@@ -22,7 +22,7 @@
 <script>
 import Oficio from '~/components/icons/Oficio.vue'
 export default {
-  name: 'index',
+  name: 'Index',
   components: {
     Oficio
   },

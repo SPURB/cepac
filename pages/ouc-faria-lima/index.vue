@@ -1,6 +1,6 @@
 <template>
   <div class="index">
-    <h1></h1>
+    <h1 />
     <index-table :table-name="addDateToName(tableName)" />
   </div>
 </template>
@@ -26,6 +26,12 @@ export default {
       const ho = date.getHours()
       const mi = date.getMinutes()
       return `${name}_${yyyy}-${mm}-${dd}_${ho}h${mi}`
+    }
+  },
+  head () {
+    return {
+      title: 'OUC Faria Lima | Estoques desvinculados',
+      meta: [{ hid: 'relatorios', name: 'relatorios', content: "Operação Urbana Consorciada Faria Lima CEPAC'S desvinculados" }]
     }
   }
 }

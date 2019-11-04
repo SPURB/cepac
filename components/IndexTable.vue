@@ -76,7 +76,8 @@ export default {
         {
           label: 'Id Status',
           field: 'IdStatus',
-          type: 'number'
+          type: 'number',
+          hidden: true
         },
         {
           label: 'E-mail',
