@@ -10,6 +10,7 @@ html {
   font-size: 16px;
   word-spacing: 1px;
   box-sizing: border-box;
+  line-height: 1.62
 }
 
 *,
@@ -23,4 +24,16 @@ h2 {
   font-weight: 300;
   font-size: 42px;
 }
+
+.container {
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .icon {
+    max-width: 60px;
+    max-height: 60px;
+  }
+}
+
 </style>

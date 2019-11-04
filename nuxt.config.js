@@ -2,10 +2,13 @@ const baseUrl = process.env.CI ? '/relatorios/' : '/'
 
 export default {
   mode: 'spa',
-  /*
-  ** Headers of the page
-  */
+  env: {
+    apiBaseUrl: process.env.NODE_ENV === 'dev' ? 'http://spurbsp163/filacepac/api' : 'http://servicos.spurbanismo.sp.gov.br/cepac/api'
+  },
   head: {
+    htmlAttrs: {
+      lang: 'pt-br'
+    },
     title: process.env.npm_package_name || '',
     meta: [
       { charset: 'utf-8' },
