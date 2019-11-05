@@ -1,0 +1,35 @@
+/*
+*  SMACSS -> http://smacss.com/book/categorizing
+  1. Base
+  2. Layout -> -> layouts/*.vue
+  3. Module -> in components/*.vue
+  4. State -> in components/*.vue
+*/
+@import './variables';
+
+/*
+  1. Base
+*/
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html {
+  font-family: $font-stack;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+a {
+  text-decoration: none;
+}
+
+/*
+  3. Module (default modules)
+*/
+#nuxt-loading {
+  background-color: $brand-1
+}

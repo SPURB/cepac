@@ -1,5 +1,5 @@
 <template>
-  <div class="indexTable">
+  <section class="indexTable">
     <div v-if="isFetching" class="preloader">
       <h2>carregando...</h2>
     </div>
@@ -34,7 +34,7 @@
         </button>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>

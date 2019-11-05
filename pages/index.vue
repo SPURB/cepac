@@ -1,11 +1,5 @@
 <template>
   <div class="index">
-    <div class="container">
-      <div class="icon">
-        <oficio :fill="'#038375'" />
-      </div>
-      <h2>Relatórios da São Paulo Urbanismo</h2>
-    </div>
     <nav id="routes">
       <h3>Relatórios</h3>
       <ul v-if="routes.length" class="report__list">
@@ -20,11 +14,11 @@
 </template>
 
 <script>
-import Oficio from '~/components/icons/Oficio.vue'
+// import Oficio from '~/components/icons/Oficio.vue'
 export default {
   name: 'Index',
   components: {
-    Oficio
+    // Oficio
   },
   data () {
     return {
@@ -42,15 +36,21 @@ export default {
   },
   methods: {
     listRoutes: (routes, componentName) => routes
-      .filter(route => componentName !== route.name)
+      .filter(route => route.name !== 'index')
   }
 }
 </script>
 <style lang="scss" scoped>
-.container { min-height: 90vh }
-nav#routes {
+.index{
+  margin: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#routes {
   display: flex;
   flex-direction: column;
-  text-align: center;
+  text-align: left;
 }
 </style>

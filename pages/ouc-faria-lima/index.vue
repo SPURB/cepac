@@ -1,15 +1,27 @@
 <template>
   <div class="index">
-    <h1 />
+    <PageTitle :two-columns="true">
+      <div class="col-1">
+        <h1>Operação Urbana Consociada Faria Lima</h1>
+        <h2>Controle de Estoques</h2>
+      </div>
+      <div class="col-2">
+        <p class="fonte">
+          Fonte: <a href="https://servicos.spurbanismo.sp.gov.br/cepacs/api/fila" target="_blank">servicos.spurbanismo.sp.gov.br/cepacs/api/fila</a>
+        </p>
+      </div>
+    </PageTitle>
     <index-table :table-name="addDateToName(tableName)" />
   </div>
 </template>
 <script>
-import IndexTable from '~/components/IndexTable'
+import PageTitle from '~/components/sections/PageTitle'
+import IndexTable from '~/components/sections/IndexTable'
 
 export default {
   name: 'OucFariaLima',
   components: {
+    PageTitle,
     IndexTable
   },
   data () {
