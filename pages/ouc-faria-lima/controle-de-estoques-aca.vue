@@ -67,76 +67,96 @@
           Hélio Pelegrino
         </li>
         <li class="conteudo">
-          C3
+          {{ lei.helioPelegrino.areaMax.res }}
         </li>
         <li class="conteudo">
-          D3
+          {{ lei.helioPelegrino.areaMax.nRes }}
         </li>
         <li class="conteudo">
-          E3
+          <!-- E3 -->
+          {{ helioPelegrino[4].AreaAdicionalR }}
         </li>
         <li class="conteudo">
-          F3
+          <!-- F3 -->
+          {{ helioPelegrino[4].AreaAdicionalNR }}
         </li>
         <li class="conteudo">
-          G3
+          <!-- G3 -->
+          {{ helioPelegrino[2].AreaAdicionalR }}
         </li>
         <li class="conteudo">
-          H3
+          <!-- H3 -->
+          {{ helioPelegrino[2].AreaAdicionalNR }}
         </li>
         <li class="conteudo">
-          I3
+          <!-- I3 -->
+          {{ helioPelegrinoSaldoRes }}
         </li>
         <li class="conteudo">
-          J3
+          <!-- J3 -->
+          {{ helioPelegrinoSaldoNres }}
         </li>
         <li class="conteudo A4-B4">
           Faria Lima
         </li>
         <li class="conteudo">
-          C4
+          <!-- C4 -->
+          {{ lei.fariaLima.areaMax.res }}
         </li>
         <li class="conteudo">
-          D4
+          <!-- D5 -->
+          {{ lei.fariaLima.areaMax.nRes }}
         </li>
         <li class="conteudo">
-          E4
+          <!-- E4 -->
+          {{ fariaLima[4].AreaAdicionalR }}
         </li>
         <li class="conteudo">
-          F4
+          <!-- F4 -->
+          {{ fariaLima[4].AreaAdicionalNR }}
         </li>
         <li class="conteudo">
-          G4
+          <!-- G4 -->
+          {{ fariaLima[2].AreaAdicionalR }}
         </li>
         <li class="conteudo">
-          H4
+          <!-- H4 -->
+          {{ fariaLima[2].AreaAdicionalNR }}
         </li>
         <li class="conteudo">
-          I4
+          <!-- I4 -->
+          {{ fariaLimaSaldoRes }}
         </li>
         <li class="conteudo">
-          J4
+          <!-- J4 -->
+          {{ fariaLimaSaldoSaldoNres }}
         </li>
         <li class="conteudo A5-B5">
           Pinheiros
         </li>
         <li class="conteudo">
-          C5
+          <!-- C5 -->
+          {{ lei.pinheiros.areaMax.res }}
         </li>
         <li class="conteudo">
-          D5
+          <!-- D5 -->
+          {{ lei.pinheiros.areaMax.nRes }}
         </li>
         <li class="conteudo">
-          E5
+          <!-- E5 -->
+          {{ pinheiros[4].AreaAdicionalR }}
         </li>
         <li class="conteudo">
-          F5
+          <!-- F5 -->
+          {{ pinheiros[4].AreaAdicionalNR }}
         </li>
         <li class="conteudo">
-          G5
+          <!-- G5 -->
+          {{ pinheiros[2].AreaAdicionalR }}
         </li>
         <li class="conteudo">
-          H5
+          <!-- H5 -->
+          {{ pinheiros[2].AreaAdicionalNR }}
         </li>
         <li class="conteudo">
           I5
@@ -148,22 +168,28 @@
           Olimpíadas
         </li>
         <li class="conteudo">
-          C6
+          <!-- C6 -->
+          {{ lei.olimpiadas.areaMax.res }}
         </li>
         <li class="conteudo">
-          D6
+          <!-- D6 -->
+          {{ lei.olimpiadas.areaMax.nRes }}
         </li>
         <li class="conteudo">
-          E6
+          <!-- E6 -->
+          {{ olimpiadas[4].AreaAdicionalR }}
         </li>
         <li class="conteudo">
-          F6
+          <!-- F6 -->
+          {{ olimpiadas[4].AreaAdicionalNR }}
         </li>
         <li class="conteudo">
-          G6
+          <!-- G6 -->
+          {{ olimpiadas[2].AreaAdicionalR }}
         </li>
         <li class="conteudo">
-          H6
+          <!-- H6 -->
+          {{ olimpiadas[2].AreaAdicionalNR }}
         </li>
         <li class="conteudo">
           I6
@@ -172,7 +198,7 @@
           J6
         </li>
         <li class="conteudo K3-L6">
-          292.445,00
+          000.000,00
         </li>
       </ul>
       <ul class="notas">
@@ -187,6 +213,7 @@
 <script>
 import axios from '~/plugins/axios'
 import PageTitle from '~/components/sections/PageTitle'
+import { oucFariaLima } from '~/content/estoques'
 
 export default {
   name: 'ControleEstoquesAca',
@@ -195,25 +222,95 @@ export default {
   },
   data () {
     return {
-      estoque: [],
+      lei: oucFariaLima,
+      estoques: [],
+      helioPelegrino: {},
+      fariaLima: {},
+      pinheiros: {},
+      olimpiadas: {},
       mapSetores: {
-        '1': 'Hélio Pelegrino',
-        '2': 'Faria Lima',
-        '3': 'Pinheiros',
-        '4': 'Olimpíadas'
+        '1': 'helioPelegrino',
+        '2': 'fariaLima',
+        '3': 'pinheiros',
+        '4': 'olimpiadas'
+      },
+      mapStatus: {
+        '1': 'Checklist',
+        '2': 'Em Análise',
+        '3': 'Indeferido',
+        '4': 'Aprovado'
       }
     }
   },
+  computed: {
+    helioPelegrinoSaldoRes () {
+      return (this.lei.helioPelegrino.areaMax.res - this.helioPelegrino[4].AreaAdicionalR).toFixed(2)
+    },
+    helioPelegrinoSaldoNres () {
+      return (this.lei.helioPelegrino.areaMax.nRes - this.helioPelegrino[4].AreaAdicionalNR).toFixed(2)
+    },
+    fariaLimaSaldoRes () {
+      return (this.lei.fariaLima.areaMax.res - this.fariaLima[4].AreaAdicionalR).toFixed(2)
+    },
+    fariaLimaSaldoSaldoNres () {
+      return (this.lei.fariaLima.areaMax.nRes - this.fariaLima[4].AreaAdicionalNR).toFixed(2)
+    },
+    pinheirosSaldoRes () {
+      return (this.lei.pinheiros.areaMax.res - this.pinheiros[4].AreaAdicionalR).toFixed(2)
+    },
+    pinheirosSaldoNres () {
+      return (this.lei.pinheiros.areaMax.nRes - this.pinheiros[4].AreaAdicionalNR).toFixed(2)
+    },
+    olimpiadasSaldoRes () {
+      return (this.lei.fariaLima.areaMax.res - this.fariaLima[4].AreaAdicionalR).toFixed(2)
+    },
+    olimpiadasSaldoNres () {
+      return (this.lei.fariaLima.areaMax.nRes - this.fariaLima[4].AreaAdicionalNR).toFixed(2)
+    }
+  },
+
   asyncData: ({ params }) => {
     return axios.get(`/estoque/`)
-      .then((res) => { return { estoque: res.data } })
+      .then((res) => { return { estoques: res.data } })
       .catch((e) => { return { error: e } })
   },
-
   created () {
-    console.log(this.estoque)
-  },
+    // cria instancias com valores igual a 0
+    const statusIds = Object.keys(this.mapSetores)
+    const setores = this.mapSetores
+    for (const setorId in setores) {
+      statusIds.forEach((statusId) => {
+        this[setores[setorId]][statusId] = {
+          AreaAdicionalNR: 0,
+          AreaAdicionalR: 0,
+          CepacACA: 0,
+          CepacUsoParam: 0,
+          IdStatus: parseInt(statusId),
+          Setor: parseInt(setorId),
+          StatusNome: this.mapStatus[statusId]
+        }
+      })
+    }
 
+    // substitui por valores da requisição (asyncData)
+    const estoquesMapped = this.estoques.map((estoque) => {
+      const StatusNome = this.mapStatus[estoque.IdStatus]
+      estoque.StatusNome = StatusNome
+      return estoque
+    })
+
+    const dividePorEtapa = (setorId) => {
+      const setorNome = this.mapSetores[setorId]
+      estoquesMapped
+        .filter(estoque => estoque.Setor === setorId)
+        .forEach((estoque) => { this[setorNome][estoque.IdStatus] = estoque })
+    }
+
+    dividePorEtapa(1)
+    dividePorEtapa(2)
+    dividePorEtapa(3)
+    dividePorEtapa(4)
+  },
   head () {
     return {
       title: 'OUC Faria Lima | Controle de estoques de área de construção adicional - ACA',
