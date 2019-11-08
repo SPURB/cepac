@@ -3,7 +3,8 @@ const baseUrl = process.env.CI ? '/relatorios/' : '/'
 export default {
   mode: 'spa',
   env: {
-    apiBaseUrl: process.env.NODE_ENV === 'dev' ? 'http://spurbsp163/filacepac/api' : 'https://servicos.spurbanismo.sp.gov.br/cepacs/api'
+    // apiBaseUrl: process.env.NODE_ENV === 'dev' ? 'http://spurbsp163/filacepac/api' : 'https://servicos.spurbanismo.sp.gov.br/cepacs/api'
+    apiBaseUrl: 'https://servicos.spurbanismo.sp.gov.br/cepacs/api'
   },
   head: {
     htmlAttrs: {

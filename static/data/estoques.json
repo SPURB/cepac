@@ -2,6 +2,7 @@
   "oucFariaLima": {
     "estoqueGeral": 2250000,
     "limiteDeEstoque": 1310000,
+    "cepacTotal": 1000000,
     "resumo": {
       "leiloado": 560712,
       "colocacaoPrivada": 117452

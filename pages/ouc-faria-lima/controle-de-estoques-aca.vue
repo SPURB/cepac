@@ -399,49 +399,63 @@
           <li class="cabecalho">
             Leiloado
           </li>
-          <!-- <li class="conteudo">{{ lei.resumo.leiloado }}</li> -->
+          <li class="conteudo">
+            {{ lei.resumo.leiloado }}
+          </li>
           <li class="cabecalho">
             Colocação privada
           </li>
           <li class="conteudo">
-            2
+            {{ lei.resumo.colocacaoPrivada }}
           </li>
           <li class="cabecalho">
-            Em circulação
+            Convertido
           </li>
           <li class="conteudo">
-            3
+            {{ acaTotais.totalConvertido }}
+          </li>
+          <li class="cabecalho destaque">
+            Em circulação
+          </li>
+          <li class="conteudo destaque">
+            {{ emCirculacao }}
           </li>
           <li class="cabecalho">
             CEPAC total
           </li>
           <li class="conteudo">
-            4
+            {{ lei.cepacTotal }}
           </li>
-          <li class="cabecalho">
+          <li class="cabecalho destaque saldo">
             CEPAC saldo
           </li>
-          <li class="conteudo">
-            5
+          <li class="conteudo destaque saldo">
+            {{ cepacSaldo }}
           </li>
         </ul>
       </div>
     </div>
+    <FooterActions :buttons="btnActions" />
   </div>
 </template>
 
 <script>
 import axios from '~/plugins/axios'
 import PageTitle from '~/components/sections/PageTitle'
-import { oucFariaLima } from '~/static/estoques'
+import FooterActions from '~/components/sections/FooterActions'
+import { oucFariaLima } from '~/static/data/estoques'
 
 export default {
   name: 'ControleEstoquesAca',
   components: {
-    PageTitle
+    PageTitle,
+    FooterActions
   },
   data () {
     return {
+      isFetching: false,
+      error: false,
+      btnActions: [],
       lei: oucFariaLima,
       estoques: [],
       helioPelegrino: {},
@@ -462,7 +476,14 @@ export default {
       },
       saldoTotal: 0,
       estoqueConsumidoTotal: 0,
-      estoqueEmAnalise: 0
+      estoqueEmAnalise: 0,
+      acaTotais: {
+        subTotalConvertido: 0,
+        subTotalConvertidoUsoPar: 0,
+        subtotalDesvinculado: 0,
+        subtotalDesvinculadoUsoPar: 0,
+        totalConvertido: 0
+      }
     }
   },
   computed: {
@@ -490,8 +511,31 @@ export default {
     olimpiadasSaldoNres () {
       return (this.lei.olimpiadas.areaMax.nRes - this.olimpiadas[4].AreaAdicionalNR).toFixed(2)
     },
-    acaTotais () {
-      /* eslint-disable */
+    emCirculacao () {
+      return (this.lei.resumo.leiloado + this.lei.resumo.colocacaoPrivada - this.acaTotais.totalConvertido)
+    },
+    cepacSaldo () {
+      return this.lei.cepacTotal - this.lei.resumo.leiloado - this.lei.resumo.colocacaoPrivada
+    }
+  },
+  created () {
+    this.defineSubsetoresModel()
+  },
+  mounted () {
+    this.isFetching = true
+    axios.get(`/estoque/`)
+      .then((res) => {
+        this.estoques = res.data
+        this.populateModel(res.data)
+        this.acaTotais = this.getAcaTotais()
+      })
+      .catch((error) => { this.error = error })
+      .finally(() => {
+        this.isFetching = false
+      })
+  },
+  methods: {
+    getAcaTotais () {
       const subTotalConvertido =
         this.helioPelegrino[4].CepacACA +
         this.fariaLima[4].CepacACA +
@@ -506,83 +550,73 @@ export default {
 
       const totalConvertido = subTotalConvertido + subTotalConvertidoUsoPar
 
-      const subtotalDesvinculado = 
+      const subtotalDesvinculado =
           this.lei.helioPelegrino.cepacDesvinculado.aca +
           this.lei.fariaLima.cepacDesvinculado.aca +
           this.lei.pinheiros.cepacDesvinculado.aca +
           this.lei.olimpiadas.cepacDesvinculado.aca
 
-      const subtotalDesvinculadoUsoPar = 
+      const subtotalDesvinculadoUsoPar =
           this.lei.helioPelegrino.cepacDesvinculado.usoPar +
           this.lei.fariaLima.cepacDesvinculado.usoPar +
           this.lei.pinheiros.cepacDesvinculado.usoPar +
           this.lei.olimpiadas.cepacDesvinculado.usoPar
 
       return {
-        'subTotalConvertido':subTotalConvertido,
-        'subTotalConvertidoUsoPar': subTotalConvertidoUsoPar,
-        'totalConvertido': totalConvertido,
-        'subtotalDesvinculado': subtotalDesvinculado,
-        'subtotalDesvinculadoUsoPar': subtotalDesvinculadoUsoPar
+        subTotalConvertido,
+        subTotalConvertidoUsoPar,
+        totalConvertido,
+        subtotalDesvinculado,
+        subtotalDesvinculadoUsoPar
       }
-    /* eslint-enable */
-    }
-  },
-
-  asyncData: ({ params }) => {
-    return axios.get(`/estoque/`)
-      .then((res) => { return { estoques: res.data } })
-      .catch((e) => { return { error: e } })
-  },
-  created () {
-    // cria instancias com valores igual a 0
-    const statusIds = Object.keys(this.mapSetores)
-    const setores = this.mapSetores
-    for (const setorId in setores) {
-      statusIds.forEach((statusId) => {
-        this[setores[setorId]][statusId] = {
-          AreaAdicionalNR: 0,
-          AreaAdicionalR: 0,
-          CepacACA: 0,
-          CepacUsoParam: 0,
-          IdStatus: parseInt(statusId),
-          Setor: parseInt(setorId),
-          StatusNome: this.mapStatus[statusId]
-        }
+    },
+    defineSubsetoresModel () {
+      const statusIds = Object.keys(this.mapSetores)
+      const setores = this.mapSetores
+      for (const setorId in setores) {
+        statusIds.forEach((statusId) => {
+          this[setores[setorId]][statusId] = {
+            AreaAdicionalNR: 0,
+            AreaAdicionalR: 0,
+            CepacACA: 0,
+            CepacUsoParam: 0,
+            IdStatus: parseInt(statusId),
+            Setor: parseInt(setorId),
+            StatusNome: this.mapStatus[statusId]
+          }
+        })
+      }
+    },
+    populateModel (response) {
+      const estoquesMapped = response.map((estoque) => { // substitui por valores da requisição (asyncData) armazenados em this.estoques
+        const StatusNome = this.mapStatus[estoque.IdStatus]
+        estoque.StatusNome = StatusNome
+        return estoque
       })
+
+      const dividePorEtapa = (setorId) => {
+        const setorNome = this.mapSetores[setorId]
+        estoquesMapped
+          .filter(estoque => estoque.Setor === setorId)
+          .forEach((estoque) => { this[setorNome][estoque.IdStatus] = estoque })
+      }
+      dividePorEtapa(1)
+      dividePorEtapa(2)
+      dividePorEtapa(3)
+      dividePorEtapa(4)
+
+      this.estoqueConsumidoTotal = response// atualiza estoqueConsumidoTotal e saldoTotal
+        .filter(estoque => estoque.IdStatus === 4)
+        .map(estoque => estoque.AreaAdicionalR + estoque.AreaAdicionalNR)
+        .reduce((acc, curr) => acc + curr)
+
+      this.saldoTotal = (this.lei.limiteDeEstoque - this.estoqueConsumidoTotal - this.lei.leiAntiga['consumidoArt6-1376904']).toFixed(2)
+
+      this.estoqueEmAnalise = response// atualiza estoqueEmAnalise
+        .filter(estoque => estoque.IdStatus === 2)
+        .map(estoque => estoque.AreaAdicionalR + estoque.AreaAdicionalNR)
+        .reduce((acc, curr) => acc + curr)
     }
-
-    // substitui por valores da requisição (asyncData) armazenados em this.estoques
-    const estoquesMapped = this.estoques.map((estoque) => {
-      const StatusNome = this.mapStatus[estoque.IdStatus]
-      estoque.StatusNome = StatusNome
-      return estoque
-    })
-
-    const dividePorEtapa = (setorId) => {
-      const setorNome = this.mapSetores[setorId]
-      estoquesMapped
-        .filter(estoque => estoque.Setor === setorId)
-        .forEach((estoque) => { this[setorNome][estoque.IdStatus] = estoque })
-    }
-    dividePorEtapa(1)
-    dividePorEtapa(2)
-    dividePorEtapa(3)
-    dividePorEtapa(4)
-
-    // atualiza estoqueConsumidoTotal e saldoTotal
-    this.estoqueConsumidoTotal = this.estoques
-      .filter(estoque => estoque.IdStatus === 4)
-      .map(estoque => estoque.AreaAdicionalR + estoque.AreaAdicionalNR)
-      .reduce((acc, curr) => acc + curr)
-
-    this.saldoTotal = (this.lei.limiteDeEstoque - this.estoqueConsumidoTotal - this.lei.leiAntiga['consumidoArt6-1376904']).toFixed(2)
-
-    // atualiza estoqueEmAnalise
-    this.estoqueEmAnalise = this.estoques
-      .filter(estoque => estoque.IdStatus === 2)
-      .map(estoque => estoque.AreaAdicionalR + estoque.AreaAdicionalNR)
-      .reduce((acc, curr) => acc + curr)
   },
   head () {
     return {
@@ -601,10 +635,6 @@ ol, ul, li {
   margin: 0;
   padding: 0;
   border: 0
-}
-
-li {
-  line-height: 2
 }
 
 .block {
@@ -687,23 +717,25 @@ li {
   display: grid;
   grid-template-columns: 2fr 3fr 1fr;
   grid-column-gap: 2rem;
-  .estoque-limite {
+  margin: 1rem;
+  .block {
     margin-right: 0;
-    ul {
-      display: grid;
-      grid-template-columns: 3fr 1fr;
-      grid-column-gap: 1rem;
+    margin-left: 0
+  }
+}
+
+.estoque-limite {
+  ul {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    grid-column-gap: 1rem;
+    li { border-top: $line-1px }
+    &.notas {
+      display: flex;
+      flex-direction: column;
       li {
-        // padding: 0.75rem 0;
-        border-top: $line-1px
-      }
-      &.notas {
-        display: flex;
-        flex-direction: column;
-        li {
-          border: 0;
-          padding: 0
-        }
+        border: 0;
+        padding: 0
       }
     }
   }
@@ -751,6 +783,11 @@ li {
   h3, .cabecalho, .conteudo { border-bottom: $line-1px }
   .tabela {
     grid-template-columns:  1fr 1fr;
+    li {
+      &.saldo {
+        border-bottom: 0
+      }
+    }
   }
 }
 </style>
