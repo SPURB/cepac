@@ -12,6 +12,8 @@
       </div>
     </PageTitle>
 
+    <Preloader :is-fetching="isFetching" :error="error" />
+
     <div class="estoques-aca block">
       <h3>Controle de Estoques de Área de Construção Adicional (ACA)</h3>
       <ul class="tabela">
@@ -435,7 +437,7 @@
         </ul>
       </div>
     </div>
-    <FooterActions :buttons="btnActions" />
+    <FooterActions :actions="pageActions" />
   </div>
 </template>
 
@@ -443,19 +445,26 @@
 import axios from '~/plugins/axios'
 import PageTitle from '~/components/sections/PageTitle'
 import FooterActions from '~/components/sections/FooterActions'
+import Preloader from '~/components/sections/Preloader'
 import { oucFariaLima } from '~/static/data/estoques'
 
 export default {
   name: 'ControleEstoquesAca',
   components: {
     PageTitle,
-    FooterActions
+    FooterActions,
+    Preloader
   },
   data () {
     return {
       isFetching: false,
       error: false,
-      btnActions: [],
+      pageActions: [
+        {
+          fileName: 'dados-gerais-ouc-faria-lima.json',
+          content: oucFariaLima
+        }
+      ],
       lei: oucFariaLima,
       estoques: [],
       helioPelegrino: {},
@@ -528,13 +537,27 @@ export default {
         this.estoques = res.data
         this.populateModel(res.data)
         this.acaTotais = this.getAcaTotais()
+        this.setPageActions('controle-de-estoques.json', res.data)
+        this.setPageActions('controle-de-estoques.csv', res.data)
       })
-      .catch((error) => { this.error = error })
+      .catch((error) => { if (error) { this.error = error } })
       .finally(() => {
         this.isFetching = false
       })
   },
   methods: {
+    setPageActions (name, content) {
+      const nameSplit = name.split('.') // ['name', 'extension']
+      const d = new Date()
+      const dateStr = `${d.getFullYear()}-${d.getMonth()}-${d.getDay()}_${d.getHours()}h${d.getMinutes()}`
+      nameSplit.splice(nameSplit.length - 1, 0, dateStr)
+      const fileNameWithDate = nameSplit.join('.')
+
+      this.pageActions.push({
+        fileName: fileNameWithDate,
+        content
+      })
+    },
     getAcaTotais () {
       const subTotalConvertido =
         this.helioPelegrino[4].CepacACA +
@@ -629,13 +652,6 @@ export default {
 
 <style lang="scss" scoped>
 $line-1px: solid #333333 1px;
-
-ol, ul, li {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  border: 0
-}
 
 .block {
   margin: 1rem 1rem 3rem;
