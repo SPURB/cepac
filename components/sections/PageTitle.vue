@@ -44,8 +44,11 @@ h2 {
   font-weight: 400
 }
 
-.fonte a {
-  color: white;
-  text-decoration: none
+.fonte {
+  a {
+    color: white;
+    text-decoration: none
+  }
 }
+
 </style>

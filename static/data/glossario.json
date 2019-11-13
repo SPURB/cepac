@@ -1,0 +1,30 @@
+{
+  "fila": {
+    "Data": "Data",
+    "SubSetor": "Sub-setor",
+    "Certidao": "Certidão",
+    "Interessado": "Interessado",
+    "Licenciamento": "Licenciamento",
+    "Sei": "SEI - Serviço Eletrônico de Informações",
+    "AreaAdResidencial": "Área Adicional (residencial)",
+    "AreaAdNaoResidencial": "Área Adicional (não residencial)",
+    "CepacAreaAdicional": "CEPAC - Área Adicional",
+    "CepacModUso": "CEPAC - Modo de uso",
+    "Email": "e-mail",
+    "Telefone": "Telefone",
+    "Procurador": "Procurador",
+    "CepacObjeto": "CEPAC - Objeto",
+    "Endereco": "Endereço",
+    "AreaTerreno": "Área do terreno",
+    "Zona": "Zona (Lei 16.402/16,)",
+    "Uso": "Tipo de uso",
+    "CAProjeto": "C.A. do Projeto",
+    "Obs": "Observação",
+    "CodigoProposta": "Código da proposta",
+    "UsuarioAlteracao": "Usuário responsável pela última alteração",
+    "DataAlteracao": "Última alteração",
+    "IdStatus": "Situação",
+    "IdSetor": "Setor",
+    "Id": "Identificador"
+  }
+}

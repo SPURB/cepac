@@ -7,7 +7,7 @@
       </div>
       <div class="col-2">
         <p class="fonte">
-          Fonte: <a href="https://servicos.spurbanismo.sp.gov.br/cepacs/api/estoque" target="_blank">servicos.spurbanismo.sp.gov.br/cepacs/api/estoque</a>
+          <a href="https://postwoman.io/?method=GET&amp;url=https%3A%2F%2Fservicos.spurbanismo.sp.gov.br%2F&amp;path=cepacs%2Fapi%2Festoque"><img src="https://img.shields.io/badge/Documentação da api-Postwoman-hex_color_code?logo=Postwoman" alt="Postwoman"></a>
         </p>
       </div>
     </PageTitle>

@@ -14,29 +14,18 @@
 </template>
 
 <script>
-// import Oficio from '~/components/icons/Oficio.vue'
 export default {
   name: 'Index',
-  components: {
-    // Oficio
-  },
   data () {
     return {
-      routes: [] // todas as rotas menos a atual (criado em created)
-    }
-  },
-  head () {
-    return {
-      title: 'SP Urbanismo | Relatórios',
-      meta: [{ hid: 'relatorios', name: 'relatorios', content: 'Relatórios da São Paulo Urbanismo' }]
+      routes: [] // todas as rotas menos exclusões de listRoutes
     }
   },
   created () {
-    this.routes = this.listRoutes(this.$router.options.routes, this.$options.name)
+    this.routes = this.listRoutes(this.$router.options.routes, ['index', 'ouc-faria-lima-id'])// excluir index e dependentes de :id
   },
   methods: {
-    listRoutes: (routes, componentName) => routes
-      .filter(route => route.name !== 'index')
+    listRoutes: (routes, excludedRoutes) => routes.filter(route => !excludedRoutes.includes(route.name))
   }
 }
 </script>
