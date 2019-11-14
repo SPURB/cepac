@@ -14,16 +14,20 @@
     <div class="main">
       <div class="a4">
         <div class="a4__header">
-          <logo-spurb :fillType="'#1D1D1B'" :fillBrand="'#038375'" />
+          <logo-spurb :fill-type="'#1D1D1B'" :fill-brand="'#038375'" />
         </div>
         <ul class="a4__report">
           <li class="report__item">
             <h3>Cadastro</h3>
-            <p class="item__text--big">{{fila.Id}}</p>
+            <p class="item__text--big">
+              {{ fila.Id }}
+            </p>
           </li>
           <li class="report__item">
             <h3>Situação</h3>
-            <p class="item__text--big">{{ statusDescription[fila.IdStatus] }}</p>
+            <p class="item__text--big">
+              {{ statusDescription[fila.IdStatus] }}
+            </p>
           </li>
           <li class="report__item">
             <h3>PA / SEI</h3>
@@ -46,22 +50,22 @@
             <h3>Uso</h3>
             <p>{{ fila.Uso }}</p>
           </li>
-          <li class="report__item" v-if="isNotEmpty(fila.SubSetor)">
+          <li v-if="isNotEmpty(fila.SubSetor)" class="report__item">
             <h3>Sub setor</h3>
             <p>{{ fila.SubSetor }}</p>
           </li>
         </ul>
 
         <ul class="a4__report one-column">
-          <li class="report__item" v-if="isNotEmpty(fila.Certidao)">
+          <li v-if="isNotEmpty(fila.Certidao)" class="report__item">
             <h3>Certidão</h3>
-            <p>{{fila.Certidao}}</p>
+            <p>{{ fila.Certidao }}</p>
           </li>
           <li class="report__item">
             <h3>Interessado</h3>
             <p>{{ fila.Interessado }}</p>
           </li>
-          <li class="report__item" v-if="isNotEmpty(fila.Procurador)">
+          <li v-if="isNotEmpty(fila.Procurador)" class="report__item">
             <h3>Procurador</h3>
             <p>{{ fila.Procurador }}</p>
           </li>
@@ -73,16 +77,15 @@
         <ul class="a4__report sqls">
           <h3>IPTU</h3>
           <li v-for="(sql, key) in sqls" :key="key" class="report__item">
-            {{sql.NumeroSql}}
+            {{ sql.NumeroSql }}
           </li>
         </ul>
         <ul class="a4__report">
-          <li class="report__item" v-if="isNotEmpty(fila.Licenciamento)">
+          <li v-if="isNotEmpty(fila.Licenciamento)" class="report__item">
             <h3>Licenciamento</h3>
-            <p>{{fila.Licenciamento}}</p>
+            <p>{{ fila.Licenciamento }}</p>
           </li>
-          <li class="report__item" v-if="isNotEmpty(fila.Zona)">
-          </li>
+          <li v-if="isNotEmpty(fila.Zona)" class="report__item" />
         </ul>
       </div>
     </div>
@@ -92,7 +95,7 @@
 import axios from '~/plugins/axios'
 import { fila as glossarioFila, statusDescription } from '~/static/data/glossario'
 import PageTitle from '~/components/sections/PageTitle'
-import LogoSpurb from '~/components/icons/logoSpurb'
+import LogoSpurb from '~/components/icons/LogoSpurb'
 
 export default {
   name: 'IdOucfl',

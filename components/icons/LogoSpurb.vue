@@ -1,6 +1,6 @@
 <template>
   <svg
-    class="logo"
+    class="LogoSpurb logo"
     width="223"
     height="53"
     viewBox="0 0 223 53"
