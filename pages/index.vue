@@ -22,7 +22,7 @@ export default {
     }
   },
   created () {
-    this.routes = this.listRoutes(this.$router.options.routes, ['index', 'ouc-faria-lima-id'])// excluir index e dependentes de :id
+    this.routes = this.listRoutes(this.$router.options.routes, ['index', 'fila-id'])// excluir index e dependentes de :id
   },
   methods: {
     listRoutes: (routes, excludedRoutes) => routes.filter(route => !excludedRoutes.includes(route.name))

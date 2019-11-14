@@ -1,5 +1,6 @@
 $font-stack: 'Roboto', 'Helvetica', Arial, sans-serif;
 $brand-1: #008375;
+$desktop: 1200px;
 
 @mixin table-collapsed {
   @media (max-width: 1900px) { @content; }

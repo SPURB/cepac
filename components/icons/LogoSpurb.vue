@@ -32,8 +32,9 @@
   </svg>
 </template>
 <script>
+/* eslint-disable */
 export default {
-  name: 'Logo',
+  name: 'LogoSpurb',
   props: {
     fillType: {
       type: String,

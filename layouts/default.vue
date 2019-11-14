@@ -1,17 +1,17 @@
 <template>
   <div class="default">
     <header>
-      <logo :fill-type="'#1D1D1B'" :fill-brand="'#038375'" />
+      <logo-spurb :fill-type="'#1D1D1B'" :fill-brand="'#038375'" />
     </header>
     <nuxt />
   </div>
 </template>
 <script>
-import Logo from '~/components/icons/Logo.vue'
+import LogoSpurb from '~/components/icons/LogoSpurb.vue'
 export default {
   name: 'Default',
   components: {
-    Logo
+    LogoSpurb
   },
   head () {
     return {

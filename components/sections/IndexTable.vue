@@ -24,6 +24,7 @@
             { field: 'Data', type: 'asc' }
           ]
         }"
+        @on-cell-click="onCellClick"
       />
       <div class="actions">
         <button @click.prevent="saveTable(`${tableName}.json`, rows)">
@@ -165,6 +166,12 @@ export default {
     filters ? this.fetchData(`/fila${filters}`) : this.fetchData('/fila')
   },
   methods: {
+    onCellClick (params) {
+      if (params.column.field === 'Id') {
+        const id = params.row.Id
+        this.$router.push({ path: `/fila/${id}` })
+      }
+    },
     saveTable (name, content) {
       const nameSplit = name.split('.')
       const type = nameSplit[nameSplit.length - 1] // 'json' ou 'csv'

@@ -1,16 +1,14 @@
+import axios from 'axios'
 const baseUrl = process.env.CI ? '/relatorios/' : '/'
 
 export default {
   mode: 'spa',
   env: {
-    // apiBaseUrl: process.env.NODE_ENV === 'dev' ? 'http://spurbsp163/filacepac/api' : 'https://servicos.spurbanismo.sp.gov.br/cepacs/api'
     apiBaseUrl: 'https://servicos.spurbanismo.sp.gov.br/cepacs/api'
   },
   head: {
-    htmlAttrs: {
-      lang: 'pt-br'
-    },
-    title: process.env.npm_package_name || '',
+    htmlAttrs: { lang: 'pt-br' },
+    title: 'Relatórios de dados públicos da São Paulo Urbanismo',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -20,50 +18,27 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: `${baseUrl}favicon.ico` }
     ]
   },
-  /*
-  ** Customize the progress-bar color
-  */
+  /* Customize the progress-bar color  */
   loading: { color: '#038375' },
-  /*
-  ** Global CSS
-  */
-  css: [
-    '@/assets/base.scss'
-  ],
-  /*
-  ** Plugins to load before mounting the App
-  */
-  plugins: [
-  ],
-  /*
-  ** Nuxt.js dev-modules
-  */
-  buildModules: [
-    // Doc: https://github.com/nuxt-community/eslint-module
-    '@nuxtjs/eslint-module'
-  ],
-  /*
-  ** Nuxt.js modules
-  */
+  css: [ '@/assets/base.scss' ],
+  /* Nuxt.js dev-modules */
+  buildModules: [ '@nuxtjs/eslint-module' ],
   modules: [
-    // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/pwa'
   ],
-  /*
-  ** Axios module configuration
-  ** See https://axios.nuxtjs.org/options
-  */
-  axios: {
-  },
-  /*
-  ** Build configuration
-  */
   build: {
-  /*
-  ** You can extend webpack config here
-  */
     extend (config, ctx) {
+    }
+  },
+  generate: {
+    routes () {
+      return axios.get('https://servicos.spurbanismo.sp.gov.br/cepacs/api/fila')
+        .then((res) => {
+          return res.data.map((fila) => {
+            return '/fila/' + fila.Id
+          })
+        })
     }
   },
   router: {

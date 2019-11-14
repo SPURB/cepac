@@ -33,6 +33,15 @@ export default {
     align-items: center;
     justify-content: flex-end;
   }
+  @media (max-width: $desktop) {
+    grid-template-columns: 1fr;
+    .col-2 {
+      margin-top:1rem;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+  }
 }
 
 h1 {

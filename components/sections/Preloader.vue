@@ -29,7 +29,6 @@ export default {
       type: String,
       default: '/'
     }
-
   },
   methods: {
     reloadApp (path = '/') {

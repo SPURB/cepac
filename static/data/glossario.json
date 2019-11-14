@@ -26,5 +26,11 @@
     "IdStatus": "Situação",
     "IdSetor": "Setor",
     "Id": "Identificador"
+  },
+  "statusDescription": {
+    "1": "Checklist",
+    "2": "Em análise",
+    "3": "Indeferido",
+    "4": "Aprovado"
   }
 }
