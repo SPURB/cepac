@@ -1,7 +1,9 @@
 $font-stack: 'Roboto', 'Helvetica', Arial, sans-serif;
 $brand-1: #008375;
+$fullhd: 1900px;
 $desktop: 1200px;
+$tablet: 800px;
 
 @mixin table-collapsed {
-  @media (max-width: 1900px) { @content; }
+  @media (max-width: $fullhd) { @content; }
 }

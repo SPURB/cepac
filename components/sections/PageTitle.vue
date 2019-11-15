@@ -24,6 +24,14 @@ export default {
   background-color: $brand-1;
   padding: 1.75rem 1rem;
   display: grid;
+  @media (max-width: $tablet) {
+    h1 {
+      font-size: 1rem
+    }
+    h2 {
+      font-size: small
+    }
+  }
 }
 
 .two-columns {
@@ -36,7 +44,7 @@ export default {
   @media (max-width: $desktop) {
     grid-template-columns: 1fr;
     .col-2 {
-      margin-top:1rem;
+      margin-top: 1rem;
       display: flex;
       align-items: center;
       justify-content: flex-start;

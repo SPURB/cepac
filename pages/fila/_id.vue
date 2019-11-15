@@ -195,12 +195,17 @@ export default {
   margin-bottom: 1rem;
   .item__text--big {
     font-size: 1.5rem;
+    @media (max-width: $tablet) { font-size: 1rem }
   }
   h3 { font-size: 12px }
   &.sqls {
     font-size: 12px;
     grid-template-columns: repeat(4, 1fr);
     h3 { grid-area: 1 / 1 / 2 / 5; }
+    @media (max-width: $tablet) {
+      grid-template-columns: repeat(3, 1fr);
+      h3 { grid-area: 1 / 1 / 2 / 4; }
+    }
   }
 }
 
