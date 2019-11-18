@@ -651,6 +651,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~/assets/variables';
+
 $line-1px: solid #333333 1px;
 
 .block {
@@ -737,6 +739,12 @@ $line-1px: solid #333333 1px;
   .block {
     margin-right: 0;
     margin-left: 0
+  }
+  @media (max-width: $desktop) {
+    grid-template-columns: 1fr 1fr;
+  }
+  @media (max-width: $tablet) {
+    grid-template-columns: 1fr;
   }
 }
 

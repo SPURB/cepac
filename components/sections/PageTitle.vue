@@ -38,16 +38,15 @@ export default {
   grid-template-columns: repeat(2, 1fr);
   .col-2 {
     display: flex;
-    align-items: center;
+    text-align: right;
     justify-content: flex-end;
+    flex-direction: column
   }
   @media (max-width: $desktop) {
     grid-template-columns: 1fr;
     .col-2 {
       margin-top: 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
+      text-align: left;
     }
   }
 }
@@ -64,7 +63,10 @@ h2 {
 .fonte {
   a {
     color: white;
-    text-decoration: none
+    text-decoration: none;
+    &:hover {
+      cursor: pointer
+    }
   }
 }
 

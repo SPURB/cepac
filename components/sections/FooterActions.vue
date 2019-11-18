@@ -6,6 +6,11 @@
           {{ action.fileName }}
         </button>
       </li>
+      <li v-if="pdf" class="actions__action">
+        <button @click.prevent="printPage">
+          PDF
+        </button>
+      </li>
     </ul>
   </footer>
 </template>
@@ -18,9 +23,16 @@ export default {
     actions: {
       type: Array,
       required: true
+    },
+    pdf: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
+    printPage () {
+      window.print()
+    },
     saveTable (fileName, content) {
       const nameSplit = fileName.split('.')
       const type = nameSplit[nameSplit.length - 1] // 'json' ou 'csv'
@@ -52,7 +64,6 @@ export default {
 
       return str
     },
-
     extension (fileName) { return fileName }
   }
 }

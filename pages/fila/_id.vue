@@ -1,14 +1,20 @@
 <template>
-  <div class="IdOucfl">
+  <div class="Cadastro">
     <PageTitle :two-columns="true">
       <div class="col-1">
         <h1>Operação Urbana Consociada Faria Lima</h1>
         <h2>Lei 13.769/04, alterada pelas leis 13.871, 15.519/11 e 16.242/15</h2>
       </div>
       <div class="col-2">
-        <p class="fonte">
-          <a :href="postwomanUrl"><img src="https://img.shields.io/badge/Documentação da api-Postwoman-hex_color_code?logo=Postwoman" alt="Postwoman"></a>
-        </p>
+        <p>Fonte:</p>
+        <ul>
+          <li class="fonte">
+            <a :href="`https://servicos.spurbanismo.sp.gov.br/cepacs/api/fila/${this.$route.params.id}`" target="_blank">{{ filaItemUrl.replace('https://', '') }}</a>
+          </li>
+          <li class="fonte">
+            <a :href="`https://servicos.spurbanismo.sp.gov.br/cepacs/api/sqls?IdFilaCepac=${this.$route.params.id}`" target="_blank">{{ sqlsItemUrl.replace('https://', '') }}</a>
+          </li>
+        </ul>
       </div>
     </PageTitle>
     <div class="main">
@@ -18,21 +24,21 @@
         </div>
         <ul class="a4__report">
           <li class="report__item">
-            <h3>Cadastro</h3>
+            <h3>{{ glossarioFila['Id'] }}</h3>
             <p class="item__text--big">
               {{ fila.Id }}
             </p>
           </li>
           <li class="report__item">
-            <h3>Situação</h3>
+            <h3>{{ glossarioFila['IdStatus'] }}</h3>
             <p class="item__text--big">
               {{ statusDescription[fila.IdStatus] }}
             </p>
           </li>
           <li class="report__item">
-            <h3>PA / SEI</h3>
+            <h3>{{ glossarioFila['Sei'] }}</h3>
             <p>{{ fila.Sei }}</p>
-            <h3>Código da proposta</h3>
+            <h3>{{ glossarioFila['CodigoProposta'] }}</h3>
             <p>{{ fila.CodigoProposta }}</p>
           </li>
         </ul>
@@ -45,14 +51,16 @@
             <p>{{ fila.Zona }}</p>
           </li>
           <li class="report__item">
-            <h3>Setor</h3>
+            <h3>{{ glossarioFila['IdSetor'] }}</h3>
             <p>{{ fila.SetorObj.Nome }}</p>
-            <h3>Uso</h3>
+            <h3>{{ glossarioFila['Uso'] }}</h3>
             <p>{{ fila.Uso }}</p>
           </li>
           <li v-if="isNotEmpty(fila.SubSetor)" class="report__item">
-            <h3>Sub setor</h3>
+            <h3>{{ glossarioFila['SubSetor'] }}</h3>
             <p>{{ fila.SubSetor }}</p>
+            <h3>{{ glossarioFila['AreaTerreno'] }}</h3>
+            <p>{{ fila.AreaTerreno }}</p>
           </li>
         </ul>
 
@@ -73,34 +81,83 @@
             <h3>Endereço</h3>
             <p>{{ fila.Endereco }}</p>
           </li>
-        </ul>
-        <ul class="a4__report sqls">
-          <h3>IPTU</h3>
-          <li v-for="(sql, key) in sqls" :key="key" class="report__item">
-            {{ sql.NumeroSql }}
-          </li>
-        </ul>
-        <ul class="a4__report">
           <li v-if="isNotEmpty(fila.Licenciamento)" class="report__item">
             <h3>Licenciamento</h3>
             <p>{{ fila.Licenciamento }}</p>
           </li>
           <li v-if="isNotEmpty(fila.Zona)" class="report__item" />
         </ul>
+        <ul class="a4__report four-columns">
+          <li class="report__item">
+            <h3>{{ glossarioFila['AreaAdResidencial'] }}</h3>
+            <p class="item__text--small">
+              {{ fila.AreaAdResidencial }}
+            </p>
+          </li>
+          <li class="report__item">
+            <h3>{{ glossarioFila['AreaAdNaoResidencial'] }}</h3>
+            <p class="item__text--small">
+              {{ fila.AreaAdNaoResidencial }}
+            </p>
+          </li>
+          <li class="report__item">
+            <h3>{{ glossarioFila['CepacAreaAdicional'] }}</h3>
+            <p class="item__text--small">
+              {{ fila.CepacAreaAdicional }}
+            </p>
+          </li>
+          <li class="report__item">
+            <h3>{{ glossarioFila['CAProjeto'] }}</h3>
+            <p class="item__text--small">
+              {{ fila.CAProjeto }}
+            </p>
+          </li>
+        </ul>
+        <ul class="a4__report four-columns">
+          <h3>IPTU</h3>
+          <li v-for="(sql, key) in sqls" :key="key" class="report__item item__text--small">
+            {{ sql.NumeroSql }}
+          </li>
+        </ul>
+        <ul class="a4__report one-column">
+          <li v-if="isNotEmpty(fila.Obs)" class="report__item">
+            <h3>{{ glossarioFila['Obs'] }}</h3>
+            <p class="item__text--small">
+              {{ fila.Obs }}
+            </p>
+          </li>
+        </ul>
+        <ul class="a4__report two-columns">
+          <li v-if="isNotEmpty(fila.Data)" class="report__item">
+            <h3>{{ glossarioFila['Data'] }}</h3>
+            <p class="item__text--small">
+              {{ fila.Data.replace('T', ' ') }}
+            </p>
+          </li>
+          <li v-if="isNotEmpty(fila.DataAlteracao)" class="report__item">
+            <h3>{{ glossarioFila['DataAlteracao'] }}</h3>
+            <p class="item__text--small">
+              {{ fila.DataAlteracao.replace('T', ' ') }}
+            </p>
+          </li>
+        </ul>
       </div>
     </div>
+    <FooterActions :actions="pageActions" :pdf="true" />
   </div>
 </template>
 <script>
 import axios from '~/plugins/axios'
 import { fila as glossarioFila, statusDescription } from '~/static/data/glossario'
 import PageTitle from '~/components/sections/PageTitle'
+import FooterActions from '~/components/sections/FooterActions'
 import LogoSpurb from '~/components/icons/LogoSpurb'
 
 export default {
-  name: 'IdOucfl',
+  name: 'Cadastro',
   components: {
     PageTitle,
+    FooterActions,
     LogoSpurb
   },
   data () {
@@ -108,25 +165,34 @@ export default {
       fila: {},
       sqls: [],
       glossarioFila,
-      statusDescription
+      statusDescription,
+      pageActions: [] // { fileName, content }
     }
   },
   computed: {
-    postwomanUrl () {
-      return `https://postwoman.io/?method=GET&amp;url=https%3A%2F%2Fservicos.spurbanismo.sp.gov.br%2F&amp;path=cepacs%2Fapi%2Ffila%2F${this.$route.params.id}`
+    filaItemUrl () {
+      return `Cadastro nº ${this.$route.params.id}`
+    },
+    sqlsItemUrl () {
+      return `IPTU's associados a cadastro nº ${this.$route.params.id}`
     }
   },
   async asyncData ({ params }) {
     const fila = await axios.get(`fila/${params.id}`)
     const sqls = await axios.get(`sqls?IdFilaCepac=${params.id}`)
-    // const filaClean = {}
-    // const filaResponse = fila.data
-    // for (const key in filaResponse) {
-    //   if (filaResponse[key] !== null || typeof (filaResponse[key]) === 'number') {
-    //     filaClean[key] = filaResponse[key]
-    //   }
-    // }
     return { fila: fila.data, sqls: sqls.data }
+  },
+  created () {
+    const d = new Date()
+    const dateStr = `${d.getFullYear()}-${d.getMonth()}-${d.getDay()}_${d.getHours()}h${d.getMinutes()}`
+
+    const outputFila = this.fila
+    outputFila.sqls = this.sqls
+
+    this.pageActions = [{
+      fileName: `cadastro-${this.fila.Id}_${dateStr}.json`,
+      content: outputFila
+    }]
   },
   methods: {
     isNotEmpty (str) {
@@ -146,11 +212,13 @@ export default {
 .main {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: 1fr;
+  grid-template-rows: 2fr;
   grid-column-gap: 16px;
-
+  footer {
+    grid-area: 2 / 1 / 3 / 13;
+  }
   @media (max-width: $desktop) {
-    display: block
+    display: block;
   }
 }
 
@@ -162,6 +230,12 @@ export default {
   background: #FFFFFF;
   border: 1px solid #EBE6E6;
   box-shadow: 4px 4px 8px rgba(125, 124, 124, 0.25);
+
+  @media (max-width: $hd){
+    height: unset;
+    padding-bottom: 2rem;
+  }
+
   @media (max-width: $desktop) {
     border: 0;
     margin-top: 0;
@@ -190,16 +264,26 @@ export default {
 }
 
 .a4__report {
+  margin-bottom: 0.5rem;
+  padding-top: 0.5rem;
   border-top: solid 1px #666666;
-  padding-top: 1rem;
-  margin-bottom: 1rem;
   .item__text--big {
     font-size: 1.5rem;
     @media (max-width: $tablet) { font-size: 1rem }
   }
+  .item__text--small { font-size: 12px }
   h3 { font-size: 12px }
-  &.sqls {
-    font-size: 12px;
+  &.one-column {
+    grid-template-columns: 1fr;
+  }
+  &.two-columns {
+    grid-template-columns: 1fr 1fr;
+    li:last-child{
+      grid-area: 1 / 2 / 2 / 3;
+      text-align: right
+    }
+  }
+  &.four-columns {
     grid-template-columns: repeat(4, 1fr);
     h3 { grid-area: 1 / 1 / 2 / 5; }
     @media (max-width: $tablet) {
@@ -209,11 +293,14 @@ export default {
   }
 }
 
-.one-column {
-  grid-template-columns: 1fr;
+.report__item {
+  p { margin-bottom: 0.5rem }
 }
 
-.report__item {
-  p { margin-bottom: 1rem }
+@media print {
+  header, .page-title, .actions {
+    display: none;
+  }
 }
+
 </style>
