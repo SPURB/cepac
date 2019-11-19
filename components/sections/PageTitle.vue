@@ -32,6 +32,7 @@ export default {
       font-size: small
     }
   }
+  @media print { display: none }
 }
 
 .two-columns {

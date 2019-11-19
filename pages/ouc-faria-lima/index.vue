@@ -11,7 +11,7 @@
         </p>
       </div>
     </PageTitle>
-    <index-table :table-name="addDateToName(tableName)" />
+    <index-table :table-name="addDateToName(tableName)" :query-filter="'?'" />
   </div>
 </template>
 <script>

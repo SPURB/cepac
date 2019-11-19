@@ -6,9 +6,15 @@
         <h2>Lei 13.769/04, alterada pelas leis 13.871, 15.519/11 e 16.242/15</h2>
       </div>
       <div class="col-2">
-        <p class="fonte">
-          <a href="https://postwoman.io/?method=GET&amp;url=https%3A%2F%2Fservicos.spurbanismo.sp.gov.br%2F&amp;path=cepacs%2Fapi%2Festoque"><img src="https://img.shields.io/badge/Documentação da api-Postwoman-hex_color_code?logo=Postwoman" alt="Postwoman"></a>
-        </p>
+        <p>Fontes:</p>
+        <ul>
+          <li class="fonte">
+            <a href="https://servicos.spurbanismo.sp.gov.br/cepacs/api/estoque/">Dados resumidos de estoque</a>
+          </li>
+          <li class="fonte">
+            <a href="/data/estoques.json">Dados gereais da OUCFL</a>
+          </li>
+        </ul>
       </div>
     </PageTitle>
 
@@ -69,68 +75,58 @@
           Hélio Pelegrino
         </li>
         <li class="conteudo">
-          {{ lei.helioPelegrino.areaMax.res }}
+          {{ lei.helioPelegrino.areaMax.res.toFixed(2) }}
         </li>
         <li class="conteudo">
-          {{ lei.helioPelegrino.areaMax.nRes }}
+          {{ lei.helioPelegrino.areaMax.nRes.toFixed(2) }}
         </li>
         <li class="conteudo">
-          <!-- E3 -->
-          {{ helioPelegrino[4].AreaAdicionalR }}
+          {{ helioPelegrino[4].AreaAdicionalR.toFixed(2) }}
         </li>
         <li class="conteudo">
-          <!-- F3 -->
-          {{ helioPelegrino[4].AreaAdicionalNR }}
+          {{ helioPelegrino[4].AreaAdicionalNR.toFixed(2) }}
         </li>
         <li class="conteudo">
-          <!-- G3 -->
-          {{ helioPelegrino[2].AreaAdicionalR }}
+          {{ helioPelegrino[2].AreaAdicionalR.toFixed(2) }}
         </li>
         <li class="conteudo">
-          <!-- H3 -->
-          {{ helioPelegrino[2].AreaAdicionalNR }}
+          {{ helioPelegrino[2].AreaAdicionalNR.toFixed(2) }}
         </li>
         <li class="conteudo">
-          <!-- I3 -->
+          <!-- fixed -->
           {{ helioPelegrinoSaldoRes }}
         </li>
+        <!-- fixed -->
         <li class="conteudo">
-          <!-- J3 -->
           {{ helioPelegrinoSaldoNres }}
         </li>
         <li class="conteudo A4-B4">
           Faria Lima
         </li>
         <li class="conteudo">
-          <!-- C4 -->
-          {{ lei.fariaLima.areaMax.res }}
+          {{ lei.fariaLima.areaMax.res.toFixed(2) }}
         </li>
         <li class="conteudo">
-          <!-- D5 -->
-          {{ lei.fariaLima.areaMax.nRes }}
+          {{ lei.fariaLima.areaMax.nRes.toFixed(2) }}
         </li>
         <li class="conteudo">
-          <!-- E4 -->
-          {{ fariaLima[4].AreaAdicionalR }}
+          {{ fariaLima[4].AreaAdicionalR.toFixed(2) }}
         </li>
         <li class="conteudo">
-          <!-- F4 -->
-          {{ fariaLima[4].AreaAdicionalNR }}
+          {{ fariaLima[4].AreaAdicionalNR.toFixed(2) }}
         </li>
         <li class="conteudo">
-          <!-- G4 -->
-          {{ fariaLima[2].AreaAdicionalR }}
+          {{ fariaLima[2].AreaAdicionalR.toFixed(2) }}
         </li>
         <li class="conteudo">
-          <!-- H4 -->
-          {{ fariaLima[2].AreaAdicionalNR }}
+          {{ fariaLima[2].AreaAdicionalNR.toFixed(2) }}
         </li>
         <li class="conteudo">
-          <!-- I4 -->
+          <!-- fixed -->
           {{ fariaLimaSaldoRes }}
         </li>
         <li class="conteudo">
-          <!-- J4 -->
+          <!-- fixed -->
           {{ fariaLimaSaldoSaldoNres }}
         </li>
         <li class="conteudo A5-B5">
@@ -138,33 +134,34 @@
         </li>
         <li class="conteudo">
           <!-- C5 -->
-          {{ lei.pinheiros.areaMax.res }}
+          {{ lei.pinheiros.areaMax.res.toFixed(2) }}
         </li>
         <li class="conteudo">
           <!-- D5 -->
-          {{ lei.pinheiros.areaMax.nRes }}
+          {{ lei.pinheiros.areaMax.nRes.toFixed(2) }}
         </li>
         <li class="conteudo">
           <!-- E5 -->
-          {{ pinheiros[4].AreaAdicionalR }}
+          {{ pinheiros[4].AreaAdicionalR.toFixed(2) }}
         </li>
         <li class="conteudo">
           <!-- F5 -->
-          {{ pinheiros[4].AreaAdicionalNR }}
+          {{ pinheiros[4].AreaAdicionalNR.toFixed(2) }}
         </li>
         <li class="conteudo">
           <!-- G5 -->
-          {{ pinheiros[2].AreaAdicionalR }}
+          {{ pinheiros[2].AreaAdicionalR.toFixed(2) }}
         </li>
         <li class="conteudo">
           <!-- H5 -->
-          {{ pinheiros[2].AreaAdicionalNR }}
+          {{ pinheiros[2].AreaAdicionalNR.toFixed(2) }}
         </li>
         <li class="conteudo">
-          <!-- I5 -->
+          <!-- fixed -->
           {{ pinheirosSaldoRes }}
         </li>
         <li class="conteudo">
+          <!-- fixed -->
           {{ pinheirosSaldoNres }}
         </li>
         <li class="conteudo A6-B6">
@@ -172,34 +169,34 @@
         </li>
         <li class="conteudo">
           <!-- C6 -->
-          {{ lei.olimpiadas.areaMax.res }}
+          {{ lei.olimpiadas.areaMax.res.toFixed(2) }}
         </li>
         <li class="conteudo">
           <!-- D6 -->
-          {{ lei.olimpiadas.areaMax.nRes }}
+          {{ lei.olimpiadas.areaMax.nRes.toFixed(2) }}
         </li>
         <li class="conteudo">
           <!-- E6 -->
-          {{ olimpiadas[4].AreaAdicionalR }}
+          {{ olimpiadas[4].AreaAdicionalR.toFixed(2) }}
         </li>
         <li class="conteudo">
           <!-- F6 -->
-          {{ olimpiadas[4].AreaAdicionalNR }}
+          {{ olimpiadas[4].AreaAdicionalNR.toFixed(2) }}
         </li>
         <li class="conteudo">
           <!-- G6 -->
-          {{ olimpiadas[2].AreaAdicionalR }}
+          {{ olimpiadas[2].AreaAdicionalR.toFixed(2) }}
         </li>
         <li class="conteudo">
           <!-- H6 -->
-          {{ olimpiadas[2].AreaAdicionalNR }}
+          {{ olimpiadas[2].AreaAdicionalNR.toFixed(2) }}
         </li>
         <li class="conteudo">
-          <!-- I6 -->
+          <!-- fixed -->
           {{ olimpiadasSaldoRes }}
         </li>
         <li class="conteudo">
-          <!-- J6 -->
+          <!-- fixed -->
           {{ olimpiadasSaldoNres }}
         </li>
         <li class="conteudo K3-L6 destaque">
@@ -309,70 +306,70 @@
             Hélio Pelegrino
           </li>
           <li class="conteudo">
-            {{ helioPelegrino[4].CepacACA }}
+            {{ helioPelegrino[4].CepacACA.toFixed(2) }}
           </li>
           <li class="conteudo">
-            {{ helioPelegrino[4].CepacUsoParam }}
+            {{ helioPelegrino[4].CepacUsoParam.toFixed(2) }}
           </li>
           <li class="conteudo">
-            {{ lei.helioPelegrino.cepacDesvinculado.aca }}
+            {{ lei.helioPelegrino.cepacDesvinculado.aca.toFixed(2) }}
           </li>
           <li class="conteudo">
-            {{ lei.helioPelegrino.cepacDesvinculado.usoPar }}
+            {{ lei.helioPelegrino.cepacDesvinculado.usoPar.toFixed(2) }}
           </li>
           <li class="conteudo A2-B2">
             Faria Lima
           </li>
           <li class="conteudo">
-            {{ fariaLima[4].CepacACA }}
+            {{ fariaLima[4].CepacACA.toFixed(2) }}
           </li>
           <li class="conteudo">
-            {{ fariaLima[4].CepacUsoParam }}
+            {{ fariaLima[4].CepacUsoParam.toFixed(2) }}
           </li>
           <li class="conteudo">
-            {{ lei.fariaLima.cepacDesvinculado.aca }}
+            {{ lei.fariaLima.cepacDesvinculado.aca.toFixed(2) }}
           </li>
           <li class="conteudo">
-            {{ lei.fariaLima.cepacDesvinculado.usoPar }}
+            {{ lei.fariaLima.cepacDesvinculado.usoPar.toFixed(2) }}
           </li>
           <li class="conteudo A3-B3">
             Pinheiros
           </li>
           <li class="conteudo">
-            {{ pinheiros[4].CepacACA }}
+            {{ pinheiros[4].CepacACA.toFixed(2) }}
           </li>
           <li class="conteudo">
-            {{ pinheiros[4].CepacUsoParam }}
+            {{ pinheiros[4].CepacUsoParam.toFixed(2) }}
           </li>
           <li class="conteudo">
-            {{ lei.pinheiros.cepacDesvinculado.aca }}
+            {{ lei.pinheiros.cepacDesvinculado.aca.toFixed(2) }}
           </li>
           <li class="conteudo">
-            {{ lei.pinheiros.cepacDesvinculado.usoPar }}
+            {{ lei.pinheiros.cepacDesvinculado.usoPar.toFixed(2) }}
           </li>
           <li class="conteudo A4-B4">
             Olimpíadas
           </li>
           <li class="conteudo">
-            {{ olimpiadas[4].CepacACA }}
+            {{ olimpiadas[4].CepacACA.toFixed(2) }}
           </li>
           <li class="conteudo">
-            {{ olimpiadas[4].CepacUsoParam }}
+            {{ olimpiadas[4].CepacUsoParam.toFixed(2) }}
           </li>
           <li class="conteudo">
-            {{ lei.olimpiadas.cepacDesvinculado.aca }}
+            {{ lei.olimpiadas.cepacDesvinculado.aca.toFixed(2) }}
           </li>
           <li class="conteudo">
-            {{ lei.olimpiadas.cepacDesvinculado.usoPar }}
+            {{ lei.olimpiadas.cepacDesvinculado.usoPar.toFixed(2) }}
           </li>
           <li class="conteudo A5-B5">
             Subtotal
           </li>
           <li class="conteudo">
-            {{ acaTotais.subTotalConvertido }}
+            {{ acaTotais.subTotalConvertido.toFixed(2) }}
           </li>
           <li class="conteudo">
-            {{ acaTotais.subTotalConvertidoUsoPar }}
+            {{ acaTotais.subTotalConvertidoUsoPar.toFixed(2) }}
           </li>
           <li class="conteudo" />
           <li class="conteudo" />
@@ -380,13 +377,13 @@
             Totais
           </li>
           <li class="conteudo C8-D8 destaque">
-            {{ acaTotais.totalConvertido }}
+            {{ acaTotais.totalConvertido.toFixed(2) }}
           </li>
           <li class="conteudo E8-F8 destaque">
-            {{ acaTotais.subtotalDesvinculado }}
+            {{ acaTotais.subtotalDesvinculado.toFixed(2) }}
           </li>
           <li class="conteudo G8-H8 destaque">
-            {{ acaTotais.subtotalDesvinculadoUsoPar }}
+            {{ acaTotais.subtotalDesvinculadoUsoPar.toFixed(2) }}
           </li>
         </ul>
         <ul class="notas">
@@ -402,42 +399,46 @@
             Leiloado
           </li>
           <li class="conteudo">
-            {{ lei.resumo.leiloado }}
+            {{ lei.resumo.leiloado.toFixed(2) }}
           </li>
           <li class="cabecalho">
             Colocação privada
           </li>
           <li class="conteudo">
-            {{ lei.resumo.colocacaoPrivada }}
+            {{ lei.resumo.colocacaoPrivada.toFixed(2) }}
           </li>
           <li class="cabecalho">
             Convertido
           </li>
           <li class="conteudo">
-            {{ acaTotais.totalConvertido }}
+            {{ acaTotais.totalConvertido.toFixed(2) }}
           </li>
           <li class="cabecalho destaque">
             Em circulação
           </li>
           <li class="conteudo destaque">
-            {{ emCirculacao }}
+            {{ emCirculacao.toFixed(2) }}
           </li>
           <li class="cabecalho">
             CEPAC total
           </li>
           <li class="conteudo">
-            {{ lei.cepacTotal }}
+            {{ lei.cepacTotal.toFixed(2) }}
           </li>
           <li class="cabecalho destaque saldo">
             CEPAC saldo
           </li>
           <li class="conteudo destaque saldo">
-            {{ cepacSaldo }}
+            {{ cepacSaldo.toFixed(2) }}
           </li>
         </ul>
       </div>
     </div>
-    <FooterActions :actions="pageActions" />
+    <FooterActions
+      :actions="pageActions"
+      :go-back-path="'/ouc-faria-lima'"
+      :pdf="true"
+    />
   </div>
 </template>
 
@@ -459,12 +460,7 @@ export default {
     return {
       isFetching: false,
       error: false,
-      pageActions: [
-        {
-          fileName: 'dados-gerais-ouc-faria-lima.json',
-          content: oucFariaLima
-        }
-      ],
+      pageActions: [],
       lei: oucFariaLima,
       estoques: [],
       helioPelegrino: {},
@@ -652,6 +648,10 @@ export default {
 
 <style lang="scss" scoped>
 @import '~/assets/variables';
+
+@page {
+   size: landscape
+}
 
 $line-1px: solid #333333 1px;
 

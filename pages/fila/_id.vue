@@ -11,7 +11,7 @@
           <li class="fonte">
             <a :href="`https://servicos.spurbanismo.sp.gov.br/cepacs/api/fila/${this.$route.params.id}`" target="_blank">{{ filaItemUrl.replace('https://', '') }}</a>
           </li>
-          <li class="fonte">
+          <li v-if="sqls.length" class="fonte">
             <a :href="`https://servicos.spurbanismo.sp.gov.br/cepacs/api/sqls?IdFilaCepac=${this.$route.params.id}`" target="_blank">{{ sqlsItemUrl.replace('https://', '') }}</a>
           </li>
         </ul>
@@ -114,10 +114,17 @@
           </li>
         </ul>
         <ul class="a4__report four-columns">
-          <h3>IPTU</h3>
-          <li v-for="(sql, key) in sqls" :key="key" class="report__item item__text--small">
-            {{ sql.NumeroSql }}
-          </li>
+          <h3>{{ pluralize('IPTU', sqls.length > 1 ? true : false) }}</h3>
+          <template v-if="sqls.length">
+            <li v-for="(sql, key) in sqls" :key="key" class="report__item">
+              <p class="item__text--small">
+                {{ sql.NumeroSql }}
+              </p>
+            </li>
+          </template>
+          <p v-else class="item__text--small four-column--exception">
+            Nenhum SQL está associado a este cadastro
+          </p>
         </ul>
         <ul class="a4__report one-column">
           <li v-if="isNotEmpty(fila.Obs)" class="report__item">
@@ -143,7 +150,12 @@
         </ul>
       </div>
     </div>
-    <FooterActions :actions="pageActions" :pdf="true" />
+    <FooterActions
+      :actions="pageActions"
+      :go-back-path="'/ouc-faria-lima'"
+      :go-forward="{ path:'/ouc-faria-lima/controle-de-estoques-aca', text:'Resumo de estoques' }"
+      :pdf="true"
+    />
   </div>
 </template>
 <script>
@@ -171,10 +183,11 @@ export default {
   },
   computed: {
     filaItemUrl () {
-      return `Cadastro nº ${this.$route.params.id}`
+      return `Dados referentes ao cadastro ${this.$route.params.id}`
     },
     sqlsItemUrl () {
-      return `IPTU's associados a cadastro nº ${this.$route.params.id}`
+      const haveSql = this.sqls.length > 1
+      return `${this.pluralize('IPTU', haveSql)} ${this.pluralize('associado', haveSql)} ao cadastro ${this.$route.params.id}`
     }
   },
   async asyncData ({ params }) {
@@ -202,6 +215,9 @@ export default {
         case null: return false
         default: return true
       }
+    },
+    pluralize (str, pluralize) {
+      return pluralize ? `${str}s` : str
     }
   }
 }
@@ -291,10 +307,13 @@ export default {
       h3 { grid-area: 1 / 1 / 2 / 4; }
     }
   }
+  .four-column--exception {
+    grid-area: 1 / 2 / 2 / 5
+  }
 }
 
 .report__item {
-  p { margin-bottom: 0.5rem }
+  p { margin-bottom: 0.35rem }
 }
 
 @media print {
