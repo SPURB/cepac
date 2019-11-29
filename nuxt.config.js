@@ -23,6 +23,7 @@ export default {
   css: [ '@/assets/base.scss' ],
   /* Nuxt.js dev-modules */
   buildModules: [ '@nuxtjs/eslint-module' ],
+  plugins: ['~plugins/numFilters.js'],
   modules: [
     '@nuxtjs/axios',
     '@nuxtjs/pwa'

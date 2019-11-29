@@ -3,7 +3,7 @@
     <PageTitle :two-columns="true">
       <div class="col-1">
         <h1>Operação Urbana Consociada Faria Lima</h1>
-        <h2>Lei 13.769/04, alterada pelas leis 13.871, 15.519/11 e 16.242/15</h2>
+        <h2>Lei 13.769/04, alterada pelas leis 13.871/04, 15.519/11 e 16.242/15</h2>
       </div>
       <div class="col-2">
         <p>Fontes:</p>
@@ -12,7 +12,7 @@
             <a href="https://servicos.spurbanismo.sp.gov.br/cepacs/api/estoque/">Dados resumidos de estoque</a>
           </li>
           <li class="fonte">
-            <a href="/data/estoques.json">Dados gereais da OUCFL</a>
+            <a href="https://spurb.github.io/relatorios/data/estoques.json">Dados gerais da OUCFL</a>
           </li>
         </ul>
       </div>
@@ -75,132 +75,118 @@
           Hélio Pelegrino
         </li>
         <li class="conteudo">
-          {{ lei.helioPelegrino.areaMax.res.toFixed(2) }}
+          {{ lei.helioPelegrino.areaMax.res | formatNumber }}
         </li>
         <li class="conteudo">
-          {{ lei.helioPelegrino.areaMax.nRes.toFixed(2) }}
+          {{ lei.helioPelegrino.areaMax.nRes | formatNumber }}
         </li>
         <li class="conteudo">
-          {{ helioPelegrino[4].AreaAdicionalR.toFixed(2) }}
+          {{ helioPelegrino[4].AreaAdicionalR | formatNumber }}
         </li>
         <li class="conteudo">
-          {{ helioPelegrino[4].AreaAdicionalNR.toFixed(2) }}
+          {{ helioPelegrino[4].AreaAdicionalNR | formatNumber }}
         </li>
         <li class="conteudo">
-          {{ helioPelegrino[2].AreaAdicionalR.toFixed(2) }}
+          {{ helioPelegrino[2].AreaAdicionalR | formatNumber }}
         </li>
         <li class="conteudo">
-          {{ helioPelegrino[2].AreaAdicionalNR.toFixed(2) }}
+          {{ helioPelegrino[2].AreaAdicionalNR | formatNumber }}
         </li>
         <li class="conteudo">
           <!-- fixed -->
-          {{ helioPelegrinoSaldoRes }}
+          {{ helioPelegrinoSaldoRes | formatNumber | formatNumber }}
         </li>
         <!-- fixed -->
         <li class="conteudo">
-          {{ helioPelegrinoSaldoNres }}
+          {{ helioPelegrinoSaldoNres | formatNumber }}
         </li>
         <li class="conteudo A4-B4">
           Faria Lima
         </li>
         <li class="conteudo">
-          {{ lei.fariaLima.areaMax.res.toFixed(2) }}
+          {{ lei.fariaLima.areaMax.res | formatNumber }}
         </li>
         <li class="conteudo">
-          {{ lei.fariaLima.areaMax.nRes.toFixed(2) }}
+          {{ lei.fariaLima.areaMax.nRes | formatNumber }}
         </li>
         <li class="conteudo">
-          {{ fariaLima[4].AreaAdicionalR.toFixed(2) }}
+          {{ fariaLima[4].AreaAdicionalR | formatNumber }}
         </li>
         <li class="conteudo">
-          {{ fariaLima[4].AreaAdicionalNR.toFixed(2) }}
+          {{ fariaLima[4].AreaAdicionalNR | formatNumber }}
         </li>
         <li class="conteudo">
-          {{ fariaLima[2].AreaAdicionalR.toFixed(2) }}
+          {{ fariaLima[2].AreaAdicionalR | formatNumber }}
         </li>
         <li class="conteudo">
-          {{ fariaLima[2].AreaAdicionalNR.toFixed(2) }}
-        </li>
-        <li class="conteudo">
-          <!-- fixed -->
-          {{ fariaLimaSaldoRes }}
+          {{ fariaLima[2].AreaAdicionalNR | formatNumber }}
         </li>
         <li class="conteudo">
           <!-- fixed -->
-          {{ fariaLimaSaldoSaldoNres }}
+          {{ fariaLimaSaldoRes | formatNumber }}
+        </li>
+        <li class="conteudo">
+          <!-- fixed -->
+          {{ fariaLimaSaldoSaldoNres | formatNumber }}
         </li>
         <li class="conteudo A5-B5">
           Pinheiros
         </li>
         <li class="conteudo">
-          <!-- C5 -->
-          {{ lei.pinheiros.areaMax.res.toFixed(2) }}
+          {{ lei.pinheiros.areaMax.res | formatNumber }}
         </li>
         <li class="conteudo">
-          <!-- D5 -->
-          {{ lei.pinheiros.areaMax.nRes.toFixed(2) }}
+          {{ lei.pinheiros.areaMax.nRes | formatNumber }}
         </li>
         <li class="conteudo">
-          <!-- E5 -->
-          {{ pinheiros[4].AreaAdicionalR.toFixed(2) }}
+          {{ pinheiros[4].AreaAdicionalR | formatNumber }}
         </li>
         <li class="conteudo">
-          <!-- F5 -->
-          {{ pinheiros[4].AreaAdicionalNR.toFixed(2) }}
+          {{ pinheiros[4].AreaAdicionalNR | formatNumber }}
         </li>
         <li class="conteudo">
-          <!-- G5 -->
-          {{ pinheiros[2].AreaAdicionalR.toFixed(2) }}
+          {{ pinheiros[2].AreaAdicionalR | formatNumber }}
         </li>
         <li class="conteudo">
-          <!-- H5 -->
-          {{ pinheiros[2].AreaAdicionalNR.toFixed(2) }}
+          {{ pinheiros[2].AreaAdicionalNR | formatNumber }}
         </li>
         <li class="conteudo">
-          <!-- fixed -->
-          {{ pinheirosSaldoRes }}
+          {{ pinheirosSaldoRes | formatNumber }}
         </li>
         <li class="conteudo">
-          <!-- fixed -->
-          {{ pinheirosSaldoNres }}
+          {{ pinheirosSaldoNres | formatNumber }}
         </li>
         <li class="conteudo A6-B6">
           Olimpíadas
         </li>
         <li class="conteudo">
-          <!-- C6 -->
-          {{ lei.olimpiadas.areaMax.res.toFixed(2) }}
+          {{ lei.olimpiadas.areaMax.res | formatNumber }}
         </li>
         <li class="conteudo">
-          <!-- D6 -->
-          {{ lei.olimpiadas.areaMax.nRes.toFixed(2) }}
+          {{ lei.olimpiadas.areaMax.nRes | formatNumber }}
         </li>
         <li class="conteudo">
-          <!-- E6 -->
-          {{ olimpiadas[4].AreaAdicionalR.toFixed(2) }}
+          {{ olimpiadas[4].AreaAdicionalR | formatNumber }}
         </li>
         <li class="conteudo">
-          <!-- F6 -->
-          {{ olimpiadas[4].AreaAdicionalNR.toFixed(2) }}
+          {{ olimpiadas[4].AreaAdicionalNR | formatNumber }}
         </li>
         <li class="conteudo">
-          <!-- G6 -->
-          {{ olimpiadas[2].AreaAdicionalR.toFixed(2) }}
+          {{ olimpiadas[2].AreaAdicionalR | formatNumber }}
         </li>
         <li class="conteudo">
-          <!-- H6 -->
-          {{ olimpiadas[2].AreaAdicionalNR.toFixed(2) }}
+          {{ olimpiadas[2].AreaAdicionalNR | formatNumber }}
         </li>
         <li class="conteudo">
           <!-- fixed -->
-          {{ olimpiadasSaldoRes }}
+          {{ olimpiadasSaldoRes | formatNumber }}
         </li>
         <li class="conteudo">
           <!-- fixed -->
-          {{ olimpiadasSaldoNres }}
+          {{ olimpiadasSaldoNres | formatNumber }}
         </li>
         <li class="conteudo K3-L6 destaque">
-          {{ saldoTotal }}
+          {{ saldoTotal | formatNumber }}
         </li>
       </ul>
       <ul class="notas">
@@ -217,49 +203,49 @@
             Estoque GERAL (aprovado pela 11.732/95)
           </li>
           <li class="conteudo">
-            {{ lei.estoqueGeral.toFixed(2) }}
+            {{ lei.estoqueGeral | formatNumber }}
           </li>
 
           <li class="cabecalho">
             Estoque cosumido lei 11.732/95
           </li>
           <li class="conteudo">
-            {{ lei.leiAntiga["consumidoPre-1376904"].toFixed(2) }}
+            {{ lei.leiAntiga["consumidoPre-1376904"] | formatNumber }}
           </li>
 
           <li class="cabecalho">
             LIMITE DE ESTOQUE - Leis 13.769/04 e 13.871/04 (**)
           </li>
           <li class="conteudo">
-            {{ lei.limiteDeEstoque.toFixed(2) }}
+            {{ lei.limiteDeEstoque | formatNumber }}
           </li>
 
           <li class="cabecalho">
             Estoque consumido lei 11.732/95 (***)
           </li>
           <li class="conteudo">
-            {{ lei.leiAntiga["consumidoArt6-1376904"].toFixed(2) }}
+            {{ lei.leiAntiga["consumidoArt6-1376904"] | formatNumber }}
           </li>
 
           <li class="cabecalho">
             Estoque consumido lei 13.769/09 e lei 13.871/04
           </li>
           <li class="conteudo">
-            {{ estoqueConsumidoTotal.toFixed(2) }}
+            {{ estoqueConsumidoTotal | formatNumber }}
           </li>
 
           <li class="cabecalho destaque">
             SALDO ESTOQUE GERAL DISPONÍVEL
           </li>
           <li class="conteudo destaque">
-            {{ saldoTotal }}
+            {{ saldoTotal | formatNumber }}
           </li>
 
           <li class="cabecalho">
             Estoque em análise
           </li>
           <li class="conteudo">
-            {{ estoqueEmAnalise }}
+            {{ estoqueEmAnalise | formatNumber }}
           </li>
         </ul>
         <ul class="notas">
@@ -273,7 +259,7 @@
             (***) Estoque consumido após a Lei 13.769/04
           </li>
           <li class="nota">
-            (*) + (***) Estoque total consumido pela Lei 11.732/95 = 118471995
+            (*) + (***) Estoque total consumido pela Lei 11.732/95 = {{ 1184719.95 | formatNumber }}
           </li>
         </ul>
       </div>
@@ -306,70 +292,70 @@
             Hélio Pelegrino
           </li>
           <li class="conteudo">
-            {{ helioPelegrino[4].CepacACA.toFixed(2) }}
+            {{ helioPelegrino[4].CepacACA | formatNumber }}
           </li>
           <li class="conteudo">
-            {{ helioPelegrino[4].CepacUsoParam.toFixed(2) }}
+            {{ helioPelegrino[4].CepacUsoParam | formatNumber }}
           </li>
           <li class="conteudo">
-            {{ lei.helioPelegrino.cepacDesvinculado.aca.toFixed(2) }}
+            {{ lei.helioPelegrino.cepacDesvinculado.aca | formatNumber }}
           </li>
           <li class="conteudo">
-            {{ lei.helioPelegrino.cepacDesvinculado.usoPar.toFixed(2) }}
+            {{ lei.helioPelegrino.cepacDesvinculado.usoPar | formatNumber }}
           </li>
           <li class="conteudo A2-B2">
             Faria Lima
           </li>
           <li class="conteudo">
-            {{ fariaLima[4].CepacACA.toFixed(2) }}
+            {{ fariaLima[4].CepacACA | formatNumber }}
           </li>
           <li class="conteudo">
-            {{ fariaLima[4].CepacUsoParam.toFixed(2) }}
+            {{ fariaLima[4].CepacUsoParam | formatNumber }}
           </li>
           <li class="conteudo">
-            {{ lei.fariaLima.cepacDesvinculado.aca.toFixed(2) }}
+            {{ lei.fariaLima.cepacDesvinculado.aca | formatNumber }}
           </li>
           <li class="conteudo">
-            {{ lei.fariaLima.cepacDesvinculado.usoPar.toFixed(2) }}
+            {{ lei.fariaLima.cepacDesvinculado.usoPar | formatNumber }}
           </li>
           <li class="conteudo A3-B3">
             Pinheiros
           </li>
           <li class="conteudo">
-            {{ pinheiros[4].CepacACA.toFixed(2) }}
+            {{ pinheiros[4].CepacACA | formatNumber }}
           </li>
           <li class="conteudo">
-            {{ pinheiros[4].CepacUsoParam.toFixed(2) }}
+            {{ pinheiros[4].CepacUsoParam | formatNumber }}
           </li>
           <li class="conteudo">
-            {{ lei.pinheiros.cepacDesvinculado.aca.toFixed(2) }}
+            {{ lei.pinheiros.cepacDesvinculado.aca | formatNumber }}
           </li>
           <li class="conteudo">
-            {{ lei.pinheiros.cepacDesvinculado.usoPar.toFixed(2) }}
+            {{ lei.pinheiros.cepacDesvinculado.usoPar | formatNumber }}
           </li>
           <li class="conteudo A4-B4">
             Olimpíadas
           </li>
           <li class="conteudo">
-            {{ olimpiadas[4].CepacACA.toFixed(2) }}
+            {{ olimpiadas[4].CepacACA | formatNumber }}
           </li>
           <li class="conteudo">
-            {{ olimpiadas[4].CepacUsoParam.toFixed(2) }}
+            {{ olimpiadas[4].CepacUsoParam | formatNumber }}
           </li>
           <li class="conteudo">
-            {{ lei.olimpiadas.cepacDesvinculado.aca.toFixed(2) }}
+            {{ lei.olimpiadas.cepacDesvinculado.aca | formatNumber }}
           </li>
           <li class="conteudo">
-            {{ lei.olimpiadas.cepacDesvinculado.usoPar.toFixed(2) }}
+            {{ lei.olimpiadas.cepacDesvinculado.usoPar | formatNumber }}
           </li>
           <li class="conteudo A5-B5">
             Subtotal
           </li>
           <li class="conteudo">
-            {{ acaTotais.subTotalConvertido.toFixed(2) }}
+            {{ acaTotais.subTotalConvertido | formatNumber }}
           </li>
           <li class="conteudo">
-            {{ acaTotais.subTotalConvertidoUsoPar.toFixed(2) }}
+            {{ acaTotais.subTotalConvertidoUsoPar | formatNumber }}
           </li>
           <li class="conteudo" />
           <li class="conteudo" />
@@ -377,13 +363,13 @@
             Totais
           </li>
           <li class="conteudo C8-D8 destaque">
-            {{ acaTotais.totalConvertido.toFixed(2) }}
+            {{ acaTotais.totalConvertido | formatNumber }}
           </li>
           <li class="conteudo E8-F8 destaque">
-            {{ acaTotais.subtotalDesvinculado.toFixed(2) }}
+            {{ acaTotais.subtotalDesvinculado | formatNumber }}
           </li>
           <li class="conteudo G8-H8 destaque">
-            {{ acaTotais.subtotalDesvinculadoUsoPar.toFixed(2) }}
+            {{ acaTotais.subtotalDesvinculadoUsoPar | formatNumber }}
           </li>
         </ul>
         <ul class="notas">
@@ -399,41 +385,42 @@
             Leiloado
           </li>
           <li class="conteudo">
-            {{ lei.resumo.leiloado.toFixed(2) }}
+            {{ lei.resumo.leiloado | formatNumber }}
           </li>
           <li class="cabecalho">
             Colocação privada
           </li>
           <li class="conteudo">
-            {{ lei.resumo.colocacaoPrivada.toFixed(2) }}
+            {{ lei.resumo.colocacaoPrivada | formatNumber }}
           </li>
           <li class="cabecalho">
             Convertido
           </li>
           <li class="conteudo">
-            {{ acaTotais.totalConvertido.toFixed(2) }}
+            {{ acaTotais.totalConvertido | formatNumber }}
           </li>
           <li class="cabecalho destaque">
             Em circulação
           </li>
           <li class="conteudo destaque">
-            {{ emCirculacao.toFixed(2) }}
+            {{ emCirculacao | formatNumber }}
           </li>
           <li class="cabecalho">
             CEPAC total
           </li>
           <li class="conteudo">
-            {{ lei.cepacTotal.toFixed(2) }}
+            {{ lei.cepacTotal | formatNumber }}
           </li>
           <li class="cabecalho destaque saldo">
             CEPAC saldo
           </li>
           <li class="conteudo destaque saldo">
-            {{ cepacSaldo.toFixed(2) }}
+            {{ cepacSaldo | formatNumber }}
           </li>
         </ul>
       </div>
     </div>
+    <ultima-atualizacao :data-iso-arr="dateStrs" />
     <FooterActions
       :actions="pageActions"
       :go-back-path="'/ouc-faria-lima'"
@@ -447,6 +434,7 @@ import axios from '~/plugins/axios'
 import PageTitle from '~/components/sections/PageTitle'
 import FooterActions from '~/components/sections/FooterActions'
 import Preloader from '~/components/sections/Preloader'
+import UltimaAtualizacao from '~/components/elements/UltimaAtualizacao'
 import { oucFariaLima } from '~/static/data/estoques'
 
 export default {
@@ -454,7 +442,8 @@ export default {
   components: {
     PageTitle,
     FooterActions,
-    Preloader
+    Preloader,
+    UltimaAtualizacao
   },
   data () {
     return {
@@ -492,29 +481,40 @@ export default {
     }
   },
   computed: {
+    dateStrs () {
+      return this.estoques.map(estoque => estoque.Atualizacao)
+      // const gmt = (str) => {
+      //   const dt = str.split(/[: T-]/).map(parseFloat)
+      //   return new Date(dt[0], dt[1] - 1, dt[2], dt[3] || 0, dt[4] || 0, dt[5] || 0, 0)
+      // }
+
+      // return this.estoques
+      //   .map(estoque => estoque.Atualizacao)
+      //   .sort((a, b) => gmt(a) < gmt(b))[0]
+    },
     helioPelegrinoSaldoRes () {
-      return (this.lei.helioPelegrino.areaMax.res - this.helioPelegrino[4].AreaAdicionalR).toFixed(2)
+      return (this.lei.helioPelegrino.areaMax.res - this.helioPelegrino[4].AreaAdicionalR)
     },
     helioPelegrinoSaldoNres () {
-      return (this.lei.helioPelegrino.areaMax.nRes - this.helioPelegrino[4].AreaAdicionalNR).toFixed(2)
+      return (this.lei.helioPelegrino.areaMax.nRes - this.helioPelegrino[4].AreaAdicionalNR)
     },
     fariaLimaSaldoRes () {
-      return (this.lei.fariaLima.areaMax.res - this.fariaLima[4].AreaAdicionalR).toFixed(2)
+      return (this.lei.fariaLima.areaMax.res - this.fariaLima[4].AreaAdicionalR)
     },
     fariaLimaSaldoSaldoNres () {
-      return (this.lei.fariaLima.areaMax.nRes - this.fariaLima[4].AreaAdicionalNR).toFixed(2)
+      return (this.lei.fariaLima.areaMax.nRes - this.fariaLima[4].AreaAdicionalNR)
     },
     pinheirosSaldoRes () {
-      return (this.lei.pinheiros.areaMax.res - this.pinheiros[4].AreaAdicionalR).toFixed(2)
+      return (this.lei.pinheiros.areaMax.res - this.pinheiros[4].AreaAdicionalR)
     },
     pinheirosSaldoNres () {
-      return (this.lei.pinheiros.areaMax.nRes - this.pinheiros[4].AreaAdicionalNR).toFixed(2)
+      return (this.lei.pinheiros.areaMax.nRes - this.pinheiros[4].AreaAdicionalNR)
     },
     olimpiadasSaldoRes () {
-      return (this.lei.olimpiadas.areaMax.res - this.olimpiadas[4].AreaAdicionalR).toFixed(2)
+      return (this.lei.olimpiadas.areaMax.res - this.olimpiadas[4].AreaAdicionalR)
     },
     olimpiadasSaldoNres () {
-      return (this.lei.olimpiadas.areaMax.nRes - this.olimpiadas[4].AreaAdicionalNR).toFixed(2)
+      return (this.lei.olimpiadas.areaMax.nRes - this.olimpiadas[4].AreaAdicionalNR)
     },
     emCirculacao () {
       return (this.lei.resumo.leiloado + this.lei.resumo.colocacaoPrivada - this.acaTotais.totalConvertido)
@@ -629,7 +629,7 @@ export default {
         .map(estoque => estoque.AreaAdicionalR + estoque.AreaAdicionalNR)
         .reduce((acc, curr) => acc + curr)
 
-      this.saldoTotal = (this.lei.limiteDeEstoque - this.estoqueConsumidoTotal - this.lei.leiAntiga['consumidoArt6-1376904']).toFixed(2)
+      this.saldoTotal = (this.lei.limiteDeEstoque - this.estoqueConsumidoTotal - this.lei.leiAntiga['consumidoArt6-1376904'])
 
       this.estoqueEmAnalise = response// atualiza estoqueEmAnalise
         .filter(estoque => estoque.IdStatus === 2)
