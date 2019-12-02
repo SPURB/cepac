@@ -96,6 +96,12 @@ export default {
           hidden: true
         },
         {
+          label: 'Id Setor',
+          field: 'IdSetor',
+          type: 'number',
+          hidden: true
+        },
+        {
           label: 'E-mail',
           field: 'Email',
           type: 'string'

@@ -1,6 +1,6 @@
 <template>
   <div class="ultima-atualizacao">
-    div.ultima-atualizacao
+    <p><span>Última atualização: </span>{{ lastUpdate | dateTimeStr }}</p>
   </div>
 </template>
 <script>
@@ -12,17 +12,32 @@ export default {
       required: true,
       note: "coleção de datas. Ex. ['2019-11-19T15:35:36.893706','2019-11-19T15:35:36.893706']"
     }
+  },
+  computed: {
+    lastUpdate () {
+      if (this.dataIsoArr.length) {
+        return this.dataIsoArr
+          .map((dateStr, index) => {
+            const cleanData = dateStr
+              .slice(0, 10)
+              .replace(/[-]/g, '')
+            return {
+              num: parseInt(cleanData),
+              index
+            }
+          })
+          .reduce((acc, curr) => acc.num > curr.num ? this.dataIsoArr[acc.index] : this.dataIsoArr[curr.index])
+      }
+      else return 'carregando'
+    }
   }
-  // computed: {
-  //   lastUpdate () {
-  //     const gmt = (str) => {
-  //       const dt = str.split(/[: T-]/).map(parseFloat)
-  //       return new Date(dt[0], dt[1] - 1, dt[2], dt[3] || 0, dt[4] || 0, dt[5] || 0, 0)
-  //     }
-
-  //     return this.dataIsoArr
-  //       .sort((a, b) => gmt(a) < gmt(b))[0]
-  //   }
-  // }
 }
 </script>
+<style lang="scss" scoped>
+.ultima-atualizacao {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 4rem;
+}
+</style>

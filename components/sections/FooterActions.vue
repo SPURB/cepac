@@ -111,10 +111,20 @@ footer {
   @media (max-width: $tablet) {
     grid-template-columns: 1fr;
     text-align: left;
+    .go-back {
+      margin: 0
+    }
   }
   @media print {
     footer, button, .actions, .action { display: none };
-
+  }
+  @supports not (display: grid) {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    @media (max-width: $tablet) {
+      flex-direction: column;
+    }
   }
 }
 
@@ -128,6 +138,9 @@ footer {
       justify-content: left;
       li { margin-left: 0 }
     }
+  }
+  @media (max-width: $tablet) {
+    padding: 1rem;
   }
 }
 
