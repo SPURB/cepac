@@ -365,6 +365,7 @@
       :actions="pageActions"
       :go-back-path="'/ouc-faria-lima'"
       :pdf="true"
+      :pdf-doc-definition="pdfDocDefinition"
     />
   </div>
 </template>
@@ -453,6 +454,192 @@ export default {
     },
     cepacSaldo () {
       return this.lei.cepacTotal - this.lei.resumo.leiloado - this.lei.resumo.colocacaoPrivada
+    },
+    pdfDocDefinition () {
+      const dd = {
+        pageOrientation: 'landscape',
+        pageSize: 'A4',
+        info: {
+          title: 'Controle de Estoques da OUCFL',
+          author: 'São Paulo Urbanismo',
+          subject: 'Operação Urbana Consociada Faria Lima',
+          keywords: 'ouc outorga cepac faria lima'
+        },
+        footer: {
+          columns: [
+            { text: new Date(), margin: [20, 10, 0, 0] },
+            { link: 'https://spurb.github.io/relatorios/ouc-faria-lima/controle-de-estoques-aca', text: 'Fonte: spurb.github.io/relatorios/ouc-faria-lima/controle-de-estoques-aca', alignment: 'right', margin: [0, 10, 20, 0] }
+          ]
+        },
+        content: [
+          { text: 'Operação Urbana Consociada Faria Lima', style: 'header' },
+          {
+            text: 'Lei 13.769/04, alterada pelas leis 13.871/04, 15.519/11 e 16.242/15',
+            style: 'subheader',
+            margin: [0, 0, 0, 20]
+          },
+          { text: 'Controle de Estoques de Área de Construção Adicional (ACA)', style: 'subheader' },
+          {
+            table: {
+              body: [
+                [
+                  { text: 'Setores', rowSpan: 2 },
+                  { text: 'Estoque máximo(m²) previsto para setores', colSpan: 2 }, {},
+                  { text: 'Estoque consumido (m²)', colSpan: 2 }, {},
+                  { text: 'Estoque em análise (m²)', colSpan: 2 }, {},
+                  { text: 'Saldo de estoque máximo (m²) previsto para setores', colSpan: 2 }, {},
+                  { text: 'Saldo estoque geral disponível para operação urbana (*)', colSpan: 2 }, {}
+                ],
+                [
+                  'Não residencial',
+                  'Residencial',
+                  'Não residencial',
+                  'Residencial',
+                  'Não residencial',
+                  'Residencial',
+                  'Não residencial',
+                  'Residencial',
+                  'Não residencial',
+                  'Residencial',
+                  'Não residencial'
+                ],
+                [
+                  'Hélio Pelegrino',
+                  '292,445.00',
+                  '182,505.00',
+                  '212,594.12',
+                  '99,766.51',
+                  '3,888.36',
+                  '569.00',
+                  '292,445.00',
+                  '182,505.00',
+                  { text: '190,820.84', colSpan: 2, rowSpan: 4, alignment: 'center' }, {}
+                ],
+                [
+                  'Faria Lima',
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                  ''
+                ],
+                [
+                  'Pinheiros',
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                  ''
+                ],
+                [
+                  'Olimpiadas',
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                  '',
+                  ''
+                ]
+              ]
+            }
+
+          },
+          { text: '(*) Saldo com base no limite de estoque líquido disponibilizado pelo Artigo 6º e Tabela 2 da Lei 13.769/04 ', style: 'footNoteSyle' },
+          { text: '', margin: [0, 20, 0, 0] },
+          { text: 'Limite de estoque para efeito de oferta de CEPAC', style: 'subheader' },
+          {
+            table: {
+              body: [
+                ['Estoque GERAL (aprovado pela 11.732/95)', '0'],
+                ['Estoque cosumido lei 11.732/95', '0'],
+                ['LIMITE DE ESTOQUE - Leis 13.769/04 e 13.871/04 (**)', '0'],
+                ['Estoque consumido lei 11.732/95 (***)', '0'],
+                ['Estoque consumido lei 13.769/09 e lei 13.871/04', '0'],
+                ['SALDO ESTOQUE GERAL DISPONÍVEL', '0'],
+                ['Estoque em análise', '0']
+              ]
+            }
+          },
+          { text: '(*) Estoque consumido até a aprovação da lei Lei 13.769/04', style: 'footNoteSyle' },
+          { text: '(**) Estoque líquido a ser utilizado conforme artigo 6º e tabela 2 da lei 13.769/04', style: 'footNoteSyle' },
+          { text: '(***) Estoque consumido após a Lei 13.769/04', style: 'footNoteSyle' },
+          { text: '(*) + (***) Estoque total consumido pela Lei 11.732/95 = 1,184,719.95', style: 'footNoteSyle' },
+          { text: '', margin: [0, 20, 0, 0] },
+          { headlineLevel: 2, text: 'CEPAC convertido e desvinculado ', style: 'subheader' },
+          {
+            table: {
+              body: [
+                [
+                  { text: 'Setores', rowSpan: 2 },
+                  { text: 'CEPAC convertido', colSpan: 2 }, {},
+                  { text: 'CEPAC desvinculado', colSpan: 2 }, {}
+                ],
+                ['', 'ACA', 'Uso e Parâmetros', 'ACA', 'Uso e Parâmetros'],
+                ['Hélio Pelegrino', '', '', '', ''],
+                ['Faria Lima', '', '', '', ''],
+                ['Pinheiros', '', '', '', ''],
+                ['Olimpíadas', '', '', '', ''],
+                ['Subtotal', '', '', '', ''],
+                ['Totais', { text: '', colSpan: 2 }, {}, '', '']
+              ]
+            }
+          },
+          { text: '', margin: [0, 40, 0, 0] },
+          { text: 'Resumo CEPAC', style: 'subheader' },
+          {
+            table: {
+              body: [
+                ['Leiloado', '0'],
+                ['Colocação privada', '0'],
+                ['Convertido', '0'],
+                ['Em circulação', '0'],
+                ['CEPAC total', '0'],
+                ['CEPAC saldo', '0']
+              ]
+            }
+          }
+        ],
+        styles: {
+          header: {
+            fontSize: 14,
+            margin: [0, 0, 0, 10]
+          },
+          subheader: {
+            fontSize: 12,
+            margin: [0, 10, 0, 5]
+          },
+          tableExample: {
+            margin: [0, 5, 0, 15]
+          },
+          tableHeader: {
+            bold: true,
+            fontSize: 8,
+            color: 'black'
+          },
+          footNoteSyle: {
+            fontSize: 8,
+            margin: [0, 5, 0, 0]
+          }
+        },
+        defaultStyle: {
+          alignment: 'left',
+          cellBorder: 0,
+          fontSize: 8
+        },
+
+        pageBreakBefore (currentNode) {
+          return currentNode.headlineLevel === 2
+        }
+      }
+      return dd
     }
   },
   created () {

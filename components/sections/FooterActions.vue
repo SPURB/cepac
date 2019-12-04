@@ -15,10 +15,7 @@
         </button>
       </li>
       <li v-if="pdf" class="action">
-        <button @click.prevent="printPage">
-          <span>&DownArrowBar;</span>
-          Salvar como .pdf
-        </button>
+        <pdf-generator :pdf-doc-definition="pdfDocDefinition" />
       </li>
     </ul>
     <div class="action go-forward" style="text-align: end">
@@ -31,9 +28,11 @@
 </template>
 <script>
 import FileSaver from 'file-saver'
+import PdfGenerator from '~/components/elements/PdfGenerator'
 
 export default {
   name: 'FooterActions',
+  components: { PdfGenerator },
   props: {
     actions: {
       type: Array,
@@ -42,6 +41,12 @@ export default {
     pdf: {
       type: Boolean,
       default: false
+    },
+    pdfDocDefinition: {
+      type: Object,
+      default: () => {
+        return {}
+      }
     },
     goBackPath: {
       type: String,
@@ -60,9 +65,6 @@ export default {
   methods: {
     go (path) {
       this.$router.push({ path })
-    },
-    printPage () {
-      window.print()
     },
     saveTable (fileName, content) {
       const type = this.extension(fileName)
@@ -102,12 +104,14 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import '~/assets/variables';
 
-footer {
+footer.actions {
   display: grid;
   grid-template-columns: 1fr 3fr 1fr;
+  background-color: #005249;
+  padding: 2rem 3.25rem;
   @media (max-width: $tablet) {
     grid-template-columns: 1fr;
     text-align: left;
@@ -126,11 +130,6 @@ footer {
       flex-direction: column;
     }
   }
-}
-
-.actions {
-  background-color: #005249;
-  padding: 2rem 3.25rem;
   ul {
     display: flex;
     justify-content: center;
@@ -142,32 +141,31 @@ footer {
   @media (max-width: $tablet) {
     padding: 1rem;
   }
-}
+  .action {
+    margin: 0 1rem;
 
-.action {
-  margin: 0 1rem;
-
-  button {
-    margin: 0 2rem 1rem 0;
-    &:last-child { margin-right: 0 }
-    border: 0;
-    padding: 1rem 1.25rem;
-    background-color: rgba(255, 255, 255, .04);
-    border-radius: 0.25rem;
-    font-family: inherit;
-    color: #FFF;
-    font-size: initial;
-    cursor: pointer;
-    transition: all ease-out .2s;
-    &:hover { background-color: #008375 }
-    span {
-      display: inline-block;
-      width: 1.2rem;
-      line-height: 1.2rem;
-      border-radius: 1.2rem;
-      background-color: rgba(255, 255, 255, .2);
-      margin: 0 0.25rem 0 0;
-      font-size: 0.8rem
+    button {
+      margin: 0 2rem 1rem 0;
+      &:last-child { margin-right: 0 }
+      border: 0;
+      padding: 1rem 1.25rem;
+      background-color: rgba(255, 255, 255, .04);
+      border-radius: 0.25rem;
+      font-family: inherit;
+      color: #FFF;
+      font-size: initial;
+      cursor: pointer;
+      transition: all ease-out .2s;
+      &:hover { background-color: #008375 }
+      span {
+        display: inline-block;
+        width: 1.2rem;
+        line-height: 1.2rem;
+        border-radius: 1.2rem;
+        background-color: rgba(255, 255, 255, .2);
+        margin: 0 0.25rem 0 0;
+        font-size: 0.8rem
+      }
     }
   }
 }
