@@ -64,7 +64,7 @@
             tag="a"
             :to="{
               path: '/ouc-faria-lima',
-              query: { IdSetor: 1 }}"
+              query: { IdSetor: 1, IdStatus: 4 }}"
           >
             Hélio pelegrino
           </router-link>
@@ -87,7 +87,7 @@
             tag="a"
             :to="{
               path: '/ouc-faria-lima',
-              query: { IdSetor: 2 }}"
+              query: { IdSetor: 2, IdStatus: 4 }}"
           >
             Faria Lima
           </router-link>
@@ -107,7 +107,7 @@
             tag="a"
             :to="{
               path: '/ouc-faria-lima',
-              query: { IdSetor: 3 }}"
+              query: { IdSetor: 3, IdStatus: 4 }}"
           >
             Pinheiros
           </router-link>
@@ -127,7 +127,7 @@
             tag="a"
             :to="{
               path: '/ouc-faria-lima',
-              query: { IdSetor: 4 }}"
+              query: { IdSetor: 4, IdStatus: 4 }}"
           >
             Olimpíadas
           </router-link>
