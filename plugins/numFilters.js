@@ -1,6 +1,14 @@
 import Vue from 'vue'
 import numeral from 'numeral'
 
+numeral.register('locale', 'pt-br', {
+  delimiters: {
+    thousands: '.',
+    decimal: ','
+  }
+})
+numeral.locale('pt-br')
+
 Vue.filter('formatNumber', function (value) {
   return numeral(value).format('0,0.00')
 })

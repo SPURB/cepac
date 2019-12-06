@@ -229,7 +229,7 @@ export default {
     onCellClick (params) {
       if (params.column.field === 'Id') {
         const id = params.row.Id
-        this.$router.push({ path: `/fila/${id}` })
+        this.$router.push({ path: `${this.$route.path}/${id}` })
       }
     },
     saveTable (name, content) {

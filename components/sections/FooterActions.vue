@@ -15,7 +15,7 @@
         </button>
       </li>
       <li v-if="pdf" class="action">
-        <pdf-generator :pdf-doc-definition="pdfDocDefinition" />
+        <pdf-generator :pdf-doc-definition="pdfDocDefinition" :use-css="useCss" />
       </li>
     </ul>
     <div class="action go-forward" style="text-align: end">
@@ -39,6 +39,10 @@ export default {
       required: true
     },
     pdf: {
+      type: Boolean,
+      default: false
+    },
+    useCss: {
       type: Boolean,
       default: false
     },
@@ -106,10 +110,14 @@ export default {
 
 <style lang="scss">
 @import '~/assets/variables';
+.main--content {
+  footer.actions {
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr
+  }
+}
 
 footer.actions {
-  display: grid;
-  grid-template-columns: 1fr 3fr 1fr;
   background-color: #005249;
   padding: 2rem 3.25rem;
   @media (max-width: $tablet) {

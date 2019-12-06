@@ -1,6 +1,6 @@
 <template>
   <div class="index">
-    <PageTitle :two-columns="true">
+    <page-title :two-columns="true">
       <div class="col-1">
         <h1>Operação Urbana Consociada Faria Lima</h1>
         <h2>Controle de Estoques</h2>
@@ -10,7 +10,7 @@
           Fonte: <a href="https://servicos.spurbanismo.sp.gov.br/cepacs/api/fila" target="_blank">servicos.spurbanismo.sp.gov.br/cepacs/api/fila</a>
         </p>
       </div>
-    </PageTitle>
+    </page-title>
     <index-table :table-name="addDateToName(tableName)" :query-filter="'?'" />
   </div>
 </template>

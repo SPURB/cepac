@@ -1,5 +1,5 @@
 <template>
-  <div class="estoque-aca">
+  <div class="estoque-aca main--content">
     <PageTitle :two-columns="true">
       <div class="col-1">
         <h1>Operação Urbana Consociada Faria Lima</h1>
@@ -206,7 +206,7 @@
                 <li>(*) Estoque consumido até a aprovação da lei Lei 13.769/04</li>
                 <li>(**) Estoque líquido a ser utilizado conforme artigo 6º e tabela 2 da lei 13.769/04</li>
                 <li>(***) Estoque consumido após a Lei 13.769/04</li>
-                <li>(*) + (***) Estoque total consumido pela Lei 11.732/95 = 1,184,719.95</li>
+                <li>(*) + (***) Estoque total consumido pela Lei 11.732/95 = 1.184.719,95</li>
               </ul>
             </td>
           </tr>
@@ -360,7 +360,10 @@
         </tr>
       </table>
     </div>
-    <ultima-atualizacao :data-iso-arr="dates" />
+    <!-- <ultima-atualizacao :data-iso-arr="dates" /> -->
+    <div class="ultima-atualizacao">
+      {{ lastUpdate }}
+    </div>
     <FooterActions
       :actions="pageActions"
       :go-back-path="'/ouc-faria-lima'"
@@ -375,7 +378,7 @@ import axios from '~/plugins/axios'
 import PageTitle from '~/components/sections/PageTitle'
 import FooterActions from '~/components/sections/FooterActions'
 import Preloader from '~/components/sections/Preloader'
-import UltimaAtualizacao from '~/components/elements/UltimaAtualizacao'
+// import UltimaAtualizacao from '~/components/elements/UltimaAtualizacao'
 import { oucFariaLima } from '~/static/data/estoques'
 
 export default {
@@ -383,11 +386,12 @@ export default {
   components: {
     PageTitle,
     FooterActions,
-    Preloader,
-    UltimaAtualizacao
+    Preloader
+    // UltimaAtualizacao
   },
   data () {
     return {
+      pdfDocDefinition: {},
       isFetching: false,
       error: false,
       pageActions: [],
@@ -418,13 +422,11 @@ export default {
         subtotalDesvinculado: 0,
         subtotalDesvinculadoUsoPar: 0,
         totalConvertido: 0
-      }
+      },
+      lastUpdate: ''
     }
   },
   computed: {
-    dates () {
-      return this.estoques.map(estoque => estoque.Atualizacao)
-    },
     helioPelegrinoSaldoRes () {
       return (this.lei.helioPelegrino.areaMax.res - this.helioPelegrino[4].AreaAdicionalR)
     },
@@ -455,7 +457,56 @@ export default {
     cepacSaldo () {
       return this.lei.cepacTotal - this.lei.resumo.leiloado - this.lei.resumo.colocacaoPrivada
     },
-    pdfDocDefinition () {
+    downloadTimeStamp () {
+      const date = new Date()
+      const dataStr = this.$options.filters.dateTimeStr(date.toISOString())
+      const hh = date.getHours()
+      const mm = date.getMinutes()
+      const ss = date.getSeconds()
+
+      return `Página visitada em ${dataStr} às ${hh}h${mm}m${ss}`
+    }
+  },
+  created () {
+    this.defineSubsetoresModel()
+  },
+  mounted () {
+    this.isFetching = true
+    axios.get(`/estoque/`)
+      .then((res) => {
+        this.estoques = res.data
+        this.populateModel(res.data)
+        this.acaTotais = this.getAcaTotais()
+        this.setPageActions('json', res.data)
+        this.setPageActions('csv', res.data)
+        this.setLastUpdate(res.data)
+      })
+      .catch((error) => { if (error) { this.error = error } })
+      .finally(() => {
+        this.isFetching = false
+        this.setPdfDocDefinition(this.helioPelegrino)
+      })
+  },
+  methods: {
+    setLastUpdate (estoques) {
+      const lastUpdateStr = estoques
+        .map((estoque, index) => {
+          const dateStr = estoque.Atualizacao
+          const cleanData = dateStr
+            .slice(0, 10)
+            .replace(/[-]/g, '') // 2019-11-19T15:35:36.893706 -> 20191119
+
+          return {
+            num: parseInt(cleanData),
+            index
+          }
+        })
+        .reduce((acc, curr) => acc.num > curr.num ? estoques[acc.index] : estoques[curr.index])
+
+      this.lastUpdate = `Última atualização: ${this.$options.filters.dateTimeStr(lastUpdateStr.Atualizacao)}`
+    },
+    fNum (num) { return this.$options.filters.formatNumber(num) },
+    setPdfDocDefinition () {
       const dd = {
         pageOrientation: 'landscape',
         pageSize: 'A4',
@@ -467,7 +518,8 @@ export default {
         },
         footer: {
           columns: [
-            { text: new Date(), margin: [20, 10, 0, 0] },
+            { text: this.downloadTimeStamp, margin: [20, 10, 0, 0] },
+            { text: this.lastUpdate, margin: [0, 10, 0, 0] },
             { link: 'https://spurb.github.io/relatorios/ouc-faria-lima/controle-de-estoques-aca', text: 'Fonte: spurb.github.io/relatorios/ouc-faria-lima/controle-de-estoques-aca', alignment: 'right', margin: [0, 10, 20, 0] }
           ]
         },
@@ -505,48 +557,48 @@ export default {
                 ],
                 [
                   'Hélio Pelegrino',
-                  '292,445.00',
-                  '182,505.00',
-                  '212,594.12',
-                  '99,766.51',
-                  '3,888.36',
-                  '569.00',
-                  '292,445.00',
-                  '182,505.00',
-                  { text: '190,820.84', colSpan: 2, rowSpan: 4, alignment: 'center' }, {}
+                  { text: this.fNum(this.lei.helioPelegrino.areaMax.res), alignment: 'right' },
+                  { text: this.fNum(this.lei.helioPelegrino.areaMax.nRes), alignment: 'right' },
+                  { text: this.fNum(this.helioPelegrino[4].AreaAdicionalR), alignment: 'right' },
+                  { text: this.fNum(this.helioPelegrino[4].AreaAdicionalNR), alignment: 'right' },
+                  { text: this.fNum(this.helioPelegrino[2].AreaAdicionalR), alignment: 'right' },
+                  { text: this.fNum(this.helioPelegrino[2].AreaAdicionalNR), alignment: 'right' },
+                  { text: this.fNum(this.helioPelegrinoSaldoRes), alignment: 'right' },
+                  { text: this.fNum(this.helioPelegrinoSaldoNres), alignment: 'right' },
+                  { text: this.fNum(this.saldoTotal), colSpan: 2, rowSpan: 4, alignment: 'center' }, {}
                 ],
                 [
                   'Faria Lima',
-                  '',
-                  '',
-                  '',
-                  '',
-                  '',
-                  '',
-                  '',
-                  ''
+                  { text: this.fNum(this.lei.fariaLima.areaMax.res), alignment: 'right' },
+                  { text: this.fNum(this.lei.fariaLima.areaMax.nRes), alignment: 'right' },
+                  { text: this.fNum(this.fariaLima[4].AreaAdicionalR), alignment: 'right' },
+                  { text: this.fNum(this.fariaLima[4].AreaAdicionalNR), alignment: 'right' },
+                  { text: this.fNum(this.fariaLima[2].AreaAdicionalR), alignment: 'right' },
+                  { text: this.fNum(this.fariaLima[2].AreaAdicionalNR), alignment: 'right' },
+                  { text: this.fNum(this.fariaLimaSaldoRes), alignment: 'right' },
+                  { text: this.fNum(this.fariaLimaSaldoSaldoNres), alignment: 'right' }
                 ],
                 [
                   'Pinheiros',
-                  '',
-                  '',
-                  '',
-                  '',
-                  '',
-                  '',
-                  '',
-                  ''
+                  { text: this.fNum(this.lei.pinheiros.areaMax.res), alignment: 'right' },
+                  { text: this.fNum(this.lei.pinheiros.areaMax.nRes), alignment: 'right' },
+                  { text: this.fNum(this.pinheiros[4].AreaAdicionalR), alignment: 'right' },
+                  { text: this.fNum(this.pinheiros[4].AreaAdicionalNR), alignment: 'right' },
+                  { text: this.fNum(this.pinheiros[2].AreaAdicionalR), alignment: 'right' },
+                  { text: this.fNum(this.pinheiros[2].AreaAdicionalNR), alignment: 'right' },
+                  { text: this.fNum(this.pinheirosSaldoRes), alignment: 'right' },
+                  { text: this.fNum(this.pinheirosSaldoNres), alignment: 'right' }
                 ],
                 [
                   'Olimpiadas',
-                  '',
-                  '',
-                  '',
-                  '',
-                  '',
-                  '',
-                  '',
-                  ''
+                  { text: this.fNum(this.lei.olimpiadas.areaMax.res), alignment: 'right' },
+                  { text: this.fNum(this.lei.olimpiadas.areaMax.nRes), alignment: 'right' },
+                  { text: this.fNum(this.olimpiadas[4].AreaAdicionalR), alignment: 'right' },
+                  { text: this.fNum(this.olimpiadas[4].AreaAdicionalNR), alignment: 'right' },
+                  { text: this.fNum(this.olimpiadas[2].AreaAdicionalR), alignment: 'right' },
+                  { text: this.fNum(this.olimpiadas[2].AreaAdicionalNR), alignment: 'right' },
+                  { text: this.fNum(this.olimpiadasSaldoRes), alignment: 'right' },
+                  { text: this.fNum(this.olimpiadasSaldoNres), alignment: 'right' }
                 ]
               ]
             }
@@ -558,20 +610,20 @@ export default {
           {
             table: {
               body: [
-                ['Estoque GERAL (aprovado pela 11.732/95)', '0'],
-                ['Estoque cosumido lei 11.732/95', '0'],
-                ['LIMITE DE ESTOQUE - Leis 13.769/04 e 13.871/04 (**)', '0'],
-                ['Estoque consumido lei 11.732/95 (***)', '0'],
-                ['Estoque consumido lei 13.769/09 e lei 13.871/04', '0'],
-                ['SALDO ESTOQUE GERAL DISPONÍVEL', '0'],
-                ['Estoque em análise', '0']
+                ['Estoque GERAL (aprovado pela 11.732/95)', { text: this.fNum(this.lei.estoqueGeral), alignment: 'right' }],
+                ['Estoque cosumido lei 11.732/95', { text: this.fNum(this.lei.leiAntiga['consumidoPre-1376904']), alignment: 'right' }],
+                ['LIMITE DE ESTOQUE - Leis 13.769/04 e 13.871/04 (**)', { text: this.fNum(this.lei.limiteDeEstoque), alignment: 'right' }],
+                ['Estoque consumido lei 11.732/95 (***)', { text: this.fNum(this.lei.leiAntiga['consumidoArt6-1376904']), alignment: 'right' }],
+                ['Estoque consumido lei 13.769/09 e lei 13.871/04', { text: this.fNum(this.estoqueConsumidoTotal), alignment: 'right' }],
+                ['SALDO ESTOQUE GERAL DISPONÍVEL', { text: this.fNum(this.saldoTotal), alignment: 'right' }],
+                ['Estoque em análise', { text: this.fNum(this.estoqueEmAnalise), alignment: 'right' }]
               ]
             }
           },
           { text: '(*) Estoque consumido até a aprovação da lei Lei 13.769/04', style: 'footNoteSyle' },
           { text: '(**) Estoque líquido a ser utilizado conforme artigo 6º e tabela 2 da lei 13.769/04', style: 'footNoteSyle' },
           { text: '(***) Estoque consumido após a Lei 13.769/04', style: 'footNoteSyle' },
-          { text: '(*) + (***) Estoque total consumido pela Lei 11.732/95 = 1,184,719.95', style: 'footNoteSyle' },
+          { text: '(*) + (***) Estoque total consumido pela Lei 11.732/95 = 1.184.719,95', style: 'footNoteSyle' },
           { text: '', margin: [0, 20, 0, 0] },
           { headlineLevel: 2, text: 'CEPAC convertido e desvinculado ', style: 'subheader' },
           {
@@ -583,12 +635,48 @@ export default {
                   { text: 'CEPAC desvinculado', colSpan: 2 }, {}
                 ],
                 ['', 'ACA', 'Uso e Parâmetros', 'ACA', 'Uso e Parâmetros'],
-                ['Hélio Pelegrino', '', '', '', ''],
-                ['Faria Lima', '', '', '', ''],
-                ['Pinheiros', '', '', '', ''],
-                ['Olimpíadas', '', '', '', ''],
-                ['Subtotal', '', '', '', ''],
-                ['Totais', { text: '', colSpan: 2 }, {}, '', '']
+                [
+                  'Hélio Pelegrino',
+                  { text: this.fNum(this.helioPelegrino[4].CepacACA), alignment: 'right' },
+                  { text: this.fNum(this.helioPelegrino[4].CepacUsoParam), alignment: 'right' },
+                  { text: this.fNum(this.lei.helioPelegrino.cepacDesvinculado.aca), alignment: 'right' },
+                  { text: this.fNum(this.lei.helioPelegrino.cepacDesvinculado.usoPar), alignment: 'right' }
+                ],
+                [
+                  'Faria Lima',
+                  { text: this.fNum(this.fariaLima[4].CepacACA), alignment: 'right' },
+                  { text: this.fNum(this.fariaLima[4].CepacUsoParam), alignment: 'right' },
+                  { text: this.fNum(this.lei.fariaLima.cepacDesvinculado.aca), alignment: 'right' },
+                  { text: this.fNum(this.lei.fariaLima.cepacDesvinculado.usoPar), alignment: 'right' }
+                ],
+                [
+                  'Pinheiros',
+                  { text: this.fNum(this.pinheiros[4].CepacACA), alignment: 'right' },
+                  { text: this.fNum(this.pinheiros[4].CepacUsoParam), alignment: 'right' },
+                  { text: this.fNum(this.lei.pinheiros.cepacDesvinculado.aca), alignment: 'right' },
+                  { text: this.fNum(this.lei.pinheiros.cepacDesvinculado.usoPar), alignment: 'right' }
+                ],
+                [
+                  'Olimpíadas',
+                  { text: this.fNum(this.olimpiadas[4].CepacACA), alignment: 'right' },
+                  { text: this.fNum(this.olimpiadas[4].CepacUsoParam), alignment: 'right' },
+                  { text: this.fNum(this.lei.olimpiadas.cepacDesvinculado.aca), alignment: 'right' },
+                  { text: this.fNum(this.lei.olimpiadas.cepacDesvinculado.usoPar), alignment: 'right' }
+                ],
+                [
+                  'Subtotal',
+                  { text: this.fNum(this.acaTotais.subTotalConvertido), alignment: 'right' },
+                  { text: this.fNum(this.acaTotais.subTotalConvertidoUsoPar), alignment: 'right' },
+                  { text: '', colspan: 2 },
+                  {}
+                ],
+                [
+                  'Totais',
+                  { text: this.fNum(this.acaTotais.totalConvertido), colSpan: 2 },
+                  {},
+                  { text: this.fNum(this.acaTotais.subtotalDesvinculado), alignment: 'center' },
+                  { text: this.fNum(this.acaTotais.subtotalDesvinculadoUsoPar), alignment: 'right' }
+                ]
               ]
             }
           },
@@ -597,12 +685,12 @@ export default {
           {
             table: {
               body: [
-                ['Leiloado', '0'],
-                ['Colocação privada', '0'],
-                ['Convertido', '0'],
-                ['Em circulação', '0'],
-                ['CEPAC total', '0'],
-                ['CEPAC saldo', '0']
+                ['Leiloado', { text: this.fNum(this.lei.resumo.leiloado), alignment: 'right' }],
+                ['Colocação privada', { text: this.fNum(this.lei.resumo.colocacaoPrivada), alignment: 'right' }],
+                ['Convertido', { text: this.fNum(this.acaTotais.totalConvertido), alignment: 'right' }],
+                ['Em circulação', { text: this.fNum(this.emCirculacao), alignment: 'right' }],
+                ['CEPAC total', { text: this.fNum(this.lei.cepacTotal), alignment: 'right' }],
+                ['CEPAC saldo', { text: this.fNum(this.cepacSaldo), alignment: 'right' }]
               ]
             }
           }
@@ -639,37 +727,14 @@ export default {
           return currentNode.headlineLevel === 2
         }
       }
-      return dd
-    }
-  },
-  created () {
-    this.defineSubsetoresModel()
-  },
-  mounted () {
-    this.isFetching = true
-    axios.get(`/estoque/`)
-      .then((res) => {
-        this.estoques = res.data
-        this.populateModel(res.data)
-        this.acaTotais = this.getAcaTotais()
-        this.setPageActions('controle-de-estoques.json', res.data)
-        this.setPageActions('controle-de-estoques.csv', res.data)
-      })
-      .catch((error) => { if (error) { this.error = error } })
-      .finally(() => {
-        this.isFetching = false
-      })
-  },
-  methods: {
-    setPageActions (name, content) {
-      const nameSplit = name.split('.') // ['name', 'extension']
-      const d = new Date()
-      const dateStr = `${d.getFullYear()}-${d.getMonth()}-${d.getDay()}_${d.getHours()}h${d.getMinutes()}`
-      nameSplit.splice(nameSplit.length - 1, 0, dateStr)
-      const fileNameWithDate = nameSplit.join('.')
+      this.pdfDocDefinition = dd
+    },
+    setPageActions (extension, content) {
+      const date = new Date().toISOString().slice(0, 19)
+      const fileName = `${this.$route.path.slice(1).replace('/', '-')}_${date}.${extension}`
 
       this.pageActions.push({
-        fileName: fileNameWithDate,
+        fileName,
         content
       })
     },
@@ -895,4 +960,11 @@ table {
     border: 0
   }
 }
+.ultima-atualizacao {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 4rem;
+}
+
 </style>
