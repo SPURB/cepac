@@ -1,7 +1,5 @@
 <template>
-  <div class="oucfl">
-
-  </div>
+  <div class="oucfl" />
 </template>
 
 <script>

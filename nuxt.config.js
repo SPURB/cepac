@@ -37,7 +37,7 @@ export default {
       return axios.get('https://servicos.spurbanismo.sp.gov.br/cepacs/api/fila')
         .then((res) => {
           return res.data.map((fila) => {
-            return '/fila/' + fila.Id
+            return '/ouc-faria-lima/' + fila.Id
           })
         })
     }
