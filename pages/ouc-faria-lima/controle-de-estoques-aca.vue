@@ -1,8 +1,8 @@
 <template>
   <div class="estoque-aca main--content">
-    <PageTitle :two-columns="true">
+    <page-title :two-columns="true">
       <div class="col-1">
-        <h1>Operação Urbana Consociada Faria Lima</h1>
+        <h1>Operação Urbana Consorciada Faria Lima</h1>
         <h2>Lei 13.769/04, alterada pelas leis 13.871/04, 15.519/11 e 16.242/15</h2>
       </div>
       <div class="col-2">
@@ -16,354 +16,357 @@
           </li>
         </ul>
       </div>
-    </PageTitle>
+    </page-title>
 
-    <Preloader :is-fetching="isFetching" :error="error" />
+    <preloader :is-fetching="isFetching" :error="error" />
 
-    <table class="tabela-aca block">
-      <tr>
-        <td class="tabela-aca__title" colspan="11">
-          <h3>Controle de Estoques de Área de Construção Adicional (ACA)</h3>
-        </td>
-      </tr>
-      <tr class="tabela-aca__header">
-        <td rowspan="2">
-          Setores
-        </td>
-        <td colspan="2">
-          Estoque máximo(m²) previsto para setores
-        </td>
-        <td colspan="2">
-          Estoque consumido (m²)
-        </td>
-        <td colspan="2">
-          Estoque em análise (m²)
-        </td>
-        <td colspan="2">
-          Saldo de estoque máximo (m²) previsto para setores
-        </td>
-        <td colspan="2">
-          Saldo estoque geral disponível para operação urbana (*)
-        </td>
-      </tr>
-      <tr class="r-nr">
-        <td>Residencial</td>
-        <td>Não residencial</td>
-        <td>Residencial</td>
-        <td>Não residencial</td>
-        <td>Residencial</td>
-        <td>Não residencial</td>
-        <td>Residencial</td>
-        <td>Não residencial</td>
-        <td>Residencial</td>
-        <td>Não residencial</td>
-      </tr>
-      <tr class="conteudo">
-        <td class="title">
-          <router-link
-            tag="a"
-            :to="{
-              path: '/ouc-faria-lima',
-              query: { IdSetor: 1, IdStatus: 4 }}"
-          >
-            Hélio pelegrino
-          </router-link>
-        </td>
-        <td>{{ lei.helioPelegrino.areaMax.res | formatNumber }}</td>
-        <td>{{ lei.helioPelegrino.areaMax.nRes | formatNumber }}</td>
-        <td>{{ helioPelegrino[4].AreaAdicionalR | formatNumber }}</td>
-        <td>{{ helioPelegrino[4].AreaAdicionalNR | formatNumber }}</td>
-        <td>{{ helioPelegrino[2].AreaAdicionalR | formatNumber }}</td>
-        <td>{{ helioPelegrino[2].AreaAdicionalNR | formatNumber }}</td>
-        <td>{{ helioPelegrinoSaldoRes | formatNumber }}</td>
-        <td>{{ helioPelegrinoSaldoNres | formatNumber }}</td>
-        <td colspan="2" rowspan="4" class="destaque">
-          {{ saldoTotal | formatNumber }}
-        </td>
-      </tr>
-      <tr class="conteudo">
-        <td class="title">
-          <router-link
-            tag="a"
-            :to="{
-              path: '/ouc-faria-lima',
-              query: { IdSetor: 2, IdStatus: 4 }}"
-          >
-            Faria Lima
-          </router-link>
-        </td>
-        <td>{{ lei.fariaLima.areaMax.res | formatNumber }}</td>
-        <td>{{ lei.fariaLima.areaMax.nRes | formatNumber }}</td>
-        <td>{{ fariaLima[4].AreaAdicionalR | formatNumber }}</td>
-        <td>{{ fariaLima[4].AreaAdicionalNR | formatNumber }}</td>
-        <td>{{ fariaLima[2].AreaAdicionalR | formatNumber }}</td>
-        <td>{{ fariaLima[2].AreaAdicionalNR | formatNumber }}</td>
-        <td>{{ fariaLimaSaldoRes | formatNumber }}</td>
-        <td>{{ fariaLimaSaldoSaldoNres | formatNumber }}</td>
-      </tr>
-      <tr class="conteudo">
-        <td class="title">
-          <router-link
-            tag="a"
-            :to="{
-              path: '/ouc-faria-lima',
-              query: { IdSetor: 3, IdStatus: 4 }}"
-          >
-            Pinheiros
-          </router-link>
-        </td>
-        <td>{{ lei.pinheiros.areaMax.res | formatNumber }}</td>
-        <td>{{ lei.pinheiros.areaMax.nRes | formatNumber }}</td>
-        <td>{{ pinheiros[4].AreaAdicionalR | formatNumber }}</td>
-        <td>{{ pinheiros[4].AreaAdicionalNR | formatNumber }}</td>
-        <td>{{ pinheiros[2].AreaAdicionalR | formatNumber }}</td>
-        <td>{{ pinheiros[2].AreaAdicionalNR | formatNumber }}</td>
-        <td>{{ pinheirosSaldoRes | formatNumber }}</td>
-        <td>{{ pinheirosSaldoNres | formatNumber }}</td>
-      </tr>
-      <tr class="conteudo last">
-        <td class="title">
-          <router-link
-            tag="a"
-            :to="{
-              path: '/ouc-faria-lima',
-              query: { IdSetor: 4, IdStatus: 4 }}"
-          >
-            Olimpíadas
-          </router-link>
-        </td>
-        <td>{{ lei.olimpiadas.areaMax.res | formatNumber }}</td>
-        <td>{{ lei.olimpiadas.areaMax.nRes | formatNumber }}</td>
-        <td>{{ olimpiadas[4].AreaAdicionalR | formatNumber }}</td>
-        <td>{{ olimpiadas[4].AreaAdicionalNR | formatNumber }}</td>
-        <td>{{ olimpiadas[2].AreaAdicionalR | formatNumber }}</td>
-        <td>{{ olimpiadas[2].AreaAdicionalNR | formatNumber }}</td>
-        <td>{{ olimpiadasSaldoRes | formatNumber }}</td>
-        <td>{{ olimpiadasSaldoNres | formatNumber }}</td>
-      </tr>
-      <tfoot>
-        <tr class="notas">
-          <td colspan="11" class="nota">
-            (*) Saldo com base no limite de estoque líquido disponibilizado pelo Artigo 6º e Tabela 2 da Lei 13.769/04
-          </td>
-        </tr>
-      </tfoot>
-    </table>
-
-    <div class="tabelas-container">
-      <table class="tabelas__limite block">
+    <section class="tabelas" :class="{ isFetching }">
+      <table class="tabela-aca block">
         <tr>
-          <td colspan="2" class="title">
-            Limite de estoque para efeito de oferta de CEPAC
+          <td class="tabela-aca__title" colspan="11">
+            <h3>Controle de Estoques de Área de Construção Adicional (ACA)</h3>
           </td>
         </tr>
-        <tr>
-          <td>Estoque GERAL (aprovado pela 11.732/95)</td>
-          <td class="dado">
-            {{ lei.estoqueGeral | formatNumber }}
+        <tr class="tabela-aca__header">
+          <td rowspan="2">
+            Setores
+          </td>
+          <td colspan="2">
+            Estoque máximo(m²) previsto para setores
+          </td>
+          <td colspan="2">
+            Estoque consumido (m²)
+          </td>
+          <td colspan="2">
+            Estoque em análise (m²)
+          </td>
+          <td colspan="2">
+            Saldo de estoque máximo (m²) previsto para setores
+          </td>
+          <td colspan="2">
+            Saldo estoque geral disponível para operação urbana (*)
           </td>
         </tr>
-        <tr>
-          <td>Estoque cosumido lei 11.732/95</td>
-          <td class="dado">
-            {{ lei.leiAntiga["consumidoPre-1376904"] | formatNumber }}
-          </td>
+        <tr class="r-nr">
+          <td>Residencial</td>
+          <td>Não residencial</td>
+          <td>Residencial</td>
+          <td>Não residencial</td>
+          <td>Residencial</td>
+          <td>Não residencial</td>
+          <td>Residencial</td>
+          <td>Não residencial</td>
+          <td>Residencial</td>
+          <td>Não residencial</td>
         </tr>
-        <tr>
-          <td> LIMITE DE ESTOQUE - Leis 13.769/04 e 13.871/04 (**)</td>
-          <td class="dado">
-            {{ lei.limiteDeEstoque | formatNumber }}
+        <tr class="conteudo">
+          <td class="title">
+            <router-link
+              tag="a"
+              :to="{
+                path: '/ouc-faria-lima',
+                query: { IdSetor: 1, IdStatus: 4 }}"
+            >
+              Hélio pelegrino
+            </router-link>
           </td>
-        </tr>
-        <tr>
-          <td>Estoque consumido lei 11.732/95 (***)</td>
-          <td class="dado">
-            {{ lei.leiAntiga["consumidoArt6-1376904"] | formatNumber }}
-          </td>
-        </tr>
-        <tr>
-          <td>Estoque consumido lei 13.769/09 e lei 13.871/04</td>
-          <td class="dado">
-            {{ estoqueConsumidoTotal | formatNumber }}
-          </td>
-        </tr>
-        <tr class="destaque">
-          <td>SALDO ESTOQUE GERAL DISPONÍVEL</td>
-          <td class="dado">
+          <td>{{ lei.helioPelegrino.areaMax.res | formatNumber }}</td>
+          <td>{{ lei.helioPelegrino.areaMax.nRes | formatNumber }}</td>
+          <td>{{ helioPelegrino[4].AreaAdicionalR | formatNumber }}</td>
+          <td>{{ helioPelegrino[4].AreaAdicionalNR | formatNumber }}</td>
+          <td>{{ helioPelegrino[2].AreaAdicionalR | formatNumber }}</td>
+          <td>{{ helioPelegrino[2].AreaAdicionalNR | formatNumber }}</td>
+          <td>{{ helioPelegrinoSaldoRes | formatNumber }}</td>
+          <td>{{ helioPelegrinoSaldoNres | formatNumber }}</td>
+          <td colspan="2" rowspan="4" class="destaque">
             {{ saldoTotal | formatNumber }}
           </td>
         </tr>
-        <tr>
-          <td>Estoque em análise</td>
-          <td class="dado">
-            {{ estoqueEmAnalise | formatNumber }}
+        <tr class="conteudo">
+          <td class="title">
+            <router-link
+              tag="a"
+              :to="{
+                path: '/ouc-faria-lima',
+                query: { IdSetor: 2, IdStatus: 4 }}"
+            >
+              Faria Lima
+            </router-link>
           </td>
+          <td>{{ lei.fariaLima.areaMax.res | formatNumber }}</td>
+          <td>{{ lei.fariaLima.areaMax.nRes | formatNumber }}</td>
+          <td>{{ fariaLima[4].AreaAdicionalR | formatNumber }}</td>
+          <td>{{ fariaLima[4].AreaAdicionalNR | formatNumber }}</td>
+          <td>{{ fariaLima[2].AreaAdicionalR | formatNumber }}</td>
+          <td>{{ fariaLima[2].AreaAdicionalNR | formatNumber }}</td>
+          <td>{{ fariaLimaSaldoRes | formatNumber }}</td>
+          <td>{{ fariaLimaSaldoSaldoNres | formatNumber }}</td>
+        </tr>
+        <tr class="conteudo">
+          <td class="title">
+            <router-link
+              tag="a"
+              :to="{
+                path: '/ouc-faria-lima',
+                query: { IdSetor: 3, IdStatus: 4 }}"
+            >
+              Pinheiros
+            </router-link>
+          </td>
+          <td>{{ lei.pinheiros.areaMax.res | formatNumber }}</td>
+          <td>{{ lei.pinheiros.areaMax.nRes | formatNumber }}</td>
+          <td>{{ pinheiros[4].AreaAdicionalR | formatNumber }}</td>
+          <td>{{ pinheiros[4].AreaAdicionalNR | formatNumber }}</td>
+          <td>{{ pinheiros[2].AreaAdicionalR | formatNumber }}</td>
+          <td>{{ pinheiros[2].AreaAdicionalNR | formatNumber }}</td>
+          <td>{{ pinheirosSaldoRes | formatNumber }}</td>
+          <td>{{ pinheirosSaldoNres | formatNumber }}</td>
+        </tr>
+        <tr class="conteudo last">
+          <td class="title">
+            <router-link
+              tag="a"
+              :to="{
+                path: '/ouc-faria-lima',
+                query: { IdSetor: 4, IdStatus: 4 }}"
+            >
+              Olimpíadas
+            </router-link>
+          </td>
+          <td>{{ lei.olimpiadas.areaMax.res | formatNumber }}</td>
+          <td>{{ lei.olimpiadas.areaMax.nRes | formatNumber }}</td>
+          <td>{{ olimpiadas[4].AreaAdicionalR | formatNumber }}</td>
+          <td>{{ olimpiadas[4].AreaAdicionalNR | formatNumber }}</td>
+          <td>{{ olimpiadas[2].AreaAdicionalR | formatNumber }}</td>
+          <td>{{ olimpiadas[2].AreaAdicionalNR | formatNumber }}</td>
+          <td>{{ olimpiadasSaldoRes | formatNumber }}</td>
+          <td>{{ olimpiadasSaldoNres | formatNumber }}</td>
         </tr>
         <tfoot>
           <tr class="notas">
-            <td colspan="2" class="nota">
-              <ul>
-                <li>(*) Estoque consumido até a aprovação da lei Lei 13.769/04</li>
-                <li>(**) Estoque líquido a ser utilizado conforme artigo 6º e tabela 2 da lei 13.769/04</li>
-                <li>(***) Estoque consumido após a Lei 13.769/04</li>
-                <li>(*) + (***) Estoque total consumido pela Lei 11.732/95 = 1.184.719,95</li>
-              </ul>
+            <td colspan="11" class="nota">
+              (*) Saldo com base no limite de estoque líquido disponibilizado pelo Artigo 6º e Tabela 2 da Lei 13.769/04
             </td>
           </tr>
         </tfoot>
       </table>
-      <table class="tabelas__convertido-desvinculado block">
-        <tr>
-          <th rowspan="2">
-            Setores
-          </th>
-          <th class="title" colspan="2">
-            CEPAC convertido
-          </th>
-          <th class="title" colspan="2">
-            CEPAC desvinculado
-          </th>
-        </tr>
-        <tr>
-          <td class="aca">
-            ACA
-          </td>
-          <td>Uso e <br>Parâmetros</td>
-          <td>ACA</td>
-          <td>Uso e <br>Parâmetros</td>
-        </tr>
-        <tr>
-          <td>Hélio Pelegrino</td>
-          <td class="dado">
-            {{ helioPelegrino[4].CepacACA | formatNumber }}
-          </td>
-          <td class="dado">
-            {{ helioPelegrino[4].CepacUsoParam | formatNumber }}
-          </td>
-          <td class="dado">
-            {{ lei.helioPelegrino.cepacDesvinculado.aca | formatNumber }}
-          </td>
-          <td class="dado">
-            {{ lei.helioPelegrino.cepacDesvinculado.usoPar | formatNumber }}
-          </td>
-        </tr>
-        <tr>
-          <td>Faria Lima</td>
-          <td class="dado">
-            {{ fariaLima[4].CepacACA | formatNumber }}
-          </td>
-          <td class="dado">
-            {{ fariaLima[4].CepacUsoParam | formatNumber }}
-          </td>
-          <td class="dado">
-            {{ lei.fariaLima.cepacDesvinculado.aca | formatNumber }}
-          </td>
-          <td class="dado">
-            {{ lei.fariaLima.cepacDesvinculado.usoPar | formatNumber }}
-          </td>
-        </tr>
-        <tr>
-          <td>Pinheiros</td>
-          <td class="dado">
-            {{ pinheiros[4].CepacACA | formatNumber }}
-          </td>
-          <td class="dado">
-            {{ pinheiros[4].CepacUsoParam | formatNumber }}
-          </td>
-          <td class="dado">
-            {{ lei.pinheiros.cepacDesvinculado.aca | formatNumber }}
-          </td>
-          <td class="dado">
-            {{ lei.pinheiros.cepacDesvinculado.usoPar | formatNumber }}
-          </td>
-        </tr>
-        <tr>
-          <td>Olimpíadas</td>
-          <td class="dado">
-            {{ olimpiadas[4].CepacACA | formatNumber }}
-          </td>
-          <td class="dado">
-            {{ olimpiadas[4].CepacUsoParam | formatNumber }}
-          </td>
-          <td class="dado">
-            {{ lei.olimpiadas.cepacDesvinculado.aca | formatNumber }}
-          </td>
-          <td class="dado">
-            {{ lei.olimpiadas.cepacDesvinculado.usoPar | formatNumber }}
-          </td>
-        </tr>
-        <tr>
-          <td>Subtotal</td>
-          <td class="dado">
-            {{ acaTotais.subTotalConvertido | formatNumber }}
-          </td>
-          <td class="dado">
-            {{ acaTotais.subTotalConvertidoUsoPar | formatNumber }}
-          </td>
-          <td />
-          <td />
-        </tr>
-        <tr class="destaque">
-          <td>Totais</td>
-          <td class="total" colspan="2">
-            {{ acaTotais.totalConvertido | formatNumber }}
-          </td>
-          <td class="dado">
-            {{ acaTotais.subtotalDesvinculado | formatNumber }}
-          </td>
-          <td class="dado">
-            {{ acaTotais.subtotalDesvinculadoUsoPar | formatNumber }}
-          </td>
-        </tr>
-      </table>
-      <table class="tabelas__resumo block">
-        <tr>
-          <td colspan="2" class="title">
-            Resumo CEPAC
-          </td>
-        </tr>
-        <tr>
-          <td>Leiloado</td>
-          <td class="dado">
-            {{ lei.resumo.leiloado | formatNumber }}
-          </td>
-        </tr>
-        <tr>
-          <td>Colocação privada</td>
-          <td class="dado">
-            {{ lei.resumo.colocacaoPrivada | formatNumber }}
-          </td>
-        </tr>
-        <tr>
-          <td>Convertido</td>
-          <td class="dado">
-            {{ acaTotais.totalConvertido | formatNumber }}
-          </td>
-        </tr>
-        <tr class="destaque">
-          <td>Em circulação</td>
-          <td class="dado">
-            {{ emCirculacao | formatNumber }}
-          </td>
-        </tr>
-        <tr>
-          <td>CEPAC total</td>
-          <td class="dado">
-            {{ lei.cepacTotal | formatNumber }}
-          </td>
-        </tr>
-        <tr class="destaque">
-          <td>CEPAC saldo</td>
-          <td class="dado">
-            {{ cepacSaldo | formatNumber }}
-          </td>
-        </tr>
-      </table>
-    </div>
-    <!-- <ultima-atualizacao :data-iso-arr="dates" /> -->
-    <div class="ultima-atualizacao">
-      {{ lastUpdate }}
-    </div>
+
+      <div class="tabelas-container">
+        <table class="tabelas__limite block">
+          <tr>
+            <td colspan="2" class="title">
+              Limite de estoque para efeito de oferta de CEPAC
+            </td>
+          </tr>
+          <tr>
+            <td>Estoque GERAL (aprovado pela 11.732/95)</td>
+            <td class="dado">
+              {{ lei.estoqueGeral | formatNumber }}
+            </td>
+          </tr>
+          <tr>
+            <td>Estoque cosumido lei 11.732/95</td>
+            <td class="dado">
+              {{ lei.leiAntiga["consumidoPre-1376904"] | formatNumber }}
+            </td>
+          </tr>
+          <tr>
+            <td> LIMITE DE ESTOQUE - Leis 13.769/04 e 13.871/04 (**)</td>
+            <td class="dado">
+              {{ lei.limiteDeEstoque | formatNumber }}
+            </td>
+          </tr>
+          <tr>
+            <td>Estoque consumido lei 11.732/95 (***)</td>
+            <td class="dado">
+              {{ lei.leiAntiga["consumidoArt6-1376904"] | formatNumber }}
+            </td>
+          </tr>
+          <tr>
+            <td>Estoque consumido lei 13.769/09 e lei 13.871/04</td>
+            <td class="dado">
+              {{ estoqueConsumidoTotal | formatNumber }}
+            </td>
+          </tr>
+          <tr class="destaque">
+            <td>SALDO ESTOQUE GERAL DISPONÍVEL</td>
+            <td class="dado">
+              {{ saldoTotal | formatNumber }}
+            </td>
+          </tr>
+          <tr>
+            <td>Estoque em análise</td>
+            <td class="dado">
+              {{ estoqueEmAnalise | formatNumber }}
+            </td>
+          </tr>
+          <tfoot>
+            <tr class="notas">
+              <td colspan="2" class="nota">
+                <ul>
+                  <li>(*) Estoque consumido até a aprovação da lei Lei 13.769/04</li>
+                  <li>(**) Estoque líquido a ser utilizado conforme artigo 6º e tabela 2 da lei 13.769/04</li>
+                  <li>(***) Estoque consumido após a Lei 13.769/04</li>
+                  <li>(*) + (***) Estoque total consumido pela Lei 11.732/95 = 1.184.719,95</li>
+                </ul>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+        <table class="tabelas__convertido-desvinculado block">
+          <tr>
+            <th rowspan="2">
+              Setores
+            </th>
+            <th class="title" colspan="2">
+              CEPAC convertido
+            </th>
+            <th class="title" colspan="2">
+              CEPAC desvinculado
+            </th>
+          </tr>
+          <tr>
+            <td class="aca">
+              ACA
+            </td>
+            <td>Uso e <br>Parâmetros</td>
+            <td>ACA</td>
+            <td>Uso e <br>Parâmetros</td>
+          </tr>
+          <tr>
+            <td>Hélio Pelegrino</td>
+            <td class="dado">
+              {{ helioPelegrino[4].CepacACA | formatNumber }}
+            </td>
+            <td class="dado">
+              {{ helioPelegrino[4].CepacUsoParam | formatNumber }}
+            </td>
+            <td class="dado">
+              {{ lei.helioPelegrino.cepacDesvinculado.aca | formatNumber }}
+            </td>
+            <td class="dado">
+              {{ lei.helioPelegrino.cepacDesvinculado.usoPar | formatNumber }}
+            </td>
+          </tr>
+          <tr>
+            <td>Faria Lima</td>
+            <td class="dado">
+              {{ fariaLima[4].CepacACA | formatNumber }}
+            </td>
+            <td class="dado">
+              {{ fariaLima[4].CepacUsoParam | formatNumber }}
+            </td>
+            <td class="dado">
+              {{ lei.fariaLima.cepacDesvinculado.aca | formatNumber }}
+            </td>
+            <td class="dado">
+              {{ lei.fariaLima.cepacDesvinculado.usoPar | formatNumber }}
+            </td>
+          </tr>
+          <tr>
+            <td>Pinheiros</td>
+            <td class="dado">
+              {{ pinheiros[4].CepacACA | formatNumber }}
+            </td>
+            <td class="dado">
+              {{ pinheiros[4].CepacUsoParam | formatNumber }}
+            </td>
+            <td class="dado">
+              {{ lei.pinheiros.cepacDesvinculado.aca | formatNumber }}
+            </td>
+            <td class="dado">
+              {{ lei.pinheiros.cepacDesvinculado.usoPar | formatNumber }}
+            </td>
+          </tr>
+          <tr>
+            <td>Olimpíadas</td>
+            <td class="dado">
+              {{ olimpiadas[4].CepacACA | formatNumber }}
+            </td>
+            <td class="dado">
+              {{ olimpiadas[4].CepacUsoParam | formatNumber }}
+            </td>
+            <td class="dado">
+              {{ lei.olimpiadas.cepacDesvinculado.aca | formatNumber }}
+            </td>
+            <td class="dado">
+              {{ lei.olimpiadas.cepacDesvinculado.usoPar | formatNumber }}
+            </td>
+          </tr>
+          <tr>
+            <td>Subtotal</td>
+            <td class="dado">
+              {{ acaTotais.subTotalConvertido | formatNumber }}
+            </td>
+            <td class="dado">
+              {{ acaTotais.subTotalConvertidoUsoPar | formatNumber }}
+            </td>
+            <td />
+            <td />
+          </tr>
+          <tr class="destaque">
+            <td>Totais</td>
+            <td class="total" colspan="2">
+              {{ acaTotais.totalConvertido | formatNumber }}
+            </td>
+            <td class="dado">
+              {{ acaTotais.subtotalDesvinculado | formatNumber }}
+            </td>
+            <td class="dado">
+              {{ acaTotais.subtotalDesvinculadoUsoPar | formatNumber }}
+            </td>
+          </tr>
+        </table>
+        <table class="tabelas__resumo block">
+          <tr>
+            <td colspan="2" class="title">
+              Resumo CEPAC
+            </td>
+          </tr>
+          <tr>
+            <td>Leiloado</td>
+            <td class="dado">
+              {{ lei.resumo.leiloado | formatNumber }}
+            </td>
+          </tr>
+          <tr>
+            <td>Colocação privada</td>
+            <td class="dado">
+              {{ lei.resumo.colocacaoPrivada | formatNumber }}
+            </td>
+          </tr>
+          <tr>
+            <td>Convertido</td>
+            <td class="dado">
+              {{ acaTotais.totalConvertido | formatNumber }}
+            </td>
+          </tr>
+          <tr class="destaque">
+            <td>Em circulação</td>
+            <td class="dado">
+              {{ emCirculacao | formatNumber }}
+            </td>
+          </tr>
+          <tr>
+            <td>CEPAC total</td>
+            <td class="dado">
+              {{ lei.cepacTotal | formatNumber }}
+            </td>
+          </tr>
+          <tr class="destaque">
+            <td>CEPAC saldo</td>
+            <td class="dado">
+              {{ cepacSaldo | formatNumber }}
+            </td>
+          </tr>
+        </table>
+      </div>
+      <!-- <ultima-atualizacao :data-iso-arr="dates" /> -->
+      <div class="ultima-atualizacao">
+        {{ lastUpdate }}
+      </div>
+    </section>
+
     <FooterActions
       :actions="pageActions"
       :go-back-path="'/ouc-faria-lima'"
@@ -484,11 +487,12 @@ export default {
       .catch((error) => { if (error) { this.error = error } })
       .finally(() => {
         this.isFetching = false
-        this.setPdfDocDefinition(this.helioPelegrino)
+        this.setPdfDocDefinition()
       })
   },
   methods: {
     setLastUpdate (estoques) {
+      const dateFiltered = index => this.$options.filters.dateTimeStr(estoques[index].Atualizacao)
       const lastUpdateStr = estoques
         .map((estoque, index) => {
           const dateStr = estoque.Atualizacao
@@ -501,13 +505,26 @@ export default {
             index
           }
         })
-        .reduce((acc, curr) => acc.num > curr.num ? estoques[acc.index] : estoques[curr.index])
+        .reduce((acc, curr) => {
+          if (acc.num > curr.num) return acc
+          else { return curr }
+        })
 
-      this.lastUpdate = `Última atualização: ${this.$options.filters.dateTimeStr(lastUpdateStr.Atualizacao)}`
+      this.lastUpdate = `Última atualização: ${dateFiltered(lastUpdateStr.index)}`
     },
     fNum (num) { return this.$options.filters.formatNumber(num) },
     setPdfDocDefinition () {
       const dd = {
+        header: {
+          columns: [
+            {
+              image: 'data:image/png;base64,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',
+              width: 75,
+              margin: [ -249, 15 ],
+              alignment: 'right'
+            }
+          ]
+        },
         pageOrientation: 'landscape',
         pageSize: 'A4',
         info: {
@@ -838,6 +855,12 @@ table {
   border-collapse: collapse;
   td {
     border-bottom: $line-1px;
+  }
+}
+
+.tabelas {
+  &.isFetching {
+    display: none
   }
 }
 

@@ -24,12 +24,18 @@ export default {
 @import '~/assets/variables';
 
 .header-nav {
-  height: 4rem;
   display: flex;
   justify-content: space-between;
+  @media (max-width: $tablet) {
+    flex-direction: column;
+    align-items: center
+  }
   .logo {
     width: 151px;
-    margin-left: 22px
+    margin-left: 22px;
+    @media (max-width: $tablet) {
+      display: none;
+    }
   }
 }
 .nav-sections {

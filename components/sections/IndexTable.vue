@@ -102,16 +102,6 @@ export default {
           hidden: true
         },
         {
-          label: 'E-mail',
-          field: 'Email',
-          type: 'string'
-        },
-        {
-          label: 'Telefone',
-          field: 'Telefone',
-          type: 'string'
-        },
-        {
           label: 'Data de criação',
           field: 'Data',
           type: 'string',
@@ -307,7 +297,7 @@ export default {
     formatSetor (setorObj) { return setorObj.Nome },
     formatOperacaoUrbana (setorObj) { return setorObj.OperacaoUrbana.Nome },
     formatStatus (statusObj) { return statusObj.Nome },
-    formatFmData (str) { return str.replace('T', ', ') }
+    formatFmData (str) { return this.$options.filters.dateTimeStr(str) }
   }
 }
 </script>
