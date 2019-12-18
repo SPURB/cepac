@@ -4,10 +4,10 @@
       <logo-spurb :fill-type="'#1D1D1B'" :fill-brand="'#038375'" />
     </router-link>
     <nav class="nav-sections">
-      <router-link class="nav-sections__item" to="/ouc-faria-lima" tag="a">
+      <router-link class="nav-sections__item" to="/ouc-faria-lima" tag="a" name="ouc-faria-lima">
         Indice da cadastros da OUCFL
       </router-link>
-      <router-link class="nav-sections__item" to="/ouc-faria-lima/controle-de-estoques-aca" tag="a">
+      <router-link class="nav-sections__item" to="/ouc-faria-lima/controle-de-estoques-aca" tag="a" name="ouc-faria-lima-controle-de-estoques-aca">
         Resumo de CEPACs da OUCFL
       </router-link>
     </nav>

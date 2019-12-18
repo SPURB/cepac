@@ -43,6 +43,7 @@ export default {
     }
   },
   router: {
-    base: baseUrl
+    base: baseUrl,
+    fallback: true
   }
 }

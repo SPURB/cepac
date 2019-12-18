@@ -219,7 +219,11 @@ export default {
     onCellClick (params) {
       if (params.column.field === 'Id') {
         const id = params.row.Id
-        this.$router.push({ path: `${this.$route.path}/${id}` })
+        this.$router.push({
+          // path: `${this.$route.path}/${id}`,
+          name: 'ouc-faria-lima-id',
+          params: { id }
+        })
       }
     },
     saveTable (name, content) {
