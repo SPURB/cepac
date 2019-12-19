@@ -1,6 +1,6 @@
 <template>
   <svg
-    class="github"
+    class="github icon"
     width="53"
     height="53"
     viewBox="0 0 53 53"

@@ -13,8 +13,8 @@
         <h4>Lei 13.769/04, alterada pelas leis 13.871, 15.519/11 e 16.242/15</h4>
       </div>
       <ul class="list__list">
-        <li>
-          <router-link tag="a" to="/ouc-faria-lima">
+        <li class="list__item subitems">
+          <router-link tag="a" to="/ouc-faria-lima" name="ouc-faria-lima" class="list__item__wrapper-link">
             <h3>Quadro geral de controle de estoque</h3>
             <div
               v-observe-visibility="{
@@ -30,9 +30,26 @@
               <seta :rotate="true" />
             </div>
           </router-link>
+          <ul class="subitems__list">
+            <router-link :to="{ path: '/ouc-faria-lima', name: 'ouc-faria-lima', query: { IdStatus: 4 }, tag: 'li'}" class="subitems__list__item">
+              Consumido
+            </router-link>
+            <router-link :to="{ path: '/ouc-faria-lima', name: 'ouc-faria-lima', query: { IdStatus: 2 }, tag: 'li'}" class="subitems__list__item">
+              Análise
+            </router-link>
+            <!-- <li class="subitems__list__item">
+                Desvinculado
+              </li> -->
+            <router-link :to="{ path: '/ouc-faria-lima', name: 'ouc-faria-lima', query: { IdStatus: 1 }, tag: 'li'}" class="subitems__list__item">
+              Checklist
+            </router-link>
+            <router-link :to="{ path: '/ouc-faria-lima', name: 'ouc-faria-lima', query: { IdStatus: 3 }, tag: 'li'}" class="subitems__list__item">
+              Indeferidos
+            </router-link>
+          </ul>
         </li>
-        <li>
-          <router-link tag="a" to="/ouc-faria-lima/controle-de-estoques-aca">
+        <li class="list__item">
+          <router-link tag="a" to="/ouc-faria-lima/controle-de-estoques-aca" class="list__item__wrapper-link">
             <h3>Resumo de CEPAC’s da OUCFL</h3>
             <div>
               <img
@@ -81,7 +98,6 @@ export default {
   methods: {
     scrollTo (ref) {
       const elHeight = this.$refs[ref].clientHeight
-      // console.log(elHeight)
       try {
         window.scrollTo({
           top: elHeight,
@@ -134,8 +150,8 @@ export default {
 }
 
 .list {
-  background-color: #fff;
   min-height: 100vh;
+  background-color: #fff;
 }
 
 .list__info, .list__list {
@@ -160,54 +176,87 @@ export default {
 
 .list__list {
   flex-grow : 1;
-  li {
-    display: flex;
-    align-items: center;
-    padding: 1rem 0 1rem 1rem;
-    h3 {
-      font-weight: 700;
-      font-size: 1.5rem;
-      text-align: center;
-      color: #fff;
-      @media (max-width: $tablet) {
-        font-size: 1rem
-      }
-    }
-    a {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      flex-grow: 1;
-      color: #000000;
-      @supports(display: grid) {
-        display: grid;
-        grid-template-columns: 1fr 2fr;
-        grid-gap: 0.5rem;
-      }
-      div {
-        display: flex;
-        align-items: center;
-        padding-top: 1rem;
-        img {
-          max-width: 528px;
-          width: 100%;
-          margin-left: auto;
-          box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.25);
-          transition: transform ease-in-out 100ms;
-          &:hover{
-            transform: translate(3px, -3px);
-            box-shadow: 7px 7px 11px rgba(0, 0, 0, 0.25);
-          }
-        }
-      }
-    }
-  }
-  li:nth-child(odd) {
+  .list__item:nth-child(odd) {
     background-color: #5CD6C9
   }
-  li:nth-child(even) {
+  .list__item:nth-child(even) {
     background-color: $brand-1
   }
+}
+
+.list__item {
+  display: flex;
+  align-items: center;
+  padding: 1rem 0 1rem 1rem;
+  h3 {
+    font-weight: 700;
+    font-size: 1.5rem;
+    text-align: center;
+    color: #fff;
+    @media (max-width: $tablet) {
+      font-size: 1rem
+    }
+  }
+  &.subitems {
+    flex-direction: column
+  }
+}
+
+.list__item__wrapper-link {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex-grow: 1;
+  color: #000000;
+  @supports(display: grid) {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-gap: 0.5rem;
+  }
+  div {
+    display: flex;
+    align-items: center;
+    padding-top: 1rem;
+    img {
+      max-width: 528px;
+      width: 100%;
+      margin-left: auto;
+      box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.25);
+      transition: transform ease-in-out 100ms;
+      &:hover{
+        transform: translate(3px, -3px);
+        box-shadow: 7px 7px 11px rgba(0, 0, 0, 0.25);
+      }
+    }
+  }
+}
+
+.subitems__list {
+  flex-shrink: 1;
+  flex-wrap: wrap;
+  display: flex;
+  margin: 3rem 0 2rem;
+  width: calc(100% - 1rem);
+}
+
+.subitems__list__item {
+  flex-grow: 1;
+  background: #0A5950;
+  padding: 1rem;
+  margin-right: 1rem;
+  border-radius: 5px;
+  color: #fff;
+  text-align: center;
+  transition: background 150ms ease-in-out;
+  &:hover {
+    background: #008375;
+  }
+  @media (max-width: $tablet) {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
 }
 </style>
