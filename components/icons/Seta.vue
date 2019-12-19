@@ -1,7 +1,7 @@
 <template>
   <svg
     class="icon seta"
-    :class="{ rotate }"
+    :class="{ rotate, horizontal }"
     width="80"
     height="52"
     viewBox="0 0 80 52"
@@ -43,6 +43,10 @@ export default {
     rotate: {
       type: Boolean,
       default: false
+    },
+    horizontal: {
+      type: Boolean,
+      default: false
     }
   }
 }
@@ -50,5 +54,17 @@ export default {
 <style lang="scss" scoped>
 .rotate {
   transform: rotate(270deg);
+  transition: transform ease-in-out 150ms;
+  &:hover {
+    transition: transform ease-in-out 150ms;
+    transform: translateX(10px)  rotate(270deg);
+  }
+}
+
+.horizontal {
+    transition: transform ease-in-out 150ms;
+    &:hover {
+     transform: translateY(-10px);
+    }
 }
 </style>

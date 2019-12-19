@@ -16,10 +16,11 @@
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/pwa": "^3.0.0-0",
     "file-saver": "^2.0.2",
-    "nuxt": "^2.0.0",
-    "vue-good-table": "^2.18.0",
     "numeral": "^2.0.6",
-    "pdfmake": "^0.1.62"
+    "nuxt": "^2.0.0",
+    "pdfmake": "^0.1.62",
+    "vue-good-table": "^2.18.0",
+    "vue-observe-visibility": "^0.4.6"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^1.0.1",
