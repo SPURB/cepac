@@ -5,10 +5,10 @@
     </router-link>
     <nav class="nav-sections">
       <router-link class="nav-sections__item" to="/ouc-faria-lima" tag="a" name="ouc-faria-lima">
-        Indice da cadastros da OUCFL
+        Quadro Geral OUCFL
       </router-link>
       <router-link class="nav-sections__item" to="/ouc-faria-lima/controle-de-estoques-aca" tag="a" name="ouc-faria-lima-controle-de-estoques-aca">
-        Resumo de CEPACs da OUCFL
+        Resumo OUCFL
       </router-link>
     </nav>
   </header>

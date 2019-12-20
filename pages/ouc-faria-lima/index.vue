@@ -1,5 +1,6 @@
 <template>
   <div class="index">
+    <preloader :is-fething="true" />
     <page-title :two-columns="true">
       <div class="col-1">
         <h1>Operação Urbana Consociada Faria Lima</h1>
@@ -17,12 +18,14 @@
 <script>
 import PageTitle from '~/components/sections/PageTitle'
 import IndexTable from '~/components/sections/IndexTable'
+import Preloader from '~/components/sections/Preloader'
 
 export default {
   name: 'OucFariaLima',
   components: {
     PageTitle,
-    IndexTable
+    IndexTable,
+    Preloader
   },
   data () {
     return {

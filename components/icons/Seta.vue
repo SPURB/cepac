@@ -64,7 +64,7 @@ export default {
 .horizontal {
     transition: transform ease-in-out 150ms;
     &:hover {
-     transform: translateY(-10px);
+     transform: translateY(10px);
     }
 }
 </style>

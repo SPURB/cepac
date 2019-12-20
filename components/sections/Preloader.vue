@@ -1,6 +1,7 @@
 <template>
   <div class="preloader">
     <div v-if="isFetching" class="is-loading" :class="{ faded: !isFetching }">
+      <preloader-animation :is-fetching="isFetching" />
       <h2>Carregando</h2>
     </div>
     <div v-else-if="error" class="error">
@@ -14,8 +15,12 @@
   </div>
 </template>
 <script>
+import PreloaderAnimation from '~/components/icons/PreloaderAnimation'
 export default {
   name: 'Preloader',
+  components: {
+    PreloaderAnimation
+  },
   props: {
     isFetching: {
       type: Boolean,
@@ -41,6 +46,7 @@ export default {
 .is-loading {
   position: absolute;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   display: flex;
@@ -50,6 +56,7 @@ export default {
   background-color: #008375;
   color: #FFF;
   transition: all ease-in .4s .2s;
+  flex-direction: column;
   h2 {
     font-size: 1rem;
     font-weight: normal;
@@ -61,7 +68,7 @@ export default {
     max-height: 0;
     h2 {
       opacity: 0;
-    }
+    };
   }
 }
 .error {

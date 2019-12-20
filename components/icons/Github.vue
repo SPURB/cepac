@@ -44,7 +44,7 @@ export default {
   }
   20%,
   60% {
-    transform: rotate(-16deg);
+    transform: rotate(-8deg);
   }
   40%,
   80% {

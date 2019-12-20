@@ -1,15 +1,8 @@
 <template>
   <section class="indexTable">
-    <div :class="{ faded: !isFetching }" class="preloader">
-      <h2>carregando...</h2>
-    </div>
-    <div v-if="displayError" class="error">
-      <h3>{{ error }}</h3>
-      <button @click="reloadApp">
-        Tentar novamente
-      </button>
-    </div>
-    <div v-else class="tabela">
+    <preloader :is-fetching="isFetching" :error="error" />
+
+    <div class="tabela">
       <vue-good-table
         :columns="columns"
         :rows="rows"
@@ -53,11 +46,13 @@
 import { VueGoodTable } from 'vue-good-table'
 import FileSaver from 'file-saver'
 import axios from '~/plugins/axios'
+import Preloader from '~/components/sections/Preloader'
 
 export default {
   name: 'Index',
   components: {
-    VueGoodTable
+    VueGoodTable,
+    Preloader
   },
   props: {
     tableName: {
@@ -198,11 +193,8 @@ export default {
       isFetching: false,
       status: [],
       rows: [],
-      error: ''
+      error: false
     }
-  },
-  computed: {
-    displayError () { return this.error !== '' }
   },
   created () {
     const filters = this.fetchFilterString(this.$route.query, this.columns)
@@ -269,7 +261,7 @@ export default {
             this.rows.push(res.data)
           }
         })
-        .catch((e) => { this.error = 'Erro' })
+        .catch((e) => { this.error = e })
         .finally(() => { this.isFetching = false })
     },
 
@@ -307,65 +299,6 @@ export default {
 </script>
 <style lang="scss">
 .indexTable {
-  .preloader {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    max-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 2;
-    background-color: #008375;
-    color: #FFF;
-    transition: all ease-in 0.25s 0.15s;
-    h2 {
-      font-size: 1rem;
-      font-weight: normal;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, .36);
-      transition: all ease-out .4s;
-      user-select: none;
-    }
-    &.faded {
-      opacity: 0.5;
-      max-height: 0;
-      h2 {
-        opacity: 0;
-      }
-    }
-  }
-  .error {
-    padding: 2rem 3.25rem;
-    h2 {
-      color: #EB5757;
-      font-size: 1.5rem;
-    }
-    p {
-      font-size: small;
-      color: #BDBDBD;
-    }
-    button {
-      margin: 2rem 0 0;
-      padding: 1.5rem 1.75rem 1.6rem;
-      background-color: #005249;
-      border: 2px solid rgba(255, 255, 255, .2);
-      border-radius: 0.25rem;
-      font-family: inherit;
-      font-size: 1rem;
-      color: #FFF;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, .36);
-      cursor: pointer;
-      transition: all ease-out .1s;
-      span {
-        font-size: 1.25rem;
-        line-height: 1.6rem;
-      }
-      &:hover {
-        background-color: #008375;
-      }
-    }
-  }
   div.tabela {
     .vgt-global-search {
       padding: 2rem 3.25rem;

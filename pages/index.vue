@@ -1,8 +1,12 @@
 <template>
-  <div class="index">
+  <div ref="index" class="index">
     <section class="index__landing landing">
+      <global-events
+        @keydown.enter="scrollTo('oucfl')"
+        @keydown.esc="scrollTo('index', true)"
+      />
       <logo-spurb :fill-type="'#fff'" :fill-brand="'#fff'" />
-      <p>Documentos com dados atualizados e distribuídos em API’s públicas mantidos pela São Paulo Urbanismo</p>
+      <p>Documentos e dados públicos mantidos pela São Paulo Urbanismo</p>
       <a class="landing__controller" @click.prevent="scrollTo('oucfl')">
         <seta :horizontal="true" />
       </a>
@@ -13,6 +17,20 @@
         <h4>Lei 13.769/04, alterada pelas leis 13.871, 15.519/11 e 16.242/15</h4>
       </div>
       <ul class="list__list">
+        <li class="list__item">
+          <router-link tag="a" to="/ouc-faria-lima/controle-de-estoques-aca" class="list__item__wrapper-link">
+            <h3>Resumo de CEPAC’s da OUCFL</h3>
+            <div>
+              <img
+                v-if="showImages"
+                srcset="~/assets/images/report-sample_thumb.jpg 40w, ~/assets/images/report-sample_medium.jpg 200w, ~/assets/images/report-sample_big.jpg 528w"
+                src="~/assets/images/report-sample_big.jpg"
+              >
+              <seta :rotate="true" />
+            </div>
+          </router-link>
+        </li>
+
         <li class="list__item subitems">
           <router-link tag="a" to="/ouc-faria-lima" name="ouc-faria-lima" class="list__item__wrapper-link">
             <h3>Quadro geral de controle de estoque</h3>
@@ -48,19 +66,6 @@
             </router-link>
           </ul>
         </li>
-        <li class="list__item">
-          <router-link tag="a" to="/ouc-faria-lima/controle-de-estoques-aca" class="list__item__wrapper-link">
-            <h3>Resumo de CEPAC’s da OUCFL</h3>
-            <div>
-              <img
-                v-if="showImages"
-                srcset="~/assets/images/report-sample_thumb.jpg 40w, ~/assets/images/report-sample_medium.jpg 200w, ~/assets/images/report-sample_big.jpg 528w"
-                src="~/assets/images/report-sample_big.jpg"
-              >
-              <seta :rotate="true" />
-            </div>
-          </router-link>
-        </li>
       </ul>
     </section>
     <section class="footer">
@@ -70,6 +75,7 @@
 </template>
 
 <script>
+import GlobalEvents from 'vue-global-events'
 import LogoSpurb from '~/components/icons/LogoSpurb'
 import Seta from '~/components/icons/Seta'
 import FooterInfo from '~/components/sections/FooterInfo'
@@ -80,7 +86,8 @@ export default {
   components: {
     LogoSpurb,
     Seta,
-    FooterInfo
+    FooterInfo,
+    GlobalEvents
   },
   data () {
     return {
@@ -96,8 +103,8 @@ export default {
     if (this.checkSectionsIsInRefs(this.$refs, this.$route.query)) this.scrollTo(this.$route.query.section)
   },
   methods: {
-    scrollTo (ref) {
-      const elHeight = this.$refs[ref].clientHeight
+    scrollTo (ref, reset = false) {
+      const elHeight = reset ? 0 : this.$refs[ref].clientHeight
       try {
         window.scrollTo({
           top: elHeight,
@@ -250,8 +257,10 @@ export default {
   color: #fff;
   text-align: center;
   transition: background 150ms ease-in-out;
+  border: 1px solid #008375;
   &:hover {
     background: #008375;
+    border: 1px solid #fff
   }
   @media (max-width: $tablet) {
     width: 100%;
