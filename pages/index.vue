@@ -76,9 +76,12 @@
 
 <script>
 import GlobalEvents from 'vue-global-events'
+import smoothscroll from 'smoothscroll-polyfill'
 import LogoSpurb from '~/components/icons/LogoSpurb'
 import Seta from '~/components/icons/Seta'
 import FooterInfo from '~/components/sections/FooterInfo'
+
+smoothscroll.polyfill()
 
 export default {
   name: 'Index',
@@ -126,6 +129,7 @@ export default {
     }
   }
 }
+
 </script>
 <style lang="scss" scoped>
 @import '~/assets/variables';
@@ -216,8 +220,8 @@ export default {
   align-items: center;
   flex-grow: 1;
   color: #000000;
+  width: 100%;
   @supports(display: grid) {
-    width: 100%;
     display: grid;
     grid-template-columns: 1fr 2fr;
     grid-gap: 0.5rem;
@@ -228,7 +232,6 @@ export default {
     padding-top: 1rem;
     img {
       max-width: 528px;
-      width: 100%;
       margin-left: auto;
       box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.25);
       transition: transform ease-in-out 100ms;

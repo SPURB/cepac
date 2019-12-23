@@ -16,10 +16,12 @@
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/pwa": "^3.0.0-0",
     "file-saver": "^2.0.2",
+    "intersection-observer": "^0.7.0",
     "numeral": "^2.0.6",
     "nuxt": "^2.0.0",
     "pdfmake": "^0.1.62",
     "save": "^2.4.0",
+    "smoothscroll-polyfill": "^0.4.4",
     "vue-global-events": "^1.1.2",
     "vue-good-table": "^2.18.0",
     "vue-observe-visibility": "^0.4.6"

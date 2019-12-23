@@ -1,7 +1,7 @@
 <template>
   <div class="preloader">
     <div v-if="isFetching" class="is-loading" :class="{ faded: !isFetching }">
-      <preloader-animation :is-fetching="isFetching" />
+      <preloader-animation v-if="!isIE" :is-fetching="isFetching" />
       <h2>Carregando</h2>
     </div>
     <div v-else-if="error" class="error">
@@ -33,6 +33,17 @@ export default {
     path: {
       type: String,
       default: '/'
+    }
+  },
+  computed: {
+    isIE () {
+      const nav = window.navigator.userAgent
+      if (nav.match(/MSIE\s\d\S*;|Trident.*rv:\d*\.\d/)) {
+        return true
+      }
+      else {
+        return false
+      }
     }
   },
   methods: {
