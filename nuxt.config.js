@@ -1,10 +1,17 @@
 import axios from 'axios'
 const baseUrl = process.env.CI ? '/relatorios/' : '/'
 
+const apiBaseUrl = (env) => {
+  switch (env) {
+    case 'dev': return 'http://spurbsp163/cepacs/api/'
+    default: return 'https://servicos.spurbanismo.sp.gov.br/cepacs/api'
+  }
+}
+
 export default {
   mode: 'spa',
   env: {
-    apiBaseUrl: 'https://servicos.spurbanismo.sp.gov.br/cepacs/api'
+    apiBaseUrl: apiBaseUrl(process.env.NODE_ENV)
   },
   head: {
     htmlAttrs: { lang: 'pt-br' },

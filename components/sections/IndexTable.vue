@@ -37,6 +37,7 @@
           <span style="font-size: 0.8rem">&boxplus;</span>
           Salvar como .csv
         </button>
+        <pdf-generator :pdf-doc-definition="pdfDocDefinition" />
       </footer>
     </div>
   </section>
@@ -47,12 +48,15 @@ import { VueGoodTable } from 'vue-good-table'
 import FileSaver from 'file-saver'
 import axios from '~/plugins/axios'
 import Preloader from '~/components/sections/Preloader'
+import PdfGenerator from '~/components/elements/PdfGenerator'
+import { spurbanismoBase64 } from '~/assets/images/spurbanismoBase64'
 
 export default {
   name: 'Index',
   components: {
     VueGoodTable,
-    Preloader
+    Preloader,
+    PdfGenerator
   },
   props: {
     tableName: {
@@ -196,6 +200,133 @@ export default {
       error: false
     }
   },
+  computed: {
+    today () {
+      return this.formatFmData(new Date().toISOString())
+    },
+    downloadTimeStamp () {
+      const now = new Date()
+      return `Página vistada em ${this.formatFmData(now.toISOString())} às ${now.getUTCHours()}h${now.getUTCMinutes()}`
+    },
+    lastUpdate () {
+      if (!this.rows.length) return ''
+
+      const parsedDated = dateStr => new Date(dateStr)
+
+      const last = this.rows.reduce((accRow, currRow) => {
+        if (parsedDated(accRow.DataAlteracao) > parsedDated(currRow.DataAlteracao)) return accRow
+        else { return currRow }
+      })
+
+      return this.formatFmData(last.DataAlteracao)
+    },
+    pdfRowsDefinition () {
+      if (!this.rows.length) return []
+
+      else {
+        const nullToZero = nullPar => nullPar === null ? 0 : nullPar
+        const sum = (a, b) => parseFloat(nullToZero(a)) + parseFloat(nullToZero(b))
+
+        const tableHeader = [
+          [
+            'Setor',
+            'Data',
+            'Nº Certidão',
+            'Empresa',
+            'Processo Prefeitura',
+            'Área Adicional Residencial (m²)',
+            'Área Adicional Não Residencial (m²)',
+            'Área adicional total (m²)',
+            'CEPAC - Área adicional',
+            'CEPAC - Modificação de uso',
+            'CEPAC Total'
+          ]
+        ]
+
+        const tableBody = this.rows
+          .map((row) => {
+            return [
+              row.SetorObj.Nome, // 'Setor',
+              row.Data, // 'Data',
+              row.Certidao, // 'Nº Certidão',
+              row.Interessado, // 'Empresa',
+              row.Sei, // 'Processo Prefeitura',
+              row.AreaAdResidencial, // 'Área Adicional Residencial (m²)',
+              row.AreaAdNaoResidencial, // 'Área Adicional Não Residencial (m²)',
+              row.AreaTerreno, // 'Área adicional total (m²)',
+              row.CepacAreaAdicional, // 'CEPAC - Área adicional',
+              row.CepacModUso, // 'CEPAC - Modificação de uso',
+              sum(row.CepacAreaAdicional, row.CepacModUso)// 'CEPAC Total'
+            ]
+          })
+        return tableHeader.concat(tableBody)
+      }
+    },
+    pdfDocTypeDefinition () {
+      const mapIdStatusTypes = {
+        '1': "Processos em 'checklist' - ",
+        '2': 'Estoque em análise - ',
+        '3': 'Processos indeferidos - ',
+        '4': 'Estoque consumido - '
+      }
+      const type = mapIdStatusTypes[this.$route.query.IdStatus]
+      return type || ''
+    },
+    pdfDocDefinition () {
+      return {
+        header: {
+          columns: [
+            {
+              image: spurbanismoBase64,
+              width: 75,
+              margin: [ -249, 15 ],
+              alignment: 'right'
+            }
+          ]
+        },
+        pageOrientation: 'landscape',
+        pageSize: 'A4',
+        info: {
+          title: 'Resumo de Estoques da OUCFL',
+          author: 'São Paulo Urbanismo',
+          subject: 'Operação Urbana Consociada Faria Lima',
+          keywords: 'ouc outorga cepac faria lima'
+        },
+        footer: {
+          columns: [
+            { text: this.downloadTimeStamp, margin: [ 20, 10, 0, 0 ] },
+            { text: `Última atualização: ${this.lastUpdate}`, margin: [ 0, 10, 0, 0 ] },
+            { link: window.location.href, text: `Fonte: ${window.location.hostname}${window.location.pathname}`, alignment: 'right', margin: [0, 10, 20, 0] }
+          ]
+        },
+
+        content: [
+          { text: 'OPERAÇÃO URBANA CONSORCIADA FARIA LIMA', style: 'pagetitle' },
+          `${this.pdfDocTypeDefinition}${this.today}`,
+          {
+            table: {
+              headerRows: 1,
+              body: this.pdfRowsDefinition
+            },
+            style: 'table'
+          }
+        ],
+        defaultStyle: {
+          fontSize: 9
+        },
+        styles: {
+          pagetitle: {
+            fontSize: 14,
+            bold: true
+          },
+          table: {
+            fontSize: 7,
+            margin: [ 0, 20, 0, 0 ]
+          }
+        }
+      }
+    }
+  },
   created () {
     const filters = this.fetchFilterString(this.$route.query, this.columns)
     filters ? this.fetchData(`/fila${filters}`) : this.fetchData(`/fila${this.queryFilter}`)
@@ -212,7 +343,6 @@ export default {
       if (params.column.field === 'Id') {
         const id = params.row.Id
         this.$router.push({
-          // path: `${this.$route.path}/${id}`,
           name: 'ouc-faria-lima-id',
           params: { id }
         })

@@ -20,7 +20,6 @@
     "numeral": "^2.0.6",
     "nuxt": "^2.0.0",
     "pdfmake": "^0.1.62",
-    "save": "^2.4.0",
     "smoothscroll-polyfill": "^0.4.4",
     "vue-global-events": "^1.1.2",
     "vue-good-table": "^2.18.0",
