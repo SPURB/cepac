@@ -76,8 +76,8 @@
           <td>{{ helioPelegrino[4].AreaAdicionalNR | formatNumber }}</td>
           <td>{{ helioPelegrino[2].AreaAdicionalR | formatNumber }}</td>
           <td>{{ helioPelegrino[2].AreaAdicionalNR | formatNumber }}</td>
-          <td>{{ helioPelegrinoSaldoRes | formatNumber }}</td>
-          <td>{{ helioPelegrinoSaldoNres | formatNumber }}</td>
+          <td>{{ saldos.helioPelegrino.residencial | formatNumber }}</td>
+          <td>{{ saldos.helioPelegrino.nR | formatNumber }}</td>
           <td colspan="2" rowspan="4" class="destaque">
             {{ saldoTotal | formatNumber }}
           </td>
@@ -99,8 +99,8 @@
           <td>{{ fariaLima[4].AreaAdicionalNR | formatNumber }}</td>
           <td>{{ fariaLima[2].AreaAdicionalR | formatNumber }}</td>
           <td>{{ fariaLima[2].AreaAdicionalNR | formatNumber }}</td>
-          <td>{{ fariaLimaSaldoRes | formatNumber }}</td>
-          <td>{{ fariaLimaSaldoSaldoNres | formatNumber }}</td>
+          <td>{{ saldos.fariaLima.residencial | formatNumber }}</td>
+          <td>{{ saldos.fariaLima.nR | formatNumber }}</td>
         </tr>
         <tr class="conteudo">
           <td class="title">
@@ -119,8 +119,8 @@
           <td>{{ pinheiros[4].AreaAdicionalNR | formatNumber }}</td>
           <td>{{ pinheiros[2].AreaAdicionalR | formatNumber }}</td>
           <td>{{ pinheiros[2].AreaAdicionalNR | formatNumber }}</td>
-          <td>{{ pinheirosSaldoRes | formatNumber }}</td>
-          <td>{{ pinheirosSaldoNres | formatNumber }}</td>
+          <td>{{ saldos.pinheiros.residencial | formatNumber }}</td>
+          <td>{{ saldos.pinheiros.nR | formatNumber }}</td>
         </tr>
         <tr class="conteudo last">
           <td class="title">
@@ -139,8 +139,8 @@
           <td>{{ olimpiadas[4].AreaAdicionalNR | formatNumber }}</td>
           <td>{{ olimpiadas[2].AreaAdicionalR | formatNumber }}</td>
           <td>{{ olimpiadas[2].AreaAdicionalNR | formatNumber }}</td>
-          <td>{{ olimpiadasSaldoRes | formatNumber }}</td>
-          <td>{{ olimpiadasSaldoNres | formatNumber }}</td>
+          <td>{{ saldos.olimpiadas.residencial | formatNumber }}</td>
+          <td>{{ saldos.olimpiadas.nR | formatNumber }}</td>
         </tr>
         <tfoot>
           <tr class="notas">
@@ -389,7 +389,6 @@ export default {
     PageTitle,
     FooterActions,
     Preloader
-    // UltimaAtualizacao
   },
   data () {
     return {
@@ -425,39 +424,33 @@ export default {
         subtotalDesvinculadoUsoPar: 0,
         totalConvertido: 0
       },
-      lastUpdate: ''
+      lastUpdate: '',
+      saldos: {
+        helioPelegrino: {
+          residencial: 0,
+          nR: 0
+        },
+        fariaLima: {
+          residencial: 0,
+          nR: 0
+        },
+        pinheiros: {
+          residencial: 0,
+          nR: 0
+        },
+        olimpiadas: {
+          residencial: 0,
+          nR: 0
+        }
+      }
     }
   },
   computed: {
-    helioPelegrinoSaldoRes () {
-      return (this.lei.helioPelegrino.areaMax.res - this.helioPelegrino[4].AreaAdicionalR)
-    },
-    helioPelegrinoSaldoNres () {
-      return (this.lei.helioPelegrino.areaMax.nRes - this.helioPelegrino[4].AreaAdicionalNR)
-    },
-    fariaLimaSaldoRes () {
-      return (this.lei.fariaLima.areaMax.res - this.fariaLima[4].AreaAdicionalR)
-    },
-    fariaLimaSaldoSaldoNres () {
-      return (this.lei.fariaLima.areaMax.nRes - this.fariaLima[4].AreaAdicionalNR)
-    },
-    pinheirosSaldoRes () {
-      return (this.lei.pinheiros.areaMax.res - this.pinheiros[4].AreaAdicionalR)
-    },
-    pinheirosSaldoNres () {
-      return (this.lei.pinheiros.areaMax.nRes - this.pinheiros[4].AreaAdicionalNR)
-    },
-    olimpiadasSaldoRes () {
-      return (this.lei.olimpiadas.areaMax.res - this.olimpiadas[4].AreaAdicionalR)
-    },
-    olimpiadasSaldoNres () {
-      return (this.lei.olimpiadas.areaMax.nRes - this.olimpiadas[4].AreaAdicionalNR)
-    },
     emCirculacao () {
-      return (this.lei.resumo.leiloado + this.lei.resumo.colocacaoPrivada - this.acaTotais.totalConvertido)
+      return (oucFariaLima.resumo.leiloado + oucFariaLima.resumo.colocacaoPrivada - this.acaTotais.totalConvertido)
     },
     cepacSaldo () {
-      return this.lei.cepacTotal - this.lei.resumo.leiloado - this.lei.resumo.colocacaoPrivada
+      return oucFariaLima.cepacTotal - oucFariaLima.resumo.leiloado - oucFariaLima.resumo.colocacaoPrivada
     },
     downloadTimeStamp () {
       const date = new Date()
@@ -482,6 +475,7 @@ export default {
         this.setPageActions('json', res.data)
         this.setPageActions('csv', res.data)
         this.setLastUpdate(res.data)
+        this.setSaldos(oucFariaLima, res.data)
       })
       .catch((error) => { if (error) { this.error = error } })
       .finally(() => {
@@ -490,6 +484,16 @@ export default {
       })
   },
   methods: {
+    setSaldos (lei) {
+      this.saldos.helioPelegrino.residencial = lei.helioPelegrino.areaMax.res - this.helioPelegrino[4].AreaAdicionalR
+      this.saldos.helioPelegrino.nR = lei.helioPelegrino.areaMax.nRes - this.helioPelegrino[4].AreaAdicionalNR
+      this.saldos.fariaLima.residencial = lei.fariaLima.areaMax.res - this.fariaLima[4].AreaAdicionalR
+      this.saldos.fariaLima.nR = lei.fariaLima.areaMax.nRes - this.fariaLima[4].AreaAdicionalNR
+      this.saldos.pinheiros.residencial = lei.pinheiros.areaMax.res - this.pinheiros[4].AreaAdicionalR
+      this.saldos.pinheiros.nR = lei.pinheiros.areaMax.nRes - this.pinheiros[4].AreaAdicionalNR
+      this.saldos.olimpiadas.residencial = lei.olimpiadas.areaMax.res - this.olimpiadas[4].AreaAdicionalR
+      this.saldos.olimpiadas.nR = lei.olimpiadas.areaMax.nRes - this.olimpiadas[4].AreaAdicionalNR
+    },
     setLastUpdate (estoques) {
       const dateFiltered = index => this.$options.filters.dateTimeStr(estoques[index].Atualizacao)
       const lastUpdateStr = estoques
@@ -573,48 +577,48 @@ export default {
                 ],
                 [
                   'Hélio Pelegrino',
-                  { text: this.fNum(this.lei.helioPelegrino.areaMax.res), alignment: 'right' },
-                  { text: this.fNum(this.lei.helioPelegrino.areaMax.nRes), alignment: 'right' },
+                  { text: this.fNum(oucFariaLima.helioPelegrino.areaMax.res), alignment: 'right' },
+                  { text: this.fNum(oucFariaLima.helioPelegrino.areaMax.nRes), alignment: 'right' },
                   { text: this.fNum(this.helioPelegrino[4].AreaAdicionalR), alignment: 'right' },
                   { text: this.fNum(this.helioPelegrino[4].AreaAdicionalNR), alignment: 'right' },
                   { text: this.fNum(this.helioPelegrino[2].AreaAdicionalR), alignment: 'right' },
                   { text: this.fNum(this.helioPelegrino[2].AreaAdicionalNR), alignment: 'right' },
-                  { text: this.fNum(this.helioPelegrinoSaldoRes), alignment: 'right' },
-                  { text: this.fNum(this.helioPelegrinoSaldoNres), alignment: 'right' },
+                  { text: this.fNum(this.saldos.helioPelegrino.residencial), alignment: 'right' },
+                  { text: this.fNum(this.saldos.helioPelegrino.nR), alignment: 'right' },
                   { text: this.fNum(this.saldoTotal), colSpan: 2, rowSpan: 4, alignment: 'center' }, {}
                 ],
                 [
                   'Faria Lima',
-                  { text: this.fNum(this.lei.fariaLima.areaMax.res), alignment: 'right' },
-                  { text: this.fNum(this.lei.fariaLima.areaMax.nRes), alignment: 'right' },
+                  { text: this.fNum(oucFariaLima.fariaLima.areaMax.res), alignment: 'right' },
+                  { text: this.fNum(oucFariaLima.fariaLima.areaMax.nRes), alignment: 'right' },
                   { text: this.fNum(this.fariaLima[4].AreaAdicionalR), alignment: 'right' },
                   { text: this.fNum(this.fariaLima[4].AreaAdicionalNR), alignment: 'right' },
                   { text: this.fNum(this.fariaLima[2].AreaAdicionalR), alignment: 'right' },
                   { text: this.fNum(this.fariaLima[2].AreaAdicionalNR), alignment: 'right' },
-                  { text: this.fNum(this.fariaLimaSaldoRes), alignment: 'right' },
-                  { text: this.fNum(this.fariaLimaSaldoSaldoNres), alignment: 'right' }
+                  { text: this.fNum(this.saldos.fariaLima.residencial), alignment: 'right' },
+                  { text: this.fNum(this.saldos.fariaLima.nR), alignment: 'right' }
                 ],
                 [
                   'Pinheiros',
-                  { text: this.fNum(this.lei.pinheiros.areaMax.res), alignment: 'right' },
-                  { text: this.fNum(this.lei.pinheiros.areaMax.nRes), alignment: 'right' },
+                  { text: this.fNum(oucFariaLima.pinheiros.areaMax.res), alignment: 'right' },
+                  { text: this.fNum(oucFariaLima.pinheiros.areaMax.nRes), alignment: 'right' },
                   { text: this.fNum(this.pinheiros[4].AreaAdicionalR), alignment: 'right' },
                   { text: this.fNum(this.pinheiros[4].AreaAdicionalNR), alignment: 'right' },
                   { text: this.fNum(this.pinheiros[2].AreaAdicionalR), alignment: 'right' },
                   { text: this.fNum(this.pinheiros[2].AreaAdicionalNR), alignment: 'right' },
-                  { text: this.fNum(this.pinheirosSaldoRes), alignment: 'right' },
-                  { text: this.fNum(this.pinheirosSaldoNres), alignment: 'right' }
+                  { text: this.fNum(this.saldos.pinheiros.residencial), alignment: 'right' },
+                  { text: this.fNum(this.saldos.pinheiros.nR), alignment: 'right' }
                 ],
                 [
                   'Olimpiadas',
-                  { text: this.fNum(this.lei.olimpiadas.areaMax.res), alignment: 'right' },
-                  { text: this.fNum(this.lei.olimpiadas.areaMax.nRes), alignment: 'right' },
+                  { text: this.fNum(oucFariaLima.olimpiadas.areaMax.res), alignment: 'right' },
+                  { text: this.fNum(oucFariaLima.olimpiadas.areaMax.nRes), alignment: 'right' },
                   { text: this.fNum(this.olimpiadas[4].AreaAdicionalR), alignment: 'right' },
                   { text: this.fNum(this.olimpiadas[4].AreaAdicionalNR), alignment: 'right' },
                   { text: this.fNum(this.olimpiadas[2].AreaAdicionalR), alignment: 'right' },
                   { text: this.fNum(this.olimpiadas[2].AreaAdicionalNR), alignment: 'right' },
-                  { text: this.fNum(this.olimpiadasSaldoRes), alignment: 'right' },
-                  { text: this.fNum(this.olimpiadasSaldoNres), alignment: 'right' }
+                  { text: this.fNum(this.saldos.olimpiadas.residencial), alignment: 'right' },
+                  { text: this.fNum(this.saldos.olimpiadas.nR), alignment: 'right' }
                 ]
               ]
             }
@@ -626,10 +630,10 @@ export default {
           {
             table: {
               body: [
-                ['Estoque GERAL (aprovado pela 11.732/95)', { text: this.fNum(this.lei.estoqueGeral), alignment: 'right' }],
-                ['Estoque cosumido lei 11.732/95', { text: this.fNum(this.lei.leiAntiga['consumidoPre-1376904']), alignment: 'right' }],
-                ['LIMITE DE ESTOQUE - Leis 13.769/04 e 13.871/04 (**)', { text: this.fNum(this.lei.limiteDeEstoque), alignment: 'right' }],
-                ['Estoque consumido lei 11.732/95 (***)', { text: this.fNum(this.lei.leiAntiga['consumidoArt6-1376904']), alignment: 'right' }],
+                ['Estoque GERAL (aprovado pela 11.732/95)', { text: this.fNum(oucFariaLima.estoqueGeral), alignment: 'right' }],
+                ['Estoque cosumido lei 11.732/95', { text: this.fNum(oucFariaLima.leiAntiga['consumidoPre-1376904']), alignment: 'right' }],
+                ['LIMITE DE ESTOQUE - Leis 13.769/04 e 13.871/04 (**)', { text: this.fNum(oucFariaLima.limiteDeEstoque), alignment: 'right' }],
+                ['Estoque consumido lei 11.732/95 (***)', { text: this.fNum(oucFariaLima.leiAntiga['consumidoArt6-1376904']), alignment: 'right' }],
                 ['Estoque consumido lei 13.769/09 e lei 13.871/04', { text: this.fNum(this.estoqueConsumidoTotal), alignment: 'right' }],
                 ['SALDO ESTOQUE GERAL DISPONÍVEL', { text: this.fNum(this.saldoTotal), alignment: 'right' }],
                 ['Estoque em análise', { text: this.fNum(this.estoqueEmAnalise), alignment: 'right' }]
@@ -655,29 +659,29 @@ export default {
                   'Hélio Pelegrino',
                   { text: this.fNum(this.helioPelegrino[4].CepacACA), alignment: 'right' },
                   { text: this.fNum(this.helioPelegrino[4].CepacUsoParam), alignment: 'right' },
-                  { text: this.fNum(this.lei.helioPelegrino.cepacDesvinculado.aca), alignment: 'right' },
-                  { text: this.fNum(this.lei.helioPelegrino.cepacDesvinculado.usoPar), alignment: 'right' }
+                  { text: this.fNum(oucFariaLima.helioPelegrino.cepacDesvinculado.aca), alignment: 'right' },
+                  { text: this.fNum(oucFariaLima.helioPelegrino.cepacDesvinculado.usoPar), alignment: 'right' }
                 ],
                 [
                   'Faria Lima',
                   { text: this.fNum(this.fariaLima[4].CepacACA), alignment: 'right' },
                   { text: this.fNum(this.fariaLima[4].CepacUsoParam), alignment: 'right' },
-                  { text: this.fNum(this.lei.fariaLima.cepacDesvinculado.aca), alignment: 'right' },
-                  { text: this.fNum(this.lei.fariaLima.cepacDesvinculado.usoPar), alignment: 'right' }
+                  { text: this.fNum(oucFariaLima.fariaLima.cepacDesvinculado.aca), alignment: 'right' },
+                  { text: this.fNum(oucFariaLima.fariaLima.cepacDesvinculado.usoPar), alignment: 'right' }
                 ],
                 [
                   'Pinheiros',
                   { text: this.fNum(this.pinheiros[4].CepacACA), alignment: 'right' },
                   { text: this.fNum(this.pinheiros[4].CepacUsoParam), alignment: 'right' },
-                  { text: this.fNum(this.lei.pinheiros.cepacDesvinculado.aca), alignment: 'right' },
-                  { text: this.fNum(this.lei.pinheiros.cepacDesvinculado.usoPar), alignment: 'right' }
+                  { text: this.fNum(oucFariaLima.pinheiros.cepacDesvinculado.aca), alignment: 'right' },
+                  { text: this.fNum(oucFariaLima.pinheiros.cepacDesvinculado.usoPar), alignment: 'right' }
                 ],
                 [
                   'Olimpíadas',
                   { text: this.fNum(this.olimpiadas[4].CepacACA), alignment: 'right' },
                   { text: this.fNum(this.olimpiadas[4].CepacUsoParam), alignment: 'right' },
-                  { text: this.fNum(this.lei.olimpiadas.cepacDesvinculado.aca), alignment: 'right' },
-                  { text: this.fNum(this.lei.olimpiadas.cepacDesvinculado.usoPar), alignment: 'right' }
+                  { text: this.fNum(oucFariaLima.olimpiadas.cepacDesvinculado.aca), alignment: 'right' },
+                  { text: this.fNum(oucFariaLima.olimpiadas.cepacDesvinculado.usoPar), alignment: 'right' }
                 ],
                 [
                   'Subtotal',
@@ -701,11 +705,11 @@ export default {
           {
             table: {
               body: [
-                ['Leiloado', { text: this.fNum(this.lei.resumo.leiloado), alignment: 'right' }],
-                ['Colocação privada', { text: this.fNum(this.lei.resumo.colocacaoPrivada), alignment: 'right' }],
+                ['Leiloado', { text: this.fNum(oucFariaLima.resumo.leiloado), alignment: 'right' }],
+                ['Colocação privada', { text: this.fNum(oucFariaLima.resumo.colocacaoPrivada), alignment: 'right' }],
                 ['Convertido', { text: this.fNum(this.acaTotais.totalConvertido), alignment: 'right' }],
                 ['Em circulação', { text: this.fNum(this.emCirculacao), alignment: 'right' }],
-                ['CEPAC total', { text: this.fNum(this.lei.cepacTotal), alignment: 'right' }],
+                ['CEPAC total', { text: this.fNum(oucFariaLima.cepacTotal), alignment: 'right' }],
                 ['CEPAC saldo', { text: this.fNum(this.cepacSaldo), alignment: 'right' }]
               ]
             }
@@ -770,16 +774,16 @@ export default {
       const totalConvertido = subTotalConvertido + subTotalConvertidoUsoPar
 
       const subtotalDesvinculado =
-          this.lei.helioPelegrino.cepacDesvinculado.aca +
-          this.lei.fariaLima.cepacDesvinculado.aca +
-          this.lei.pinheiros.cepacDesvinculado.aca +
-          this.lei.olimpiadas.cepacDesvinculado.aca
+          oucFariaLima.helioPelegrino.cepacDesvinculado.aca +
+          oucFariaLima.fariaLima.cepacDesvinculado.aca +
+          oucFariaLima.pinheiros.cepacDesvinculado.aca +
+          oucFariaLima.olimpiadas.cepacDesvinculado.aca
 
       const subtotalDesvinculadoUsoPar =
-          this.lei.helioPelegrino.cepacDesvinculado.usoPar +
-          this.lei.fariaLima.cepacDesvinculado.usoPar +
-          this.lei.pinheiros.cepacDesvinculado.usoPar +
-          this.lei.olimpiadas.cepacDesvinculado.usoPar
+          oucFariaLima.helioPelegrino.cepacDesvinculado.usoPar +
+          oucFariaLima.fariaLima.cepacDesvinculado.usoPar +
+          oucFariaLima.pinheiros.cepacDesvinculado.usoPar +
+          oucFariaLima.olimpiadas.cepacDesvinculado.usoPar
 
       return {
         subTotalConvertido,
@@ -829,7 +833,7 @@ export default {
         .map(estoque => estoque.AreaAdicionalR + estoque.AreaAdicionalNR)
         .reduce((acc, curr) => acc + curr)
 
-      this.saldoTotal = (this.lei.limiteDeEstoque - this.estoqueConsumidoTotal - this.lei.leiAntiga['consumidoArt6-1376904'])
+      this.saldoTotal = (oucFariaLima.limiteDeEstoque - this.estoqueConsumidoTotal - oucFariaLima.leiAntiga['consumidoArt6-1376904'])
 
       this.estoqueEmAnalise = response// atualiza estoqueEmAnalise
         .filter(estoque => estoque.IdStatus === 2)
