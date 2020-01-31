@@ -70,7 +70,16 @@
               Hélio pelegrino
             </router-link>
           </td>
-          <td>{{ lei.helioPelegrino.areaMax.res | formatNumber }}</td>
+          <td>
+            <router-link
+              tag="a"
+              :to="{
+                path: '/ouc-faria-lima',
+                query: { IdSetor: 3, IdStatus: 4 }}"
+            >
+              {{ lei.helioPelegrino.areaMax.res | formatNumber }}
+            </router-link>
+          </td>
           <td>{{ lei.helioPelegrino.areaMax.nRes | formatNumber }}</td>
           <td>{{ helioPelegrino[4].AreaAdicionalR | formatNumber }}</td>
           <td>{{ helioPelegrino[4].AreaAdicionalNR | formatNumber }}</td>

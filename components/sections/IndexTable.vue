@@ -38,6 +38,15 @@
           Salvar como .csv
         </button>
         <pdf-generator :pdf-doc-definition="pdfDocDefinition" />
+        <router-toggle-filter
+          :btn-actions="[
+            { name: 'Checklist', url: `${locationPath}?IdStatus=1` },
+            { name: 'Em análise', url: `${locationPath}?IdStatus=2` },
+            { name: 'Indeferidos', url: `${locationPath}?IdStatus=3` },
+            { name: 'Aprovados', url: `${locationPath}?IdStatus=4` },
+            { name: 'Cancelados', url: `${locationPath}?IdStatus=5` }
+          ]"
+        />
       </footer>
     </div>
   </section>
@@ -49,6 +58,7 @@ import FileSaver from 'file-saver'
 import axios from '~/plugins/axios'
 import Preloader from '~/components/sections/Preloader'
 import PdfGenerator from '~/components/elements/PdfGenerator'
+import RouterToggleFilter from '~/components/elements/RouterToggleFilter'
 import { spurbanismoBase64 } from '~/assets/images/spurbanismoBase64'
 
 export default {
@@ -56,7 +66,8 @@ export default {
   components: {
     VueGoodTable,
     Preloader,
-    PdfGenerator
+    PdfGenerator,
+    RouterToggleFilter
   },
   props: {
     tableName: {
@@ -70,6 +81,7 @@ export default {
   },
   data () {
     return {
+      locationPath: '',
       columns: [
         {
           label: 'ID',
@@ -330,6 +342,9 @@ export default {
   created () {
     const filters = this.fetchFilterString(this.$route.query, this.columns)
     filters ? this.fetchData(`/fila${filters}`) : this.fetchData(`/fila${this.queryFilter}`)
+  },
+  mounted () {
+    this.locationPath = `${window.location.protocol}//${window.location.host}${window.location.pathname}` // /ouc-faria-lima
   },
   methods: {
     addDateToFileName (name) {

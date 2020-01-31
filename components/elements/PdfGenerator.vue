@@ -12,11 +12,11 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs
 export default {
   name: 'PdfGenerator',
   props: {
-    pdfDocDefinition: {// crie a definição no playgound do pdfmake -> http://pdfmake.org/playground.html
+    pdfDocDefinition: { // crie a definição no playgound do pdfmake -> http://pdfmake.org/playground.html
       type: Object,
       required: true
     },
-    useCss: {
+    useCss: { // verdadeiro imprime utilizando css e não o pdfmake
       type: Boolean,
       default: false
     }
