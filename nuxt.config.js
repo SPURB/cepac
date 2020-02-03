@@ -44,12 +44,9 @@ export default {
   },
   generate: {
     routes () {
-      return axios.get('https://servicos.spurbanismo.sp.gov.br/cepacs/api/fila')
-        .then((res) => {
-          return res.data.map((fila) => {
-            return '/ouc-faria-lima/' + fila.Id
-          })
-        })
+      return axios.get('https://servicos.spurbanismo.sp.gov.br/cepacs/api/fila', { timeout: 600000 }) // 10min
+        .then((res) => res.data.map((fila) => '/ouc-faria-lima/' + fila.Id))
+        .catch(err => new Error(err))
     }
   },
   router: {
