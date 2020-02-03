@@ -15,24 +15,14 @@ export default {
     pdfDocDefinition: { // crie a definição no playgound do pdfmake -> http://pdfmake.org/playground.html
       type: Object,
       required: true
-    },
-    useCss: { // verdadeiro imprime utilizando css e não o pdfmake
-      type: Boolean,
-      default: false
     }
   },
   methods: {
     printPage () {
-      if (this.useCss) this.printCss()
-      else {
-        const dateStr = new Date().toISOString().slice(0, 19)
-        const fileName = `${this.$route.path.slice(1).replace('/', '-')}_${dateStr}.pdf`
-
-        pdfMake.createPdf(this.pdfDocDefinition).download(fileName)
-      }
-    },
-
-    printCss () { window.print() }
+      const dateStr = new Date().toISOString().slice(0, 19)
+      const fileName = `${this.$route.path.slice(1).replace('/', '-')}_${dateStr}.pdf`
+      pdfMake.createPdf(this.pdfDocDefinition).download(fileName)
+    }
   }
 }
 </script>

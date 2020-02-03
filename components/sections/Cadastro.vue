@@ -96,9 +96,9 @@
         </li>
       </ul>
       <ul class="a4__report four-columns">
-        <h3>{{ pluralize('IPTU', sqls.length > 1 ? true : false) }}</h3>
+        <h3>{{ pluralize('IPTU', fila.sqls.length > 1 ? true : false) }}</h3>
         <template v-if="sqls.length">
-          <li v-for="(sql, key) in sqls" :key="key" class="report__item">
+          <li v-for="(sql, key) in fila.sqls" :key="key" class="report__item">
             <p class="item__text--small">
               {{ sql.NumeroSql }}
             </p>
@@ -107,14 +107,6 @@
         <p v-else class="item__text--small four-column--exception">
           Nenhum SQL está associado a este cadastro
         </p>
-      </ul>
-      <ul class="a4__report one-column">
-        <li v-if="isNotEmpty(fila.Obs)" class="report__item">
-          <h3>{{ glossarioFila['Obs'] }}</h3>
-          <p class="item__text--small">
-            {{ fila.Obs }}
-          </p>
-        </li>
       </ul>
       <ul class="a4__report two-columns">
         <li v-if="isNotEmpty(fila.Data)" class="report__item">
@@ -158,16 +150,6 @@ export default {
     return {
       glossarioFila,
       statusDescription
-    }
-  },
-  methods: {
-    isNotEmpty (str) {
-      switch (str) {
-        case '': return false
-        case '-': return false
-        case null: return false
-        default: return true
-      }
     }
   }
 }

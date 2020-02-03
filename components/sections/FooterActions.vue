@@ -15,7 +15,7 @@
         </button>
       </li>
       <li v-if="pdf" class="action">
-        <pdf-generator :pdf-doc-definition="pdfDocDefinition" :use-css="useCss" />
+        <pdf-generator :pdf-doc-definition="pdfDocDefinition" />
       </li>
     </ul>
     <div class="action go-forward" style="text-align: end">
@@ -48,9 +48,7 @@ export default {
     },
     pdfDocDefinition: {
       type: Object,
-      default: () => {
-        return {}
-      }
+      default: () => {}
     },
     goBackPath: {
       type: String,
