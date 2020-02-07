@@ -1,11 +1,11 @@
 <template>
   <div class="router-toggle-filter">
-    <button @click.prevent="displayActions=!displayActions">
+    <button class="router-toggle-filter__btn" @click.prevent="displayActions=!displayActions">
       Filtrar
     </button>
     <ul v-if="displayActions" class="router-toggle-filter__list">
       <li v-for="(btnAction, index) in btnActions" :key="index" class="list__item">
-        <button @click.prevent="goto(btnAction.url)">
+        <button class="item__btn" @click.prevent="goto(btnAction.url)">
           {{ btnAction.name }}
         </button>
       </li>
@@ -34,12 +34,39 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+@import '~/assets/variables';
+
 .router-toggle-filter,
 .router-toggle-filter__list {
-  display: flex
+  display: flex;
+  @media (max-width: $tablet) {
+    flex-direction: column;
+  }
+}
+
+button {
+  @media (max-width: $tablet) {
+    margin-bottom: 0.1rem
+  }
+}
+
+.router-toggle-filter__btn {
+  @media (max-width: $tablet) {
+    margin-right: 0;
+  }
 }
 
 .list__item {
   margin-right: 1rem;
+  @media (max-width: $tablet) {
+    margin-right: 0;
+  }
+}
+
+.item__btn {
+  @media (max-width: $tablet) {
+    width: 100%;
+    margin-bottom: 1rem
+  }
 }
 </style>

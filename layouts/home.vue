@@ -7,8 +7,8 @@
 export default {
   head () {
     return {
-      title: 'SP Urbanismo | Relatórios',
-      meta: [{ hid: 'relatorios', name: 'relatorios', content: 'Relatórios da São Paulo Urbanismo' }]
+      title: 'SPUrbanismo | Relatórios',
+      meta: [{ hid: 'Relatorios', name: 'Relatorios', content: 'Relatórios de dados públicos da São Paulo Urbanismo' }]
     }
   }
 }

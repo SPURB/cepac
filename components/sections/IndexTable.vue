@@ -443,6 +443,8 @@ export default {
 }
 </script>
 <style lang="scss">
+@import '~/assets/variables';
+
 .indexTable {
   div.tabela {
     .vgt-global-search {
@@ -636,6 +638,9 @@ export default {
       padding: 2rem 3.25rem 0;
       background-color: #005249;
       .footer__row-count {
+        @media (max-width: $tablet) {
+          display: none;
+        }
         line-height: 1.2;
         padding: 1rem 1.25rem;
         background-color: rgba(255, 255, 255, .04);
@@ -656,7 +661,7 @@ export default {
         white-space: nowrap;
         box-sizing: border-box;
         color: #FFF;
-        a.footer__navigation__page-btn {
+        .footer__navigation__page-btn {
           display: inline-block;
           padding: 1rem 1.25rem;
           background-color: rgba(255, 255, 255, .04);
@@ -671,9 +676,15 @@ export default {
           -moz-user-select: none;
           &:first-child {
             margin-right: 0.5rem;
+            @media (max-width: $tablet) {
+              display: none
+            }
           }
           &:last-child {
             margin-left: 0.5rem;
+            @media (max-width: $tablet) {
+              margin-left: 0.15rem;
+            }
           }
           &:hover {
             background-color: #008375;
@@ -685,6 +696,13 @@ export default {
             cursor: default;
             padding: 0;
             margin: 0;
+          }
+        }
+        &.vgt-pull-right {
+          @media (max-width: $tablet) {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
           }
         }
         .footer__navigation__info {
@@ -702,6 +720,9 @@ export default {
     padding: 2rem 3.25rem 0;
     button {
       margin: 0 2rem 2rem 0;
+      @media (max-width: $tablet) {
+        width: 100%;
+      };
       &:last-child {
         margin-right: 0;
       }

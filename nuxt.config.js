@@ -58,5 +58,12 @@ export default {
     ['@nuxtjs/google-analytics', {
       id: 'UA-113737634-9'
     }]
-  ]
+  ],
+  pwa: {
+    manifest: {
+      name: 'Relatórios de dados públicos da São Paulo Urbanismo',
+      lang: 'ptbr',
+      short_name: "São Paulo Urbanismo",
+    }
+  }
 }
