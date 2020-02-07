@@ -655,6 +655,9 @@ export default {
           background-color: #FFF;
           margin-left: 0.75rem;
         }
+        @media (max-width: $tablet) {
+          padding-right: 1rem;
+        }
       }
       .footer__navigation {
         order: 1;
@@ -722,6 +725,7 @@ export default {
       margin: 0 2rem 2rem 0;
       @media (max-width: $tablet) {
         width: 100%;
+        margin: 0 1rem 1rem 0;
       };
       &:last-child {
         margin-right: 0;

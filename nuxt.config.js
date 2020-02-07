@@ -29,7 +29,10 @@ export default {
   loading: { color: '#038375' },
   css: [ '@/assets/base.scss' ],
   /* Nuxt.js dev-modules */
-  buildModules: [ '@nuxtjs/eslint-module' ],
+  buildModules: [
+    '@nuxtjs/eslint-module',
+    ['@nuxtjs/google-analytics', { id: 'UA-113737634-9' }]
+  ],
   plugins: [
     '~/plugins/numFilters.js',
     '~/plugins/visibility-change.js'
@@ -54,16 +57,11 @@ export default {
     base: baseUrl,
     fallback: true
   },
-  buildModules: [
-    ['@nuxtjs/google-analytics', {
-      id: 'UA-113737634-9'
-    }]
-  ],
   pwa: {
     manifest: {
       name: 'Relatórios de dados públicos da São Paulo Urbanismo',
       lang: 'ptbr',
-      short_name: "São Paulo Urbanismo",
+      short_name: 'São Paulo Urbanismo'
     }
   }
 }
