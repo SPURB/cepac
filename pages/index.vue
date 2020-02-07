@@ -20,11 +20,27 @@
         <li class="list__item">
           <router-link tag="a" to="/ouc-faria-lima/controle-de-estoques-aca" class="list__item__wrapper-link">
             <h3>Resumo de CEPAC’s da OUCFL</h3>
-            <div>
+            <div
+              v-observe-visibility="{
+                callback: visibilityChanged
+              }"
+              class="first"
+              :class="{ visible: displayFirstImg }"
+            >
               <img
-                v-if="showImages"
-                srcset="~/assets/images/report-sample_thumb.jpg 40w, ~/assets/images/report-sample_medium.jpg 200w, ~/assets/images/report-sample_big.jpg 528w"
+                v-if="firstImageIsVisible"
+                class="item__preview"
+                srcset="
+                  ~/assets/images/report-sample_thumb.jpg 40w,
+                  ~/assets/images/report-sample_medium.jpg 200w,
+                  ~/assets/images/report-sample_big.jpg 528w"
                 src="~/assets/images/report-sample_big.jpg"
+                @load="isLoaded('first')"
+              >
+              <img
+                v-else
+                class="item__placeholder"
+                src="~/assets/images/report-sample_thumb.jpg"
               >
               <seta :rotate="true" />
             </div>
@@ -36,14 +52,25 @@
             <h3>Quadro geral de controle de estoque</h3>
             <div
               v-observe-visibility="{
-                callback: visibilityChanged,
-                once: true,
+                callback: visibilityChanged
               }"
+              class="second"
+              :class="{ visible: displaySecondImg }"
             >
               <img
-                v-if="showImages"
-                srcset="~/assets/images/index-sample_thumb.jpg 40w, ~/assets/images/index-sample_medium.jpg 200w, ~/assets/images/index-sample_big.jpg 528w"
+                v-if="secondImageIsVisible"
+                class="item__preview"
+                srcset="
+                  ~/assets/images/index-sample_thumb.jpg 40w,
+                  ~/assets/images/index-sample_medium.jpg 200w,
+                  ~/assets/images/index-sample_big.jpg 528w"
                 src="~/assets/images/index-sample_big.jpg"
+                @load="isLoaded('second')"
+              >
+              <img
+                v-else
+                class="item__placeholder"
+                src="~/assets/images/index-sample_thumb.jpg"
               >
               <seta :rotate="true" />
             </div>
@@ -55,9 +82,6 @@
             <router-link :to="{ path: '/ouc-faria-lima', name: 'ouc-faria-lima', query: { IdStatus: 2 }, tag: 'li'}" class="subitems__list__item">
               Análise
             </router-link>
-            <!-- <li class="subitems__list__item">
-                Desvinculado
-              </li> -->
             <router-link :to="{ path: '/ouc-faria-lima', name: 'ouc-faria-lima', query: { IdStatus: 1 }, tag: 'li'}" class="subitems__list__item">
               Checklist
             </router-link>
@@ -94,12 +118,21 @@ export default {
   },
   data () {
     return {
-      showImages: false
+      firstImageIsVisible: false,
+      secondImageIsVisible: false,
+      firstImageIsLoaded: false,
+      secondImageIsLoaded: false
     }
   },
   computed: {
     section () {
       return this.$route.query.section
+    },
+    displayFirstImg () {
+      return this.firstImageIsVisible && this.firstImageIsLoaded
+    },
+    displaySecondImg () {
+      return this.secondImageIsVisible && this.secondImageIsLoaded
     }
   },
   mounted () {
@@ -125,7 +158,12 @@ export default {
       return sections.includes(section)
     },
     visibilityChanged (isVisible, entry) {
-      if (isVisible) this.showImages = true
+      if (entry.target.className === 'first') this.firstImageIsVisible = isVisible
+      else if (entry.target.className === 'second') this.secondImageIsVisible = isVisible
+    },
+    isLoaded (imgItem) {
+      if (imgItem === 'first') this.firstImageIsLoaded = true
+      else if (imgItem === 'second') this.secondImageIsLoaded = true
     }
   }
 }
@@ -230,16 +268,21 @@ export default {
     display: flex;
     align-items: center;
     padding-top: 1rem;
+    filter: blur(8px);
     img {
       max-width: 528px;
       margin-left: auto;
       box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.25);
-      transition: transform ease-in-out 100ms;
       &:hover{
         transform: translate(3px, -3px);
         box-shadow: 7px 7px 11px rgba(0, 0, 0, 0.25);
       }
     }
+  }
+  .visible {
+      transition: filter ease-in-out 700ms;
+      transition-delay: 500ms;
+      filter: blur(0);
   }
 }
 
