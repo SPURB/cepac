@@ -273,7 +273,9 @@ export default {
       max-width: 528px;
       margin-left: auto;
       box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.25);
+      transition: all ease 200ms;
       &:hover{
+        transition: all ease 200ms;
         transform: translate(3px, -3px);
         box-shadow: 7px 7px 11px rgba(0, 0, 0, 0.25);
       }
