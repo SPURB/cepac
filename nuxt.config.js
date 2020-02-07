@@ -53,5 +53,10 @@ export default {
   router: {
     base: baseUrl,
     fallback: true
-  }
+  },
+  buildModules: [
+    ['@nuxtjs/google-analytics', {
+      id: 'UA-113737634-9'
+    }]
+  ]
 }
