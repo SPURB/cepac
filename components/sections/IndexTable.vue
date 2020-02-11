@@ -95,10 +95,8 @@ export default {
         },
         {
           label: 'Situação',
-          field: 'Status',
-          type: 'string',
-          formatFn: this.formatStatus,
-          sortable: false
+          field: 'Situacao',
+          type: 'string'
         },
         {
           label: 'Id Status',
@@ -135,15 +133,13 @@ export default {
         },
         {
           label: 'Operacão Urbana',
-          field: 'SetorObj',
-          type: 'string',
-          formatFn: this.formatOperacaoUrbana
+          field: 'OperacaoUrbana',
+          type: 'string'
         },
         {
           label: 'Setor',
-          field: 'SetorObj',
-          type: 'string',
-          formatFn: this.formatSetor
+          field: 'Setor',
+          type: 'string'
         },
         {
           label: 'Subsetor',
@@ -400,16 +396,19 @@ export default {
       this.isFetching = true
       axios.get(path)
         .then((res) => {
-          const resIsArray = Object.prototype.toString.call(res.data) === '[object Array]'
-          if (resIsArray) { this.rows = res.data }
-          else {
-            this.rows.push(res.data)
-          }
+          this.rows = this.parseRowItemObjects(res.data)
         })
         .catch((e) => { this.error = e })
         .finally(() => { this.isFetching = false })
     },
-
+    parseRowItemObjects (responseArray) {
+      return responseArray.map((item) => {
+        item.Setor = item.SetorObj.Nome
+        item.OperacaoUrbana = item.SetorObj.OperacaoUrbana.Nome
+        item.Situacao = item.Status.Nome
+        return item
+      })
+    },
     fetchFilterString (queries, columns) {
       if (Object.keys(queries).length === 0) { return false } // no queries
 
@@ -434,10 +433,7 @@ export default {
       }
       else { return false }
     },
-    reloadApp () { window.location.reload(true) },
-    formatSetor (setorObj) { return setorObj.Nome },
-    formatOperacaoUrbana (setorObj) { return setorObj.OperacaoUrbana.Nome },
-    formatStatus (statusObj) { return statusObj.Nome },
+    reloadApp: () => window.location.reload(true),
     formatFmData (str) { return this.$options.filters.dateTimeStr(str) }
   }
 }
