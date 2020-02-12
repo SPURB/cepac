@@ -209,6 +209,7 @@ export default {
     }
   },
   computed: {
+    idStatusQueries () { return this.$route.query.IdStatus },
     today () {
       return this.formatFmData(new Date().toISOString())
     },
@@ -228,54 +229,13 @@ export default {
 
       return this.formatFmData(last.DataAlteracao)
     },
-    pdfRowsDefinition () {
-      if (!this.rows.length) return []
-
-      else {
-        const nullToZero = nullPar => nullPar === null ? 0 : nullPar
-        const sum = (a, b) => parseFloat(nullToZero(a)) + parseFloat(nullToZero(b))
-
-        const tableHeader = [
-          [
-            'Setor',
-            'Data',
-            'Nº Certidão',
-            'Empresa',
-            'Processo Prefeitura',
-            'Área Adicional Residencial (m²)',
-            'Área Adicional Não Residencial (m²)',
-            'Área adicional total (m²)',
-            'CEPAC - Área adicional',
-            'CEPAC - Modificação de uso',
-            'CEPAC Total'
-          ]
-        ]
-
-        const tableBody = this.rows
-          .map((row) => {
-            return [
-              row.SetorObj.Nome, // 'Setor',
-              row.Data, // 'Data',
-              row.Certidao, // 'Nº Certidão',
-              row.Interessado, // 'Empresa',
-              row.Sei, // 'Processo Prefeitura',
-              row.AreaAdResidencial, // 'Área Adicional Residencial (m²)',
-              row.AreaAdNaoResidencial, // 'Área Adicional Não Residencial (m²)',
-              row.AreaTerreno, // 'Área adicional total (m²)',
-              row.CepacAreaAdicional, // 'CEPAC - Área adicional',
-              row.CepacModUso, // 'CEPAC - Modificação de uso',
-              sum(row.CepacAreaAdicional, row.CepacModUso)// 'CEPAC Total'
-            ]
-          })
-        return tableHeader.concat(tableBody)
-      }
-    },
     pdfDocTypeDefinition () {
       const mapIdStatusTypes = {
         '1': "Processos em 'checklist' - ",
         '2': 'Estoque em análise - ',
         '3': 'Processos indeferidos - ',
-        '4': 'Estoque consumido - '
+        '4': 'Estoque consumido - ',
+        '5': 'Processos cancelados - '
       }
       const type = mapIdStatusTypes[this.$route.query.IdStatus]
       return type || ''
@@ -300,36 +260,33 @@ export default {
           subject: 'Operação Urbana Consociada Faria Lima',
           keywords: 'ouc outorga cepac faria lima'
         },
-        footer: {
-          columns: [
-            { text: this.downloadTimeStamp, margin: [ 20, 10, 0, 0 ] },
-            { text: `Última atualização: ${this.lastUpdate}`, margin: [ 0, 10, 0, 0 ] },
-            { link: window.location.href, text: `Fonte: ${window.location.hostname}${window.location.pathname}`, alignment: 'right', margin: [0, 10, 20, 0] }
-          ]
-        },
-
-        content: [
-          { text: 'OPERAÇÃO URBANA CONSORCIADA FARIA LIMA', style: 'pagetitle' },
-          `${this.pdfDocTypeDefinition}${this.today}`,
-          {
-            table: {
-              headerRows: 1,
-              body: this.pdfRowsDefinition
-            },
-            style: 'table'
+        footer: (currentPage, pageCount) => {
+          return {
+            columns: [
+              { text: this.downloadTimeStamp, margin: [ 40, 0, 0, 0 ], style: 'table' },
+              { text: `Última atualização: ${this.lastUpdate}`, style: 'table', margin: [ 0, 0, 0, 0 ], alignment: 'center' },
+              { link: window.location.href, text: `Fonte: ${window.location.hostname}${window.location.pathname}`, alignment: 'right', style: 'table', margin: [ 0, 0, 0, 0 ] },
+              { text: `${currentPage}/${pageCount}`, alignment: 'right', style: 'table', margin: [ 0, 0, 40, 0 ] }
+            ]
           }
-        ],
+        },
+        content: this.pdfContent(this.rows),
         defaultStyle: {
           fontSize: 9
         },
         styles: {
-          pagetitle: {
+          title: {
             fontSize: 14,
             bold: true
           },
+          subtitle: {
+            fontSize: 10,
+            bold: true,
+            margin: [ 0, 20, 0, 0 ]
+          },
           table: {
             fontSize: 7,
-            margin: [ 0, 20, 0, 0 ]
+            margin: [ 0, 5, 0, 0 ]
           }
         }
       }
@@ -343,6 +300,70 @@ export default {
     this.locationPath = `${window.location.protocol}//${window.location.host}${window.location.pathname}` // /ouc-faria-lima
   },
   methods: {
+    pdfContent (rows) {
+      if (!rows.length) return []
+
+      else {
+        const nullToZero = nullPar => nullPar === null ? 0 : nullPar
+        const sum = (a, b) => parseFloat(nullToZero(a)) + parseFloat(nullToZero(b))
+
+        const setores = rows.map(row => row.SetorObj)
+        const uniqueSetoresIds = [...new Set(rows.map(row => row.SetorObj.Id))].sort()
+        const uniqueSetoresObjects = uniqueSetoresIds.map(setorId => setores.find(setor => setor.Id === setorId))
+
+        const rowsPerSetores = uniqueSetoresObjects
+          .map((setor, index) => {
+            const tableHeader = [
+              [
+                'Data',
+                'Nº Certidão',
+                'Empresa',
+                'Processo Prefeitura',
+                'Área Adicional Residencial (m²)',
+                'Área Adicional Não Residencial (m²)',
+                'Área adicional total (m²)',
+                'CEPAC - Área adicional',
+                'CEPAC - Modificação de uso',
+                'CEPAC Total'
+              ]
+            ]
+
+            const tableBody = rows
+              .filter(row => row.SetorObj.Id === setor.Id)
+              .map((row) => {
+                return [
+                  row.Data, // 'Data',
+                  row.Certidao, // 'Nº Certidão',
+                  row.Interessado, // 'Empresa',
+                  row.Sei, // 'Processo Prefeitura',
+                  row.AreaAdResidencial, // 'Área Adicional Residencial (m²)',
+                  row.AreaAdNaoResidencial, // 'Área Adicional Não Residencial (m²)',
+                  row.AreaTerreno, // 'Área adicional total (m²)',
+                  row.CepacAreaAdicional, // 'CEPAC - Área adicional',
+                  row.CepacModUso, // 'CEPAC - Modificação de uso',
+                  sum(row.CepacAreaAdicional, row.CepacModUso)// 'CEPAC Total'
+                ]
+              })
+            return [
+              { text: `Setor ${setor.Nome}`, style: 'subtitle' },
+              { text: `${this.pdfDocTypeDefinition}${this.today}`, style: 'table' },
+              {
+                table: {
+                  headerRows: 1,
+                  body: tableHeader.concat(tableBody)
+                },
+                style: 'table'
+              },
+              { text: '', setorindex: index, pageBreak: 'after' }
+            ]
+          })
+
+        const content = [
+          { text: 'OPERAÇÃO URBANA CONSORCIADA FARIA LIMA', style: 'title' }
+        ]
+        return content.concat(rowsPerSetores)
+      }
+    },
     addDateToFileName (name) {
       const nameSplit = name.split('.') // ['name', 'extension']
       const d = new Date()
