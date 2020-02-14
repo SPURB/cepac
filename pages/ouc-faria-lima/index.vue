@@ -13,23 +13,31 @@
       </div>
     </page-title>
     <index-table :table-name="addDateToName(tableName)" :query-filter="'?'" />
+    <message-bar v-if="displayCanceladosMessage" :message="'Os itens CANCELADOS estão em processo de revisão'" />
   </div>
 </template>
 <script>
 import PageTitle from '~/components/sections/PageTitle'
 import IndexTable from '~/components/sections/IndexTable'
 import Preloader from '~/components/sections/Preloader'
+import MessageBar from '~/components/elements/MessageBar'
 
 export default {
   name: 'OucFariaLima',
   components: {
     PageTitle,
     IndexTable,
-    Preloader
+    Preloader,
+    MessageBar
   },
   data () {
     return {
       tableName: 'ouc-faria-lima'
+    }
+  },
+  computed: {
+    displayCanceladosMessage () {
+      return this.$route.query.IdStatus === '5'
     }
   },
   methods: {

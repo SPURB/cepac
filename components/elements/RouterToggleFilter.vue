@@ -1,15 +1,18 @@
 <template>
   <div class="router-toggle-filter">
     <button class="router-toggle-filter__btn" @click.prevent="displayActions=!displayActions">
-      Filtrar
+      <span class="btn__icon" :class="{ 'btn__icon--open': displayActions }">&dtrif;</span>Filtros
     </button>
     <ul v-if="displayActions" class="router-toggle-filter__list">
       <li v-for="(btnAction, index) in btnActions" :key="index" class="list__item">
-        <button class="item__btn" @click.prevent="goto(btnAction.url)">
+        <button class="item__btn" :class="{ active: btnAction.active }" @click.prevent="goto(btnAction.url)">
           {{ btnAction.name }}
         </button>
       </li>
     </ul>
+    <button v-if="haveActives" @click.prevent="goto(`${$route.path}`)">
+      <span class="btn__icon" :class="{ 'btn__icon--open': displayActions }">&cularr;</span>Limpar filtros
+    </button>
   </div>
 </template>
 <script>
@@ -17,13 +20,25 @@ export default {
   name: 'RouterToggleFilter',
   props: {
     btnActions: {
-      type: Array, // [{ name: 'nome do botão', url: 'http://url' }]
+      type: Array, // [{ name: 'nome do botão', url: 'http://url', active: true/false }]
       required: true
     }
   },
   data () {
     return {
       displayActions: false
+    }
+  },
+  computed: {
+    haveActives () {
+      return this.btnActions
+        .map(action => action.active)
+        .includes(true)
+    }
+  },
+  created () {
+    if (this.haveActives) {
+      this.displayActions = true
     }
   },
   methods: {
@@ -64,9 +79,16 @@ button {
 }
 
 .item__btn {
+  &.active {
+    background-color: #008375;
+  }
   @media (max-width: $tablet) {
     width: 100%;
     margin-bottom: 1rem
   }
+}
+
+.btn__icon--open{
+  transform: rotate(30deg)
 }
 </style>

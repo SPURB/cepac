@@ -40,11 +40,11 @@
         <pdf-generator :pdf-doc-definition="pdfDocDefinition" />
         <router-toggle-filter
           :btn-actions="[
-            { name: 'Checklist', url: `${locationPath}?IdStatus=1` },
-            { name: 'Em análise', url: `${locationPath}?IdStatus=2` },
-            { name: 'Indeferidos', url: `${locationPath}?IdStatus=3` },
-            { name: 'Aprovados', url: `${locationPath}?IdStatus=4` },
-            { name: 'Cancelados', url: `${locationPath}?IdStatus=5` }
+            { name: 'Checklist', url: `${locationPath}?IdStatus=1`, active: isQueryActive('IdStatus', 1) },
+            { name: 'Em análise', url: `${locationPath}?IdStatus=2`, active: isQueryActive('IdStatus', 2) },
+            { name: 'Indeferidos', url: `${locationPath}?IdStatus=3`, active: isQueryActive('IdStatus', 3) },
+            { name: 'Aprovados', url: `${locationPath}?IdStatus=4`, active: isQueryActive('IdStatus', 4) },
+            { name: 'Cancelados', url: `${locationPath}?IdStatus=5`, active: isQueryActive('IdStatus', 5) }
           ]"
         />
       </footer>
@@ -300,6 +300,9 @@ export default {
     this.locationPath = `${window.location.protocol}//${window.location.host}${window.location.pathname}` // /ouc-faria-lima
   },
   methods: {
+    isQueryActive (queryKey, queryValue) {
+      return parseInt(this.$route.query[queryKey]) === parseInt(queryValue)
+    },
     pdfContent (rows) {
       if (!rows.length) return []
 
