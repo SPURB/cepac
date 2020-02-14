@@ -16,7 +16,7 @@ export default {
       required: true
     },
     fileName: {
-      type: Object,
+      type: String,
       required: true
     }
   },

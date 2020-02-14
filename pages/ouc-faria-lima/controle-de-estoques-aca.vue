@@ -375,11 +375,12 @@
       </div>
     </section>
 
-    <FooterActions
-      :actions="pageActions"
+    <footer-actions
       :go-back-path="'/ouc-faria-lima'"
-      :pdf="true"
       :pdf-doc-definition="pdfDocDefinition"
+      :json-doc-definition="estoques"
+      :csv-doc-definition="estoques"
+      :file-name="fileName"
     />
   </div>
 </template>
@@ -404,7 +405,6 @@ export default {
       pdfDocDefinition: {},
       isFetching: false,
       error: false,
-      pageActions: [],
       lei: oucFariaLima,
       estoques: [],
       helioPelegrino: {},
@@ -455,6 +455,10 @@ export default {
     }
   },
   computed: {
+    fileName () {
+      const date = new Date().toISOString().slice(0, 19)
+      return `${this.$route.path.slice(1).replace('/', '-')}_${date}`
+    },
     emCirculacao () {
       return (oucFariaLima.resumo.leiloado + oucFariaLima.resumo.colocacaoPrivada - this.acaTotais.totalConvertido)
     },
@@ -481,8 +485,6 @@ export default {
         this.estoques = res.data
         this.populateModel(res.data)
         this.acaTotais = this.getAcaTotais()
-        this.setPageActions('json', res.data)
-        this.setPageActions('csv', res.data)
         this.setLastUpdate(res.data)
         this.setSaldos(oucFariaLima, res.data)
       })
@@ -757,15 +759,6 @@ export default {
         }
       }
       this.pdfDocDefinition = dd
-    },
-    setPageActions (extension, content) {
-      const date = new Date().toISOString().slice(0, 19)
-      const fileName = `${this.$route.path.slice(1).replace('/', '-')}_${date}.${extension}`
-
-      this.pageActions.push({
-        fileName,
-        content
-      })
     },
     getAcaTotais () {
       const subTotalConvertido =

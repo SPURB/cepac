@@ -25,11 +25,11 @@
     />
     <footer-actions
       :pdf-doc-definition="pdfDocDefinition"
-      :actions="pageActions"
+      :csv-doc-definition="docDefinition"
+      :file-name="fileName"
+      :json-doc-definition="docDefinition"
       :go-back-path="'/ouc-faria-lima'"
       :go-forward="{ path:'/ouc-faria-lima/controle-de-estoques-aca', text:'Resumo de estoques' }"
-      :pdf="true"
-      :use-css="true"
     />
   </div>
 </template>
@@ -38,7 +38,7 @@ import axios from '~/plugins/axios'
 import PageTitle from '~/components/sections/PageTitle'
 import Cadastro from '~/components/sections/Cadastro'
 import FooterActions from '~/components/sections/FooterActions'
-import { helpers } from '~/plugins/mixins'
+import { helpers } from '~/mixins/helpers'
 import { spurbanismoBase64 } from '~/assets/images/spurbanismoBase64'
 import { fila as glossarioFila } from '~/static/data/glossario'
 const svgLine = '<svg width="475" height="1" viewBox="0 0 475 1" fill="none" ><line y1="0.5" x2="475" y2="0.5" stroke="#666666"/></svg>'
@@ -55,12 +55,16 @@ export default {
     return {
       fila: {},
       sqls: [],
-      pageActions: [], // { fileName, content }
       outputFila: {},
-      pdfDocDefinition: {}
+      pdfDocDefinition: {},
+      docDefinition: []
     }
   },
   computed: {
+    fileName () {
+      const d = new Date()
+      return `${this.$route.name}-${this.$route.params.id}_${d.getFullYear()}-${d.getMonth()}-${d.getDay()}_${d.getHours()}h${d.getMinutes()}`
+    },
     filaItemUrl () {
       return `Dados referentes ao cadastro ${this.$route.params.id}`
     },
@@ -75,15 +79,10 @@ export default {
     return { fila: fila.data, sqls: sqls.data }
   },
   created () {
-    const d = new Date()
-    const dateStr = `${d.getFullYear()}-${d.getMonth()}-${d.getDay()}_${d.getHours()}h${d.getMinutes()}`
     const outputFila = this.fila
     outputFila.sqls = this.sqls
 
-    this.pageActions = [{
-      fileName: `cadastro-${this.fila.Id}_${dateStr}.json`,
-      content: outputFila
-    }]
+    this.docDefinition.push(outputFila)
 
     this.pdfDocDefinition = this.setPdfDocDefinition(this.fila)
   },

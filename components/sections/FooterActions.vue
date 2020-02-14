@@ -7,15 +7,14 @@
       </button>
     </div>
     <ul class="action__list">
-      <li v-for="(action, index) in actions" :key="index" class="action">
-        <button class="action__button" @click.prevent="saveTable(action.fileName, action.content)">
-          <span v-if="extension(action.fileName) === 'json'" class="action__extension">{ }</span>
-          <span v-else-if="extension(action.fileName) === 'csv'">&boxplus;</span>
-          Salvar como .{{ extension(action.fileName) }}
-        </button>
+      <li class="action">
+        <csv-generator :csv-doc-definition="csvDocDefinition" :file-name="fileName + '.csv'" />
       </li>
-      <li v-if="pdf" class="action">
-        <pdf-generator :pdf-doc-definition="pdfDocDefinition" />
+      <li class="action">
+        <json-generator :json-doc-definition="jsonDocDefinition" :file-name="fileName + '.json'" />
+      </li>
+      <li class="action">
+        <pdf-generator :pdf-doc-definition="pdfDocDefinition" :file-name="fileName + '.pdf'" />
       </li>
     </ul>
     <div v-if="goForward.path !== ''" class="action go-forward" style="text-align: end">
@@ -27,24 +26,33 @@
   </footer>
 </template>
 <script>
-import FileSaver from 'file-saver'
 import PdfGenerator from '~/components/elements/PdfGenerator'
+import JsonGenerator from '~/components/elements/JsonGenerator'
+import CsvGenerator from '~/components/elements/CsvGenerator'
 
 export default {
   name: 'FooterActions',
-  components: { PdfGenerator },
+  components: {
+    PdfGenerator,
+    JsonGenerator,
+    CsvGenerator
+  },
   props: {
-    actions: {
-      type: Array,
-      required: true
-    },
-    pdf: {
-      type: Boolean,
-      default: false
-    },
     pdfDocDefinition: {
       type: Object,
       default: () => {}
+    },
+    jsonDocDefinition: {
+      type: Array,
+      required: true
+    },
+    csvDocDefinition: {
+      required: true,
+      type: Array
+    },
+    fileName: {
+      type: String,
+      required: true
     },
     goBackPath: {
       type: String,
@@ -63,40 +71,6 @@ export default {
   methods: {
     go (path) {
       this.$router.push({ path })
-    },
-    saveTable (fileName, content) {
-      const type = this.extension(fileName)
-
-      if (type === 'json') {
-        const jsonBlob = new Blob([JSON.stringify(content)], { type: 'text/json; charset=utf-8' })
-        FileSaver.saveAs(jsonBlob, fileName)
-      }
-
-      else if (type === 'csv') {
-        const csvBlob = new Blob([this.convertToCSV(content)], { type: 'text/csv; charset=utf-8' })
-        FileSaver.saveAs(csvBlob, fileName)
-      }
-
-      else { throw new Error(`${type} não é um formato válido para conversão`) }
-    },
-    convertToCSV (objArray) {
-      const array = typeof objArray !== 'object' ? JSON.parse(objArray) : objArray
-      let str = `${Object.keys(objArray[0]).join(',')}\r\n` // header vem do primeiro objeto
-
-      array.forEach((obj) => {
-        let line = ''
-        for (const key in obj) {
-          if (line !== '') { line += ',' }
-          line += obj[key]
-        }
-        str += `${line}\r\n`
-      })
-
-      return str
-    },
-    extension (fileName) {
-      const split = fileName.split('.')
-      return split[split.length - 1]
     }
   }
 }

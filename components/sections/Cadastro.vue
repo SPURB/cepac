@@ -128,7 +128,7 @@
 <script>
 import { fila as glossarioFila, statusDescription } from '~/static/data/glossario'
 import LogoSpurb from '~/components/icons/LogoSpurb'
-import { helpers } from '~/plugins/mixins'
+import { helpers } from '~/mixins/helpers'
 
 export default {
   name: 'Cadastro',

@@ -29,9 +29,9 @@
         @on-cell-click="onCellClick"
       />
       <footer class="actions">
-        <json-generator :json-doc-definition="rows" :file-name="fileNameWithDate(tableName + '.json')" />
-        <csv-generator :csv-doc-definition="csvDocDefinition" :file-name="fileNameWithDate(tableName + '.csv')" />
-        <pdf-generator :pdf-doc-definition="pdfDocDefinition" :file-name="fileNameWithDate(tableName + '.pdf')" />
+        <json-generator :json-doc-definition="rows" :file-name="tableName + '.json'" />
+        <csv-generator :csv-doc-definition="csvDocDefinition" :file-name="tableName + '.csv'" />
+        <pdf-generator :pdf-doc-definition="pdfDocDefinition" :file-name="tableName + '.pdf'" />
         <router-toggle-filter
           :btn-actions="[
             { name: 'Checklist', url: `${locationPath}?IdStatus=1`, active: isQueryActive('IdStatus', 1) },
@@ -384,13 +384,6 @@ export default {
         ]
         return content.concat(rowsPerSetores)
       }
-    },
-    fileNameWithDate (name) {
-      const nameSplit = name.split('.') // ['name', 'extension']
-      const d = new Date()
-      const dateStr = `${d.getFullYear()}-${d.getMonth()}-${d.getDay()}_${d.getHours()}h${d.getMinutes()}`
-      nameSplit.splice(nameSplit.length - 1, 0, dateStr)
-      return nameSplit.join('.')
     },
     onCellClick (params) {
       if (params.column.field === 'Id') {
