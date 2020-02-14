@@ -1,14 +1,21 @@
 <template>
-  <button @click.prevent="printPage">
+  <button @click.prevent="printPage(fileName)">
     <span>&DownArrowBar;</span>
     {{ message }}
   </button>
 </template>
 <script>
+import { loadExternalLib } from '~/mixins/utils'
+
 export default {
   name: 'PdfGenerator',
+  mixins: [ loadExternalLib ],
   props: {
     pdfDocDefinition: { // crie a definição no playgound do pdfmake -> http://pdfmake.org/playground.html
+      type: Object,
+      required: true
+    },
+    fileName: {
       type: Object,
       required: true
     }
@@ -20,24 +27,13 @@ export default {
     }
   },
   methods: {
-    loadExternalLib (url) {
-      return new Promise((resolve, reject) => {
-        const script = document.createElement('script')
-        script.onload = () => { resolve(`${url} está pronta`) }
-        script.async = true
-        script.src = url
-        document.head.appendChild(script)
-      })
-    },
-    printPage () {
+    printPage (fileName) {
       this.isLoading = true
       this.message = 'Criando arquivo'
       this.loadExternalLib('https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.62/pdfmake.min.js')
         .then(() => {
           this.loadExternalLib('https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.62/vfs_fonts.js')
             .then(() => {
-              const dateStr = new Date().toISOString().slice(0, 19)
-              const fileName = `${this.$route.path.slice(1).replace('/', '-')}_${dateStr}.pdf`
               window.pdfMake.createPdf(this.pdfDocDefinition).download(fileName)
             })
         })

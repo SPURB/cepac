@@ -29,15 +29,9 @@
         @on-cell-click="onCellClick"
       />
       <footer class="actions">
-        <button @click.prevent="saveTable(addDateToFileName(tableName + '.json'), rows)">
-          <span style="font-size: 0.8rem">{ }</span>
-          Salvar como .json
-        </button>
-        <button @click.prevent="saveTable(addDateToFileName(tableName + '.csv'), rows)">
-          <span style="font-size: 0.8rem">&boxplus;</span>
-          Salvar como .csv
-        </button>
-        <pdf-generator :pdf-doc-definition="pdfDocDefinition" />
+        <json-generator :json-doc-definition="rows" :file-name="fileNameWithDate(tableName + '.json')" />
+        <csv-generator :csv-doc-definition="csvDocDefinition" :file-name="fileNameWithDate(tableName + '.csv')" />
+        <pdf-generator :pdf-doc-definition="pdfDocDefinition" :file-name="fileNameWithDate(tableName + '.pdf')" />
         <router-toggle-filter
           :btn-actions="[
             { name: 'Checklist', url: `${locationPath}?IdStatus=1`, active: isQueryActive('IdStatus', 1) },
@@ -54,11 +48,12 @@
 
 <script>
 import { VueGoodTable } from 'vue-good-table'
-import FileSaver from 'file-saver'
 import axios from '~/plugins/axios'
 import Preloader from '~/components/sections/Preloader'
-import PdfGenerator from '~/components/elements/PdfGenerator'
 import RouterToggleFilter from '~/components/elements/RouterToggleFilter'
+import CsvGenerator from '~/components/elements/CsvGenerator'
+import PdfGenerator from '~/components/elements/PdfGenerator'
+import JsonGenerator from '~/components/elements/JsonGenerator'
 import { spurbanismoBase64 } from '~/assets/images/spurbanismoBase64'
 
 export default {
@@ -67,6 +62,8 @@ export default {
     VueGoodTable,
     Preloader,
     PdfGenerator,
+    CsvGenerator,
+    JsonGenerator,
     RouterToggleFilter
   },
   props: {
@@ -209,6 +206,26 @@ export default {
     }
   },
   computed: {
+    csvDocDefinition () {
+      if (this.rows.length === 0) { return [] }
+
+      return this.rows.map((row) => {
+        return {
+          'Situação': row.Status.Nome,
+          'Setor': row.Setor,
+          'Data': row.Data,
+          'N° Certidão': row.Certidao,
+          'Empresa': row.Interessado,
+          'Processo prefeitura': row.Sei,
+          'Área Adicional Residencial (m²)': this.soma(row.AreaAdResidencial, 0),
+          'Área Adicional Não Residencial (m²)': this.soma(row.AreaAdNaoResidencial, 0),
+          'Área Adicional total (m²)': this.soma(row.AreaAdResidencial, row.AreaAdNaoResidencial),
+          'CEPAC - Área adicional': this.soma(row.CepacAreaAdicional, 0),
+          'CEPAC - Modificação de uso': this.soma(row.CepacModUso, 0),
+          'CEPAC Total': this.soma(row.CepacAreaAdicional, row.CepacModUso)
+        }
+      })
+    },
     idStatusQueries () { return this.$route.query.IdStatus },
     today () {
       return this.formatFmData(new Date().toISOString())
@@ -300,6 +317,10 @@ export default {
     this.locationPath = `${window.location.protocol}//${window.location.host}${window.location.pathname}` // /ouc-faria-lima
   },
   methods: {
+    soma (a, b) {
+      const nullToZero = nullPar => nullPar === null ? 0 : nullPar
+      return parseFloat(nullToZero(a)) + parseFloat(nullToZero(b))
+    },
     isQueryActive (queryKey, queryValue) {
       return parseInt(this.$route.query[queryKey]) === parseInt(queryValue)
     },
@@ -307,9 +328,6 @@ export default {
       if (!rows.length) return []
 
       else {
-        const nullToZero = nullPar => nullPar === null ? 0 : nullPar
-        const sum = (a, b) => parseFloat(nullToZero(a)) + parseFloat(nullToZero(b))
-
         const setores = rows.map(row => row.SetorObj)
         const uniqueSetoresIds = [...new Set(rows.map(row => row.SetorObj.Id))].sort()
         const uniqueSetoresObjects = uniqueSetoresIds.map(setorId => setores.find(setor => setor.Id === setorId))
@@ -344,7 +362,7 @@ export default {
                   row.AreaTerreno, // 'Área adicional total (m²)',
                   row.CepacAreaAdicional, // 'CEPAC - Área adicional',
                   row.CepacModUso, // 'CEPAC - Modificação de uso',
-                  sum(row.CepacAreaAdicional, row.CepacModUso)// 'CEPAC Total'
+                  this.soma(row.CepacAreaAdicional, row.CepacModUso)// 'CEPAC Total'
                 ]
               })
             return [
@@ -367,7 +385,7 @@ export default {
         return content.concat(rowsPerSetores)
       }
     },
-    addDateToFileName (name) {
+    fileNameWithDate (name) {
       const nameSplit = name.split('.') // ['name', 'extension']
       const d = new Date()
       const dateStr = `${d.getFullYear()}-${d.getMonth()}-${d.getDay()}_${d.getHours()}h${d.getMinutes()}`
@@ -382,38 +400,6 @@ export default {
           params: { id }
         })
       }
-    },
-    saveTable (name, content) {
-      const nameSplit = name.split('.')
-      const type = nameSplit[nameSplit.length - 1] // 'json' ou 'csv'
-
-      if (type === 'json') {
-        const jsonBlob = new Blob([JSON.stringify(content)], { type: 'text/json; charset=utf-8' })
-        FileSaver.saveAs(jsonBlob, name)
-      }
-
-      else if (type === 'csv') {
-        const csvBlob = new Blob([this.convertToCSV(content)], { type: 'text/csv; charset=utf-8' })
-        FileSaver.saveAs(csvBlob, name)
-      }
-
-      else { throw new Error(`${type} não é um formato válido para conversão`) }
-    },
-
-    convertToCSV (objArray) {
-      const array = typeof objArray !== 'object' ? JSON.parse(objArray) : objArray
-      let str = `${Object.keys(objArray[0]).join(',')}\r\n` // header vem do primeiro objeto
-
-      array.forEach((obj) => {
-        let line = ''
-        for (const key in obj) {
-          if (line !== '') { line += ',' }
-          line += obj[key]
-        }
-        str += `${line}\r\n`
-      })
-
-      return str
     },
 
     fetchData (path) {

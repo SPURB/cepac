@@ -3,6 +3,7 @@
     {{ message }}
   </div>
 </template>
+
 <script>
 export default {
   name: 'MessageBar',
@@ -14,6 +15,7 @@ export default {
   }
 }
 </script>
+
 <style lang="scss" scoped>
 .message-bar {
   padding: 1rem;
