@@ -10,7 +10,7 @@
         </button>
       </li>
     </ul>
-    <button v-if="haveActives" @click.prevent="goto(`${$route.path}`)">
+    <button v-if="haveActives" @click.prevent="reset">
       <span class="btn__icon" :class="{ 'btn__icon--open': displayActions }">&cularr;</span>Limpar filtros
     </button>
   </div>
@@ -44,6 +44,10 @@ export default {
   methods: {
     goto (url) {
       window.location.assign(url)
+    },
+    reset () {
+      const urlNoQueries = window.location.origin + window.location.pathname
+      this.goto(urlNoQueries)
     }
   }
 }
