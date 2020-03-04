@@ -1,8 +1,16 @@
 <template>
   <section class="indexTable">
     <preloader :is-fetching="isFetching" :error="error" />
-
     <div class="tabela">
+      <Filtro
+        :situacao="[
+            { name: 'Checklist', value: 1 },
+            { name: 'Em análise', value: 2 },
+            { name: 'Indeferidos', value: 3 },
+            { name: 'Aprovados', value: 4 },
+            { name: 'Cancelados', value: 5 }
+          ]"
+      />
       <vue-good-table
         :columns="columns"
         :rows="rows"
@@ -32,15 +40,6 @@
         <json-generator :json-doc-definition="rows" :file-name="tableName + '.json'" />
         <csv-generator :csv-doc-definition="csvDocDefinition" :file-name="tableName + '.csv'" />
         <pdf-generator :pdf-doc-definition="pdfDocDefinition" :file-name="tableName + '.pdf'" />
-        <router-toggle-filter
-          :btn-actions="[
-            { name: 'Checklist', url: `${locationPath}?IdStatus=1`, active: isQueryActive('IdStatus', 1) },
-            { name: 'Em análise', url: `${locationPath}?IdStatus=2`, active: isQueryActive('IdStatus', 2) },
-            { name: 'Indeferidos', url: `${locationPath}?IdStatus=3`, active: isQueryActive('IdStatus', 3) },
-            { name: 'Aprovados', url: `${locationPath}?IdStatus=4`, active: isQueryActive('IdStatus', 4) },
-            { name: 'Cancelados', url: `${locationPath}?IdStatus=5`, active: isQueryActive('IdStatus', 5) }
-          ]"
-        />
       </footer>
     </div>
   </section>
@@ -50,7 +49,8 @@
 import { VueGoodTable } from 'vue-good-table'
 import axios from '~/plugins/axios'
 import Preloader from '~/components/sections/Preloader'
-import RouterToggleFilter from '~/components/elements/RouterToggleFilter'
+import Filtro from '~/components/elements/Filtro'
+// import RouterToggleFilter from '~/components/elements/RouterToggleFilter'
 import CsvGenerator from '~/components/elements/CsvGenerator'
 import PdfGenerator from '~/components/elements/PdfGenerator'
 import JsonGenerator from '~/components/elements/JsonGenerator'
@@ -64,7 +64,8 @@ export default {
     PdfGenerator,
     CsvGenerator,
     JsonGenerator,
-    RouterToggleFilter
+    Filtro
+    // RouterToggleFilter
   },
   props: {
     tableName: {
