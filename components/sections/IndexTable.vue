@@ -3,13 +3,27 @@
     <preloader :is-fetching="isFetching" :error="error" />
     <div class="tabela">
       <Filtro
-        :situacao="[
-            { name: 'Checklist', value: 1 },
-            { name: 'Em análise', value: 2 },
-            { name: 'Indeferidos', value: 3 },
-            { name: 'Aprovados', value: 4 },
-            { name: 'Cancelados', value: 5 }
-          ]"
+        :locationPath="this.locationPath"
+        :buildFiltros="[
+          {
+            title: 'Situação',
+            values: [
+              { name: 'Checklist', value: 'IdStatus=1' },
+              { name: 'Em análise', value: 'IdStatus=2' },
+              { name: 'Indeferidos', value: 'IdStatus=3' },
+              { name: 'Aprovados', value: 'IdStatus=4' },
+              { name: 'Cancelados', value: 'IdStatus=5' }
+            ]
+          },
+          {
+            title: 'OUC',
+            values: [
+              { name: '3C', value: 'SubSetor=3C' },
+              { name: '3D', value: 'SubSetor=3d' },
+              { name: '3E', value: 'SubSetor=3E' }
+            ]
+          }
+        ]"
       />
       <vue-good-table
         :columns="columns"
