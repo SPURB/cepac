@@ -44,15 +44,18 @@
       :style="`display: ${ showForm ? 'flex' : 'none' && existQuery ? 'flex' : 'none'}`"
       @submit.prevent="search"
     >
-      <custom-select
-        :key="index"
-        :buildSelect="item"
-        v-for="(item, index) in buildFiltros"
-      />
-      <div class="form-section">
-        <button type="submit" class="btn btn-submit">
-          Filtrar
-        </button>
+      <div class="select-generator">
+        <custom-select
+          :key="index"
+          :buildSelect="item"
+          @optionValue="getValueOption"
+          v-for="(item, index) in buildFiltros"
+        />
+        <div class="form-section">
+          <button type="submit" class="btn btn-submit">
+            Filtrar
+          </button>
+        </div>
       </div>
     </form>
   </div>
@@ -77,10 +80,7 @@ export default {
   },
   data () {
     return {
-      form: {
-        situacao: '',
-        ouc: ''
-      },
+      form: {},
       showForm: false
     }
   },
@@ -96,11 +96,17 @@ export default {
     onShowForm () {
       this.showForm = !this.showForm
     },
+    getValueOption (optionValue) {
+      optionValue = optionValue.split('=')
+      this.form[`${optionValue[0]}`] = optionValue[1]
+      console.log(optionValue)
+    },
     search () {
       let url = '?'
-      Object.values(this.form).map((item) => {
-        if (item !== '') {
-          url = url + `&${item}`
+      Object.keys(this.form).map((key, index) => {
+        const value = this.form[key]
+        if (value !== '') {
+          url = url + `&${key}=${value}`
         }
       })
       url = url.replace('&', '') // remove a primeira instancia de & para não ocorrer erro na query
@@ -158,13 +164,45 @@ export default {
 
   form {
     display: none;
+    padding-left: 30px;
     width: 100%;
 
+    .select-generator {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-right: 30px;
+      width: 100%;
+      /**
+        Limpando conflitos com o button-submit
+       */
+      .form-section {
+        padding-top: 0;
+        width: 100%;
+
+        &:last-child {
+          align-self: flex-end;
+          padding-top: 0;
+          width: 100%;
+
+          button {
+            max-width: 22%;
+            height: 43px;
+          }
+        }
+      }
+    }
+  }
+}
+@media (max-width: $tablet) {
+  .select-generator {
+    grid-template-columns: repeat(1, 1fr) !important;
     .form-section {
+      width: 100% !important;
+
       &:last-child {
-        align-self: center;
-        padding-top: 36px;
-        width: 10%;
+        display: flex;
+        justify-content: flex-end;
       }
     }
   }
