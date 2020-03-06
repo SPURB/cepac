@@ -4,8 +4,11 @@
       {{ buildSelect.title }}
     </div>
     <div class="custom-select">
-      <select>
-        <option selected disabled>
+      <select
+        @change="emitValue"
+        v-model="optionValue"
+      >
+        <option value="" selected disabled>
           Selecione uma opção
         </option>
         <option
@@ -28,6 +31,16 @@ export default {
       type: Object,
       required: true
     }
+  },
+  data () {
+    return {
+      optionValue: ''
+    }
+  },
+  methods: {
+    emitValue () {
+      this.$emit('optionValue', this.optionValue)
+    }
   }
 }
 </script>
@@ -37,7 +50,6 @@ export default {
 .form-section {
   display: flex;
   flex-direction: column;
-  margin: 15px;
   width: 33%;
 
   .title-select {
