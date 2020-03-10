@@ -2,28 +2,9 @@
   <section class="indexTable">
     <preloader :is-fetching="isFetching" :error="error" />
     <div class="tabela">
-      <Filtro
-        :locationPath="this.locationPath"
-        :buildFiltros="[
-          {
-            title: 'Situação',
-            values: [
-              { name: 'Checklist', value: 'IdStatus=1' },
-              { name: 'Em análise', value: 'IdStatus=2' },
-              { name: 'Indeferidos', value: 'IdStatus=3' },
-              { name: 'Aprovados', value: 'IdStatus=4' },
-              { name: 'Cancelados', value: 'IdStatus=5' }
-            ]
-          },
-          {
-            title: 'OUC',
-            values: [
-              { name: '3C', value: 'SubSetor=3C' },
-              { name: '3D', value: 'SubSetor=3d' },
-              { name: '3E', value: 'SubSetor=3E' }
-            ]
-          }
-        ]"
+      <filter-queries
+        :location-path="locationPath"
+        :build-filtros="buildFiltros"
       />
       <vue-good-table
         :columns="columns"
@@ -63,23 +44,21 @@
 import { VueGoodTable } from 'vue-good-table'
 import axios from '~/plugins/axios'
 import Preloader from '~/components/sections/Preloader'
-import Filtro from '~/components/elements/Filtro'
-// import RouterToggleFilter from '~/components/elements/RouterToggleFilter'
+import FilterQueries from '~/components/elements/FilterQueries'
 import CsvGenerator from '~/components/elements/CsvGenerator'
 import PdfGenerator from '~/components/elements/PdfGenerator'
 import JsonGenerator from '~/components/elements/JsonGenerator'
 import { spurbanismoBase64 } from '~/assets/images/spurbanismoBase64'
 
 export default {
-  name: 'Index',
+  name: 'IndexTable',
   components: {
     VueGoodTable,
     Preloader,
     PdfGenerator,
     CsvGenerator,
     JsonGenerator,
-    Filtro
-    // RouterToggleFilter
+    FilterQueries
   },
   props: {
     tableName: {
@@ -89,6 +68,10 @@ export default {
     queryFilter: {
       type: String,
       default: ''
+    },
+    buildFiltros: {
+      type: Array,
+      required: true
     }
   },
   data () {

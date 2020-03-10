@@ -5,15 +5,15 @@
     </div>
     <div class="custom-select">
       <select
-        @change="emitValue"
         v-model="optionValue"
+        @change="emitValue"
       >
         <option value="" selected disabled>
           Selecione uma opção
         </option>
         <option
-          :key="item.name+index"
           v-for="(item, index) in buildSelect.values"
+          :key="item.name+index"
           :value="item.value"
         >
           {{ item.name }}

@@ -2,39 +2,18 @@
   <div id="filter">
     <div class="btn-group">
       <button
-        @click="onShowForm"
         type="button"
         class="btn btn-filtro"
+        @click="onShowForm"
       >
-        <svg
-          version="1.0"
-          xmlns="http://www.w3.org/2000/svg"
-          width="15px"
-          height="15px"
-          viewBox="0 0 1232.000000 1280.000000"
-          preserveAspectRatio="xMidYMid meet"
-        >
-          <metadata>Created by potrace 1.15, written by Peter Selinger 2001-2017</metadata>
-          <g
-            transform="translate(0.000000,1280.000000) scale(0.100000,-0.100000)"
-            fill="#FFFFFF"
-            stroke="none"
-          >
-            <path
-              d="M102 12678 c58 -68 1233 -1459 2613 -3093 1380 -1633 2542 -3009
-            2582 -3056 l73 -86 0 -3221 0 -3221 790 792 790 792 0 2430 1 2430 1470 1740
-            c1881 2225 2386 2823 3193 3780 362 429 670 792 684 808 l26 27 -6163 0 -6163
-            0 104 -122z"
-            />
-          </g>
-        </svg>
+        <filtro />
         Filtros
       </button>
       <button
-        @click="resetFiltros"
         v-if="existQuery"
         type="button"
         class="btn btn-filtro"
+        @click="resetFiltros"
       >
         &cularr; Limpar filtros
       </button>
@@ -46,10 +25,10 @@
     >
       <div class="select-generator">
         <custom-select
-          :key="index"
-          :buildSelect="item"
-          @optionValue="getValueOption"
           v-for="(item, index) in buildFiltros"
+          :key="index"
+          :build-select="item"
+          @optionValue="getValueOption"
         />
         <div class="form-section">
           <button type="submit" class="btn btn-submit">
@@ -62,11 +41,14 @@
 </template>
 
 <script>
-import CustomSelect from './CustomSelect'
+import CustomSelect from '~/components/elements/CustomSelect'
+import Filtro from '~/components/icons/Filtro'
+
 export default {
-  name: 'Filtro',
+  name: 'FilterQueries',
   components: {
-    CustomSelect
+    CustomSelect,
+    Filtro
   },
   props: {
     buildFiltros: {
