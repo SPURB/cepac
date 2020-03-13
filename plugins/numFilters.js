@@ -9,8 +9,12 @@ numeral.register('locale', 'pt-br', {
 })
 numeral.locale('pt-br')
 
-Vue.filter('formatNumber', function (value) {
+Vue.filter('formatNumber', (value) => {
   return numeral(value).format('0,0.00')
+})
+
+Vue.filter('formatNumberInt', (value) => {
+  return numeral(value).format('0,0')
 })
 
 /*

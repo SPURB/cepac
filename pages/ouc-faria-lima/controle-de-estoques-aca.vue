@@ -245,70 +245,70 @@
           <tr>
             <td>Hélio Pelegrino</td>
             <td class="dado">
-              {{ helioPelegrino[4].CepacACA | formatNumber }}
+              {{ helioPelegrino[4].CepacACA | formatNumberInt }}
             </td>
             <td class="dado">
-              {{ helioPelegrino[4].CepacUsoParam | formatNumber }}
+              {{ helioPelegrino[4].CepacUsoParam | formatNumberInt }}
             </td>
             <td class="dado">
-              {{ lei.helioPelegrino.cepacDesvinculado.aca | formatNumber }}
+              {{ lei.helioPelegrino.cepacDesvinculado.aca | formatNumberInt }}
             </td>
             <td class="dado">
-              {{ lei.helioPelegrino.cepacDesvinculado.usoPar | formatNumber }}
+              {{ lei.helioPelegrino.cepacDesvinculado.usoPar | formatNumberInt }}
             </td>
           </tr>
           <tr>
             <td>Faria Lima</td>
             <td class="dado">
-              {{ fariaLima[4].CepacACA | formatNumber }}
+              {{ fariaLima[4].CepacACA | formatNumberInt }}
             </td>
             <td class="dado">
-              {{ fariaLima[4].CepacUsoParam | formatNumber }}
+              {{ fariaLima[4].CepacUsoParam | formatNumberInt }}
             </td>
             <td class="dado">
-              {{ lei.fariaLima.cepacDesvinculado.aca | formatNumber }}
+              {{ lei.fariaLima.cepacDesvinculado.aca | formatNumberInt }}
             </td>
             <td class="dado">
-              {{ lei.fariaLima.cepacDesvinculado.usoPar | formatNumber }}
+              {{ lei.fariaLima.cepacDesvinculado.usoPar | formatNumberInt }}
             </td>
           </tr>
           <tr>
             <td>Pinheiros</td>
             <td class="dado">
-              {{ pinheiros[4].CepacACA | formatNumber }}
+              {{ pinheiros[4].CepacACA | formatNumberInt }}
             </td>
             <td class="dado">
-              {{ pinheiros[4].CepacUsoParam | formatNumber }}
+              {{ pinheiros[4].CepacUsoParam | formatNumberInt }}
             </td>
             <td class="dado">
-              {{ lei.pinheiros.cepacDesvinculado.aca | formatNumber }}
+              {{ lei.pinheiros.cepacDesvinculado.aca | formatNumberInt }}
             </td>
             <td class="dado">
-              {{ lei.pinheiros.cepacDesvinculado.usoPar | formatNumber }}
+              {{ lei.pinheiros.cepacDesvinculado.usoPar | formatNumberInt }}
             </td>
           </tr>
           <tr>
             <td>Olimpíadas</td>
             <td class="dado">
-              {{ olimpiadas[4].CepacACA | formatNumber }}
+              {{ olimpiadas[4].CepacACA | formatNumberInt }}
             </td>
             <td class="dado">
-              {{ olimpiadas[4].CepacUsoParam | formatNumber }}
+              {{ olimpiadas[4].CepacUsoParam | formatNumberInt }}
             </td>
             <td class="dado">
-              {{ lei.olimpiadas.cepacDesvinculado.aca | formatNumber }}
+              {{ lei.olimpiadas.cepacDesvinculado.aca | formatNumberInt }}
             </td>
             <td class="dado">
-              {{ lei.olimpiadas.cepacDesvinculado.usoPar | formatNumber }}
+              {{ lei.olimpiadas.cepacDesvinculado.usoPar | formatNumberInt }}
             </td>
           </tr>
           <tr>
             <td>Subtotal</td>
             <td class="dado">
-              {{ acaTotais.subTotalConvertido | formatNumber }}
+              {{ acaTotais.subTotalConvertido | formatNumberInt }}
             </td>
             <td class="dado">
-              {{ acaTotais.subTotalConvertidoUsoPar | formatNumber }}
+              {{ acaTotais.subTotalConvertidoUsoPar | formatNumberInt }}
             </td>
             <td />
             <td />
@@ -316,13 +316,13 @@
           <tr class="destaque">
             <td>Totais</td>
             <td class="total" colspan="2">
-              {{ acaTotais.totalConvertido | formatNumber }}
+              {{ acaTotais.totalConvertido | formatNumberInt }}
             </td>
             <td class="dado">
-              {{ acaTotais.subtotalDesvinculado | formatNumber }}
+              {{ acaTotais.subtotalDesvinculado | formatNumberInt }}
             </td>
             <td class="dado">
-              {{ acaTotais.subtotalDesvinculadoUsoPar | formatNumber }}
+              {{ acaTotais.subtotalDesvinculadoUsoPar | formatNumberInt }}
             </td>
           </tr>
         </table>
