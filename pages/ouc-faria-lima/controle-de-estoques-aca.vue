@@ -20,7 +20,7 @@
 
     <preloader :is-fetching="isFetching" :error="error" />
 
-    <section class="tabelas" :class="{ isFetching }">
+    <section :class="{ isFetching }" class="tabelas">
       <table class="tabela-aca block">
         <tr>
           <td class="tabela-aca__title" colspan="11">
@@ -62,20 +62,20 @@
         <tr class="conteudo">
           <td class="title">
             <router-link
-              tag="a"
               :to="{
                 path: '/ouc-faria-lima',
                 query: { IdSetor: 1, IdStatus: 4 }}"
+              tag="a"
             >
               Hélio pelegrino
             </router-link>
           </td>
           <td>
             <router-link
-              tag="a"
               :to="{
                 path: '/ouc-faria-lima',
                 query: { IdSetor: 3, IdStatus: 4 }}"
+              tag="a"
             >
               {{ lei.helioPelegrino.areaMax.res | formatNumber }}
             </router-link>
@@ -94,10 +94,10 @@
         <tr class="conteudo">
           <td class="title">
             <router-link
-              tag="a"
               :to="{
                 path: '/ouc-faria-lima',
                 query: { IdSetor: 2, IdStatus: 4 }}"
+              tag="a"
             >
               Faria Lima
             </router-link>
@@ -114,10 +114,10 @@
         <tr class="conteudo">
           <td class="title">
             <router-link
-              tag="a"
               :to="{
                 path: '/ouc-faria-lima',
                 query: { IdSetor: 3, IdStatus: 4 }}"
+              tag="a"
             >
               Pinheiros
             </router-link>
@@ -134,10 +134,10 @@
         <tr class="conteudo last">
           <td class="title">
             <router-link
-              tag="a"
               :to="{
                 path: '/ouc-faria-lima',
                 query: { IdSetor: 4, IdStatus: 4 }}"
+              tag="a"
             >
               Olimpíadas
             </router-link>
