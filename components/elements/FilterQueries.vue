@@ -2,18 +2,18 @@
   <div id="filter">
     <div class="btn-group">
       <button
+        @click="onShowForm"
         type="button"
         class="btn btn-filtro"
-        @click="onShowForm"
       >
         <filtro />
         Filtros
       </button>
       <button
         v-if="existQuery"
+        @click="resetFiltros"
         type="button"
         class="btn btn-filtro"
-        @click="resetFiltros"
       >
         &cularr; Limpar filtros
       </button>
@@ -28,6 +28,7 @@
           v-for="(item, index) in buildFiltros"
           :key="index"
           :build-select="item"
+          :ref="`dropdown-${index}`"
           @optionValue="getValueOption"
         />
         <div class="form-section">
@@ -72,7 +73,25 @@ export default {
         return true
       }
       return false
+    },
+    idStatus () {
+      if (this.$route.query.IdStatus) {
+        return `IdStatus=${this.$route.query.IdStatus}`
+      }
+      return 0
+    },
+    idSetor () {
+      if (this.$route.query.IdSetor) {
+        return `IdSetor=${this.$route.query.IdSetor}`
+      }
+      return 0
+    },
+    joinFiltros () {
+      return [this.idStatus, this.idSetor]
     }
+  },
+  mounted () {
+    this.selectField()
   },
   methods: {
     onShowForm () {
@@ -81,7 +100,6 @@ export default {
     getValueOption (optionValue) {
       optionValue = optionValue.split('=')
       this.form[`${optionValue[0]}`] = optionValue[1]
-      console.log(optionValue)
     },
     search () {
       let url = '?'
@@ -96,6 +114,22 @@ export default {
     },
     resetFiltros () {
       window.location.assign(this.locationPath)
+    },
+    selectField () {
+      for (const i in this.buildFiltros) {
+        const select =
+          this.$refs[`dropdown-${i}`][0].$el
+            .children[1]
+            .children[0]
+        const filtroValue = this.joinFiltros[i]
+        for (const j in select.options) {
+          const option = select.options[j]
+          if (option.value === filtroValue) {
+            option.selected = true
+            this.getValueOption(filtroValue)
+          }
+        }
+      }
     }
   }
 }
