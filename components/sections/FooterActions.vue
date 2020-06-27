@@ -18,7 +18,7 @@
       </li>
     </ul>
     <div v-if="goForward.path !== ''" class="action go-forward" style="text-align: end">
-      <button class="action__button" @click.prevent="go(goForward.path)">
+      <button @click.prevent="go(goForward.path)" class="action__button">
         <span>&rdca;</span>
         {{ goForward.text }}
       </button>

@@ -7,7 +7,7 @@
       />
       <logo-spurb :fill-type="'#fff'" :fill-brand="'#fff'" />
       <p>Documentos e dados públicos mantidos pela São Paulo Urbanismo</p>
-      <a class="landing__controller" @click.prevent="scrollTo('oucfl')">
+      <a @click.prevent="scrollTo('oucfl')" class="landing__controller">
         <seta :horizontal="true" />
       </a>
     </section>
@@ -24,18 +24,18 @@
               v-observe-visibility="{
                 callback: visibilityChanged
               }"
-              class="first"
               :class="{ visible: displayFirstImg }"
+              class="first"
             >
               <img
                 v-if="firstImageIsVisible"
+                @load="isLoaded('first')"
                 class="item__preview"
                 srcset="
                   ~/assets/images/report-sample_thumb.jpg 40w,
                   ~/assets/images/report-sample_medium.jpg 200w,
                   ~/assets/images/report-sample_big.jpg 528w"
                 src="~/assets/images/report-sample_big.jpg"
-                @load="isLoaded('first')"
               >
               <img
                 v-else
@@ -54,18 +54,18 @@
               v-observe-visibility="{
                 callback: visibilityChanged
               }"
-              class="second"
               :class="{ visible: displaySecondImg }"
+              class="second"
             >
               <img
                 v-if="secondImageIsVisible"
+                @load="isLoaded('second')"
                 class="item__preview"
                 srcset="
                   ~/assets/images/index-sample_thumb.jpg 40w,
                   ~/assets/images/index-sample_medium.jpg 200w,
                   ~/assets/images/index-sample_big.jpg 528w"
                 src="~/assets/images/index-sample_big.jpg"
-                @load="isLoaded('second')"
               >
               <img
                 v-else

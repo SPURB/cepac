@@ -1,5 +1,5 @@
 <template>
-  <section class="page-title" :class="{ 'two-columns': twoColumns }">
+  <section :class="{ 'two-columns': twoColumns }" class="page-title">
     <slot />
   </section>
 </template>

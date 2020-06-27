@@ -1,6 +1,6 @@
 <template>
   <div class="preloader">
-    <div v-if="isFetching" class="is-loading" :class="{ faded: !isFetching }">
+    <div v-if="isFetching" :class="{ faded: !isFetching }" class="is-loading">
       <preloader-animation v-if="!isIE" :is-fetching="isFetching" />
       <h2>Carregando</h2>
     </div>

@@ -1,11 +1,11 @@
 <template>
   <svg
-    class="icon seta"
     :class="{ rotate, horizontal }"
+    :fill="fill"
+    class="icon seta"
     width="80"
     height="52"
     viewBox="0 0 80 52"
-    :fill="fill"
   >
     <g filter="url(#filter0_d)">
       <path d="M9 6L39 36L69 6" stroke="white" stroke-width="5" />
