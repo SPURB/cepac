@@ -1,5 +1,5 @@
 import { get } from 'axios'
-const baseUrl = process.env.CI ? '/relatorios/' : '/'
+const baseUrl = process.env.CI ? '/cepacs/' : '/'
 
 export default {
   mode: 'spa',
@@ -23,16 +23,17 @@ export default {
   css: [ '@/assets/base.scss' ],
   buildModules: [
     '@nuxtjs/eslint-module',
-    ['@nuxtjs/google-analytics', { id: 'UA-113737634-9' }]
+    '@nuxtjs/google-analytics',
+    '@nuxtjs/axios',
+    '@nuxtjs/pwa'
   ],
   plugins: [
     '~/plugins/numFilters.js',
     '~/plugins/visibility-change.js'
   ],
-  modules: [
-    '@nuxtjs/axios',
-    '@nuxtjs/pwa'
-  ],
+  googleAnalytics: {
+    id: 'UA-113737634-10'
+  },
   generate: {
     routes () {
       return get('https://servicos.spurbanismo.sp.gov.br/cepacs/api/fila', { timeout: 600000 }) // 10min
