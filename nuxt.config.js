@@ -1,3 +1,4 @@
+import { get } from 'axios'
 const baseUrl = process.env.CI ? '/relatorios/' : '/'
 
 export default {
@@ -32,6 +33,14 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/pwa'
   ],
+  generate: {
+    routes () {
+      return get('https://servicos.spurbanismo.sp.gov.br/cepacs/api/fila', { timeout: 600000 }) // 10min
+        .then(res => res.data.map(fila => `/ouc-faria-lima/${fila.Id}`))
+        .catch(err => new Error(err))
+    },
+    interval: 100 // cria intervalo de 1s para cada requisição
+  },
   router: {
     base: baseUrl,
     fallback: true
