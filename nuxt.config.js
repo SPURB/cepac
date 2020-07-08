@@ -1,8 +1,8 @@
-import axios from 'axios'
 const baseUrl = process.env.CI ? '/relatorios/' : '/'
 
 export default {
   mode: 'spa',
+  target: 'static',
   env: {
     apiBaseUrl: 'https://servicos.spurbanismo.sp.gov.br/cepacs/api'
   },
@@ -18,10 +18,8 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: `${baseUrl}favicon.ico` }
     ]
   },
-  /* Customize the progress-bar color  */
   loading: { color: '#038375' },
   css: [ '@/assets/base.scss' ],
-  /* Nuxt.js dev-modules */
   buildModules: [
     '@nuxtjs/eslint-module',
     ['@nuxtjs/google-analytics', { id: 'UA-113737634-9' }]
@@ -34,18 +32,6 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/pwa'
   ],
-  build: {
-    extend (config, ctx) {
-    }
-  },
-  generate: {
-    routes () {
-      return axios.get('https://servicos.spurbanismo.sp.gov.br/cepacs/api/fila', { timeout: 600000 }) // 10min
-        .then(res => res.data.map(fila => `/ouc-faria-lima/${fila.Id}`))
-        .catch(err => new Error(err))
-    },
-    interval: 100 // cria intervalo de 1s para cada requisição
-  },
   router: {
     base: baseUrl,
     fallback: true
