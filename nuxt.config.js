@@ -1,5 +1,5 @@
 import { get } from 'axios'
-const baseUrl = process.env.CI ? '/cepacs/' : '/'
+const baseUrl = process.env.NODE_ENV === 'prod' ? '/cepacs/' : '/'
 
 export default {
   mode: 'spa',
