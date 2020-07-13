@@ -6,7 +6,9 @@
         @keydown.esc="scrollTo('index', true)"
       />
       <logo-spurb :fill-type="'#fff'" :fill-brand="'#fff'" />
-      <p>Documentos e dados públicos mantidos pela São Paulo Urbanismo</p>
+      <p class="index__caption">
+        Documentos e dados dos CEPAC’s (Certificados de Potencial Adicional de Construção) mantidos pela São Paulo Urbanismo
+      </p>
       <a @click.prevent="scrollTo('oucfl')" class="landing__controller">
         <seta :horizontal="true" />
       </a>
@@ -171,6 +173,12 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import '~/assets/variables';
+.index {
+  &__caption {
+    max-width: 600px;
+  }
+}
+
 .index__landing {
   display: flex;
   align-items: center;

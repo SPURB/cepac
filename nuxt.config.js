@@ -1,5 +1,9 @@
 import { get } from 'axios'
-const baseUrl = process.env.CI ? '/relatorios/' : '/'
+
+const baseUrl = {
+  'prod': process.env.TRAVIS ? '/relatorios/' : '/cepac/',
+  'dev': '/'
+}
 
 export default {
   mode: 'spa',
@@ -16,23 +20,24 @@ export default {
       { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: `${baseUrl}favicon.ico` }
+      { rel: 'icon', type: 'image/x-icon', href: `${baseUrl[process.env.NODE_ENV]}favicon.ico` }
     ]
   },
   loading: { color: '#038375' },
   css: [ '@/assets/base.scss' ],
   buildModules: [
     '@nuxtjs/eslint-module',
-    ['@nuxtjs/google-analytics', { id: 'UA-113737634-9' }]
+    '@nuxtjs/google-analytics',
+    '@nuxtjs/axios',
+    '@nuxtjs/pwa'
   ],
   plugins: [
     '~/plugins/numFilters.js',
     '~/plugins/visibility-change.js'
   ],
-  modules: [
-    '@nuxtjs/axios',
-    '@nuxtjs/pwa'
-  ],
+  googleAnalytics: {
+    id: 'UA-113737634-10'
+  },
   generate: {
     routes () {
       return get('https://servicos.spurbanismo.sp.gov.br/cepacs/api/fila', { timeout: 600000 }) // 10min
@@ -42,7 +47,7 @@ export default {
     interval: 100 // cria intervalo de 1s para cada requisição
   },
   router: {
-    base: baseUrl,
+    base: baseUrl[process.env.NODE_ENV],
     fallback: true
   },
   pwa: {
