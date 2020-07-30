@@ -209,6 +209,7 @@ export default {
 
       return this.rows.map((row) => {
         return {
+          'id': row.Id,
           'Situação': row.Status.Nome,
           'Setor': row.Setor,
           'Data': row.Data,
