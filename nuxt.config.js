@@ -1,9 +1,6 @@
 import { get } from 'axios'
 
-const baseUrl = {
-  'prod': process.env.TRAVIS ? '/relatorios/' : '/cepac/',
-  'dev': '/'
-}
+const baseUrl = '/cepac/'
 
 export default {
   mode: 'spa',
@@ -20,7 +17,7 @@ export default {
       { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: `${baseUrl[process.env.NODE_ENV]}favicon.ico` }
+      { rel: 'icon', type: 'image/x-icon', href: `${baseUrl}favicon.ico` }
     ]
   },
   loading: { color: '#038375' },
@@ -47,7 +44,7 @@ export default {
     interval: 100 // cria intervalo de 1s para cada requisição
   },
   router: {
-    base: baseUrl[process.env.NODE_ENV],
+    base: baseUrl,
     fallback: true
   },
   pwa: {
