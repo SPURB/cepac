@@ -1,7 +1,7 @@
 {
-  "name": "relatorios",
+  "name": "cepac",
   "version": "1.0.0",
-  "description": "Relatórios públicos da São Paulo Urbanismo",
+  "description": "Certificados de Potencial Adicional de Construção administrados pela São Paulo Urbanismo",
   "author": "dev-spurbanismo",
   "private": true,
   "scripts": {
