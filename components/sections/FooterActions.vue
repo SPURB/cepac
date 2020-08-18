@@ -8,7 +8,7 @@
     </div>
     <ul class="action__list">
       <li class="action">
-        <csv-generator :csv-doc-definition="csvDocDefinition" :file-name="fileName + '.csv'" />
+        <csv-generator :csv-doc-definition="csvDocDefinition" :file-name="fileName + '.xlsx'" />
       </li>
       <li class="action">
         <json-generator :json-doc-definition="jsonDocDefinition" :file-name="fileName + '.json'" />

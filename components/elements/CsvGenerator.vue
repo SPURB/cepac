@@ -25,22 +25,39 @@ export default {
   data () {
     return {
       isLoading: false,
-      message: 'Salvar como .csv'
+      message: 'Salvar como .xlsx'
     }
   },
   methods: {
-    createCsv (content, name) {
+    async createCsv (content, name) {
       this.isLoading = true
       this.message = 'Criando arquivo'
-      this.loadExternalLib('https://cdn.jsdelivr.net/npm/json2csv')
-        .then(() => {
-          const csvBlob = new Blob([window.json2csv.parse(content)], { type: 'text/csv; charset=utf-8' })
-          FileSaver.saveAs(csvBlob, name)
-        })
-        .finally(() => {
-          this.isLoading = false
-          this.message = 'Salvar como .csv'
-        })
+
+      await this.loadExternalLib('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js')
+
+      const EXCEL_TYPE =
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+
+      const worksheet = window.XLSX.utils.json_to_sheet(content)
+      const workbook = {
+        Sheets: {
+          data: worksheet
+        },
+        SheetNames: ['data']
+      }
+
+      const excelBuffer = window.XLSX.write(workbook, {
+        bookType: 'xlsx',
+        type: 'array'
+      })
+      const csvBlob = new Blob([excelBuffer], {
+        type: EXCEL_TYPE
+      })
+
+      FileSaver.saveAs(csvBlob, name)
+
+      this.isLoading = false
+      this.message = 'Salvar como .xlsx'
     }
   }
 }

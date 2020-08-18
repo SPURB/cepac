@@ -33,7 +33,7 @@
       />
       <footer class="actions">
         <json-generator :json-doc-definition="rows" :file-name="tableName + '.json'" />
-        <csv-generator :csv-doc-definition="csvDocDefinition" :file-name="tableName + '.csv'" />
+        <csv-generator :csv-doc-definition="csvDocDefinition" :file-name="tableName + '.xlsx'" />
         <pdf-generator :pdf-doc-definition="pdfDocDefinition" :file-name="tableName + '.pdf'" />
       </footer>
     </div>
