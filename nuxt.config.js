@@ -28,9 +28,13 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/pwa'
   ],
+  modules: [
+    '~/shared/vueLayers'
+  ],
   plugins: [
     '~/plugins/numFilters.js',
-    '~/plugins/visibility-change.js'
+    '~/plugins/visibility-change.js',
+    '~/plugins/vuelayers.js'
   ],
   googleAnalytics: {
     id: 'UA-113737634-10'
