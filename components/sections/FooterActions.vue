@@ -3,7 +3,7 @@
     <div class="action go-back">
       <button @click.prevent="go(goBackPath)">
         <span>&ldca;</span>
-        Voltar para lista
+        Quadro geral
       </button>
     </div>
     <ul class="action__list">
@@ -47,8 +47,8 @@ export default {
       required: true
     },
     csvDocDefinition: {
-      required: true,
-      type: Array
+      type: Array,
+      required: true
     },
     fileName: {
       type: String,

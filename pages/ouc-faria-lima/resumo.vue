@@ -386,7 +386,6 @@
 </template>
 
 <script>
-import axios from '~/plugins/axios'
 import PageTitle from '~/components/sections/PageTitle'
 import FooterActions from '~/components/sections/FooterActions'
 import Preloader from '~/components/sections/Preloader'
@@ -479,8 +478,8 @@ export default {
     this.defineSubsetoresModel()
   },
   mounted () {
-    this.isFetching = true
-    axios.get(`/estoque/`)
+    this.isFetching = false
+    this.$cepacs.get('estoque')
       .then((res) => {
         this.estoques = res.data
         this.populateModel(res.data)
@@ -551,7 +550,7 @@ export default {
           columns: [
             { text: this.downloadTimeStamp, margin: [20, 10, 0, 0] },
             { text: this.lastUpdate, margin: [0, 10, 0, 0] },
-            { link: 'https://spurb.github.io/relatorios/ouc-faria-lima/controle-de-estoques-aca', text: 'Fonte: spurb.github.io/relatorios/ouc-faria-lima/controle-de-estoques-aca', alignment: 'right', margin: [0, 10, 20, 0] }
+            { link: 'https://spurb.github.io/relatorios/ouc-faria-lima/resumo', text: 'Fonte: spurb.github.io/relatorios/ouc-faria-lima/resumo', alignment: 'right', margin: [0, 10, 20, 0] }
           ]
         },
         content: [

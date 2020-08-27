@@ -20,7 +20,7 @@
       </div>
       <ul class="list__list">
         <li class="list__item">
-          <router-link tag="a" to="/ouc-faria-lima/controle-de-estoques-aca" class="list__item__wrapper-link">
+          <router-link tag="a" to="/ouc-faria-lima/resumo" class="list__item__wrapper-link">
             <h3>Resumo de CEPAC’s da OUCFL</h3>
             <div
               v-observe-visibility="{
@@ -92,6 +92,35 @@
             </router-link>
           </ul>
         </li>
+        <li class="list__item subitems">
+          <router-link tag="a" to="/ouc-faria-lima/mapa/1" name="ouc-faria-lima" class="list__item__wrapper-link">
+            <h3>Mapa dos cadastros da OUCFL</h3>
+            <div
+              v-observe-visibility="{
+                callback: visibilityChanged
+              }"
+              :class="{ visible: displayThirdImg }"
+              class="third"
+            >
+              <img
+                v-if="thirdImageIsVisible"
+                @load="isLoaded('third')"
+                class="item__preview"
+                srcset="
+                  ~/assets/images/map-sample_thumb.jpg 40w,
+                  ~/assets/images/map-sample_medium.jpg 200w,
+                  ~/assets/images/map-sample_big.jpg 528w"
+                src="~/assets/images/map-sample_big.jpg"
+              >
+              <img
+                v-else
+                class="item__placeholder"
+                src="~/assets/images/map-sample_thumb.jpg"
+              >
+              <seta :rotate="true" />
+            </div>
+          </router-link>
+        </li>
       </ul>
     </section>
     <section class="footer">
@@ -123,7 +152,9 @@ export default {
       firstImageIsVisible: false,
       secondImageIsVisible: false,
       firstImageIsLoaded: false,
-      secondImageIsLoaded: false
+      secondImageIsLoaded: false,
+      thirdImageIsVisible: false,
+      thirdImageIsLoaded: false
     }
   },
   computed: {
@@ -135,6 +166,9 @@ export default {
     },
     displaySecondImg () {
       return this.secondImageIsVisible && this.secondImageIsLoaded
+    },
+    displayThirdImg () {
+      return this.thirdImageIsVisible && this.thirdImageIsLoaded
     }
   },
   mounted () {
@@ -162,10 +196,12 @@ export default {
     visibilityChanged (isVisible, entry) {
       if (entry.target.className === 'first') this.firstImageIsVisible = isVisible
       else if (entry.target.className === 'second') this.secondImageIsVisible = isVisible
+      else if (entry.target.className === 'third') this.thirdImageIsVisible = isVisible
     },
     isLoaded (imgItem) {
       if (imgItem === 'first') this.firstImageIsLoaded = true
       else if (imgItem === 'second') this.secondImageIsLoaded = true
+      else if (imgItem === 'third') this.thirdImageIsLoaded = true
     }
   }
 }

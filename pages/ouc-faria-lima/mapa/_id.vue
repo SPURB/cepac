@@ -1,0 +1,192 @@
+<template xmlns:>
+  <div class="mapa main--content">
+    <page-title :two-columns="true">
+      <div class="col-1">
+        <h1>Operação Urbana Consorciada Faria Lima</h1>
+        <h2>Lei 13.769/04, alterada pelas leis 13.871/04, 15.519/11 e 16.242/15</h2>
+      </div>
+      <div class="col-2">
+        <p>Fontes:</p>
+        <ul>
+          <li class="fonte">
+            <a href="https://servicos.spurbanismo.sp.gov.br/geo/api/mapa/1">Dados geográficos</a>
+          </li>
+          <li class="fonte">
+            <a href="https://servicos.spurbanismo.sp.gov.br/cepacs/api/fila">Cadastro</a>
+          </li>
+        </ul>
+      </div>
+    </page-title>
+    <preloader :is-fetching="fetching" :error="error" />
+
+    <vl-map
+      ref="map"
+      :load-tiles-while-animating="true"
+      :load-tiles-while-interacting="true"
+      @mounted="onMapMounted"
+      :rotation="0"
+      data-projection="EPSG:4326"
+      style="height: calc(100vh - 300px)"
+    >
+      <vl-view
+        :zoom.sync="zoom"
+        :center.sync="center"
+        projection="EPSG:4326"
+      />
+
+      <vl-layer-tile>
+        <vl-source-stamen
+          layer="toner"
+          projection="EPSG:4326"
+        />
+      </vl-layer-tile>
+
+      <vl-layer-vector :id="'vector-layer'">
+        <vl-source-vector :features.sync="features" />
+
+        <vl-style-box>
+          <vl-style-stroke
+            :width="2"
+            color="rgba(49, 159, 211, 1)"
+          />
+          <vl-style-fill color="rgba(49, 159, 211, 0.1)" />
+        </vl-style-box>
+
+        <!-- interactions -->
+        <vl-interaction-select :features.sync="selectedFeatures">
+          <template slot-scope="select">
+            <vl-overlay
+              v-for="feature in select.features"
+              :key="feature.id"
+              :id="feature.id"
+              :position="findPointOnSurface(feature.geometry)"
+              :auto-pan="true"
+              :auto-pan-animation="{ duration: 300 }"
+              class="mapa__feature-popup"
+            >
+              <template>
+                <section class="mapa__card">
+                  <header class="mapa__card-header">
+                    <a
+                      @click="selectedFeatures = selectedFeatures.filter(f => f.id !== feature.id)"
+                      class="mapa__card-header-icon"
+                      title="Close"
+                    >
+                      <div>fechar</div>
+                    </a>
+                  </header>
+                  <div class="mapa__card-content">
+                    <p v-if="filaFetching" class="mapa__card-content--fetching">
+                      Procurando cadastro...
+                    </p>
+                    <p v-else>
+                      {{ filaFound }}
+                    </p>
+                  </div>
+                </section>
+              </template>
+            </vl-overlay>
+          </template>
+        </vl-interaction-select>
+      <!--// interactions -->
+      </vl-layer-vector>
+    </vl-map>
+    <footer-actions
+      :pdf-doc-definition="{}"
+      :csv-doc-definition="[]"
+      :file-name="'--em-desenvolvimento--'"
+      :json-doc-definition="[]"
+      :go-back-path="'/ouc-faria-lima'"
+      :go-forward="{ path:'/ouc-faria-lima/resumo', text:'Resumo' }"
+    />
+  </div>
+</template>
+<script>
+import ZoomSlider from 'ol/control/ZoomSlider'
+import ScaleLine from 'ol/control/ScaleLine'
+import PageTitle from '@/components/sections/PageTitle'
+import FooterActions from '@/components/sections/FooterActions'
+import Preloader from '@/components/sections/Preloader'
+import { findPointOnSurface } from 'vuelayers/lib/ol-ext'
+
+export default {
+  name: 'MapaOUCFL',
+  components: {
+    PageTitle,
+    FooterActions,
+    Preloader
+  },
+  data () {
+    return {
+      zoom: 13.5,
+      center: [ -46.685461, -23.585462 ],
+      features: [],
+      selectedFeatures: [],
+      error: false,
+      fetching: false,
+      mapLoaded: false,
+      filaFetching: false,
+      filaFound: {}
+    }
+  },
+  computed: {
+    mapId () { return this.$route.params.id }
+  },
+  watch: {
+    selectedFeatures (features) {
+      if (features.length) {
+        this.searhAnddisplayFila(features)
+      }
+    }
+  },
+  async created () {
+    const { $geo, mapId } = this
+    this.fetching = true
+    try {
+      const { data } = await $geo(`mapas/${mapId}`)
+      this.features = data.features
+    }
+    catch (e) {
+      this.error = e
+    }
+    finally {
+      this.fetching = false
+    }
+  },
+  methods: {
+    findPointOnSurface,
+    onMapMounted () {
+      this.$refs.map.$map.getControls().extend([
+        new ScaleLine(),
+        new ZoomSlider()
+      ])
+    },
+    async searhAnddisplayFila (features) {
+      const { id } = features[0].properties
+      this.filaFetching = true
+      try {
+        const { data } = await this.$cepacs.get(`fila/${id}`)
+        this.filaFound = data
+      }
+      catch {
+        this.filaFound = 'Nenhum cadastro associado à esta geometria'
+      }
+      finally {
+        this.filaFetching = false
+      }
+    }
+  }
+}
+</script>
+<style lang="scss" scoped>
+@import '../../../assets/variables';
+.mapa {
+  &__card {
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    border: solid 1px $grey-2;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  }
+}
+</style>

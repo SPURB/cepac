@@ -23,7 +23,8 @@
     "smoothscroll-polyfill": "^0.4.4",
     "vue-global-events": "^1.1.2",
     "vue-good-table": "^2.18.0",
-    "vue-observe-visibility": "^0.4.6"
+    "vue-observe-visibility": "^0.4.6",
+    "vuelayers": "^0.11.27"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^1.0.1",

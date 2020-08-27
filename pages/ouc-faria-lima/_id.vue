@@ -29,12 +29,11 @@
       :file-name="fileName"
       :json-doc-definition="docDefinition"
       :go-back-path="'/ouc-faria-lima'"
-      :go-forward="{ path:'/ouc-faria-lima/controle-de-estoques-aca', text:'Resumo de estoques' }"
+      :go-forward="{ path:'/ouc-faria-lima/resumo', text:'Resumo de estoques' }"
     />
   </div>
 </template>
 <script>
-import axios from '~/plugins/axios'
 import PageTitle from '~/components/sections/PageTitle'
 import Cadastro from '~/components/sections/Cadastro'
 import FooterActions from '~/components/sections/FooterActions'
@@ -73,9 +72,9 @@ export default {
       return `${this.pluralize('IPTU', haveSql)} ${this.pluralize('associado', haveSql)} ao cadastro ${this.$route.params.id}`
     }
   },
-  async asyncData ({ params }) {
-    const fila = await axios.get(`fila/${params.id}`)
-    const sqls = await axios.get(`sqls?IdFilaCepac=${params.id}`)
+  async asyncData ({ params, $cepacs }) {
+    const fila = await $cepacs.get(`fila/${params.id}`)
+    const sqls = await $cepacs.get(`sqls?IdFilaCepac=${params.id}`)
     return { fila: fila.data, sqls: sqls.data }
   },
   created () {
