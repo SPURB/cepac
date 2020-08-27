@@ -163,13 +163,16 @@ export default {
     },
     async searhAnddisplayFila (features) {
       const { id } = features[0].properties
-
+      this.filaFetching = true
       try {
         const { data } = await this.$cepacs.get(`fila/${id}`)
         this.filaFound = data
       }
       catch {
         this.filaFound = 'Nenhum cadastro associado à esta geometria'
+      }
+      finally {
+        this.filaFetching = false
       }
     }
   }

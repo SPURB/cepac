@@ -30,7 +30,6 @@ export default {
     '@nuxtjs/pwa'
   ],
   modules: [
-    '~/shared/vueLayers',
     '@nuxtjs/axios'
   ],
   plugins: [
