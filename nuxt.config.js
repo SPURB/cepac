@@ -1,13 +1,14 @@
 import { get } from 'axios'
 
 const baseUrl = '/cepac/'
+const apiBaseUrl = 'https://servicos.spurbanismo.sp.gov.br/cepacs/api'
 
 export default {
   mode: 'spa',
   target: 'static',
   env: {
-    apiBaseUrl: 'https://servicos.spurbanismo.sp.gov.br/cepacs/api',
-    apiGeoUrl: 'http://localhost:5000/geo/api'// 'https://servicos.spurbanismo.sp.gov.br/geo/api'
+    apiBaseUrl,
+    apiGeoUrl: 'https://servicos.spurbanismo.sp.gov.br/geo/api' // 'http://localhost:5000/geo/api'
   },
   head: {
     htmlAttrs: { lang: 'pt-br' },
@@ -36,14 +37,14 @@ export default {
     '~/plugins/numFilters.js',
     '~/plugins/visibility-change.js',
     '~/plugins/vuelayers.js',
-    '~/plugins/axios'
+    '~/plugins/services'
   ],
   googleAnalytics: {
     id: 'UA-113737634-10'
   },
   generate: {
     routes () {
-      return get('https://servicos.spurbanismo.sp.gov.br/cepacs/api/fila', { timeout: 600000 }) // 10min
+      return get(`${apiBaseUrl}/fila`, { timeout: 600000 }) // 10min
         .then(res => res.data.map(fila => `/ouc-faria-lima/${fila.Id}`))
         .catch(err => new Error(err))
     },
