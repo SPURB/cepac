@@ -6,7 +6,8 @@ export default {
   mode: 'spa',
   target: 'static',
   env: {
-    apiBaseUrl: 'https://servicos.spurbanismo.sp.gov.br/cepacs/api'
+    apiBaseUrl: 'https://servicos.spurbanismo.sp.gov.br/cepacs/api',
+    apiGeoUrl: 'http://localhost:5000/geo/api'// 'https://servicos.spurbanismo.sp.gov.br/geo/api'
   },
   head: {
     htmlAttrs: { lang: 'pt-br' },
@@ -21,20 +22,21 @@ export default {
     ]
   },
   loading: { color: '#038375' },
-  css: [ '@/assets/base.scss' ],
+  css: [ '@/assets/base.scss', '@/assets/theme.scss' ],
   buildModules: [
     '@nuxtjs/eslint-module',
     '@nuxtjs/google-analytics',
-    '@nuxtjs/axios',
     '@nuxtjs/pwa'
   ],
   modules: [
-    '~/shared/vueLayers'
+    '~/shared/vueLayers',
+    '@nuxtjs/axios'
   ],
   plugins: [
     '~/plugins/numFilters.js',
     '~/plugins/visibility-change.js',
-    '~/plugins/vuelayers.js'
+    '~/plugins/vuelayers.js',
+    '~/plugins/axios'
   ],
   googleAnalytics: {
     id: 'UA-113737634-10'

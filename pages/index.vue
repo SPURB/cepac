@@ -20,7 +20,7 @@
       </div>
       <ul class="list__list">
         <li class="list__item">
-          <router-link tag="a" to="/ouc-faria-lima/controle-de-estoques-aca" class="list__item__wrapper-link">
+          <router-link tag="a" to="/ouc-faria-lima/resumo" class="list__item__wrapper-link">
             <h3>Resumo de CEPAC’s da OUCFL</h3>
             <div
               v-observe-visibility="{
