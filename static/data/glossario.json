@@ -1,6 +1,7 @@
 {
   "fila": {
     "Data": "Data de cadastro",
+    "TipoPedido": "Tipo de pedido",
     "SubSetor": "Sub-setor",
     "Certidao": "Certidão",
     "Interessado": "Interessado",

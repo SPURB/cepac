@@ -97,6 +97,7 @@ export default {
       justify-content: center;
       @media(max-width: $tablet) {
         justify-content: space-between;
+        display: block;
         li { margin-left: 0 }
       }
     }

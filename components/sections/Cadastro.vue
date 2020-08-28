@@ -7,9 +7,11 @@
       <ul class="a4__report">
         <li class="report__item">
           <h3>{{ glossarioFila['Id'] }}</h3>
-          <p class="item__text--big">
-            {{ fila.Id }}
-          </p>
+          <p>{{ fila.Id }}</p>
+          <template v-if="isNotEmpty(fila.TipoPedido)">
+            <h3>{{ glossarioFila['TipoPedido'] }}</h3>
+            <p>{{ fila.TipoPedido }}</p>
+          </template>
         </li>
         <li class="report__item">
           <h3>{{ glossarioFila['IdStatus'] }}</h3>
@@ -247,11 +249,4 @@ export default {
 .report__item {
   p { margin-bottom: 0.35rem }
 }
-
-@media print {
-  header, .page-title, .actions {
-    display: none;
-  }
-}
-
 </style>

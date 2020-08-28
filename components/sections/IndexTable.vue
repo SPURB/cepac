@@ -88,6 +88,12 @@ export default {
           type: 'string'
         },
         {
+          label: 'Tipo de pedido',
+          field: 'TipoPedido',
+          type: 'string',
+          globalSearchDisabled: true
+        },
+        {
           label: 'Situação',
           field: 'Situacao',
           type: 'string'
@@ -209,6 +215,7 @@ export default {
       return this.rows.map((row) => {
         return {
           'id': row.Id,
+          'TipoPedido': row.TipoPedido,
           'Situação': row.Status.Nome,
           'Setor': row.Setor,
           'Data': row.Data,
@@ -300,7 +307,7 @@ export default {
             margin: [ 0, 20, 0, 0 ]
           },
           table: {
-            fontSize: 7,
+            fontSize: 6,
             margin: [ 0, 5, 0, 0 ]
           }
         }
@@ -335,6 +342,7 @@ export default {
             const tableHeader = [
               [
                 'Data',
+                'Tipo de pedido',
                 'Nº Certidão',
                 'Empresa',
                 'Processo Prefeitura',
@@ -352,6 +360,7 @@ export default {
               .map((row) => {
                 return [
                   row.Data, // 'Data',
+                  row.TipoPedido,
                   row.Certidao, // 'Nº Certidão',
                   row.Interessado, // 'Empresa',
                   row.Sei, // 'Processo Prefeitura',
