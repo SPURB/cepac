@@ -72,32 +72,77 @@
                       class="mapa__card-header-icon"
                       title="Close"
                     >
-                      <div>fechar</div>
+                      <div>Fechar</div>
                     </a>
                   </header>
                   <div class="mapa__card-content">
                     <p v-if="filaFetching" class="mapa__card-content--fetching">
                       Procurando cadastro...
                     </p>
-                    <p v-else>
-                      {{ filaFound }}
-                    </p>
+                    <div v-else>
+                      <ul v-if="isFound">
+                        <li>
+                          <span>Status:</span>
+                          {{ filaFound.Status ? filaFound.Status.Nome : 'Não informado.' }}
+                        </li>
+                        <li>
+                          <span>Tipo do pedido:</span>
+                          {{ filaFound.TipoPedido || 'Não informado.' }}
+                        </li>
+                        <li>
+                          <span>Interessado:</span>
+                          {{ filaFound.Interessado || 'Não informado.' }}
+                        </li>
+                        <li>
+                          <span>Certidão:</span>
+                          {{ filaFound.Certidao || 'Não informado.' }}
+                        </li>
+                        <li>
+                          <span>Proposta:</span>
+                          {{ filaFound.CodigoProposta || 'Não informado.' }}
+                        </li>
+                        <li>
+                          <span>Endereço:</span>
+                          {{ filaFound.Endereco || 'Não informado.' }}
+                        </li>
+                        <li>
+                          <span>Setor:</span>
+                          {{
+                            filaFound.SetorObj ? filaFound.SetorObj.OperacaoUrbana.Nome : 'Não informado'
+                          }}
+                        </li>
+                        <li>
+                          <span>Subsetor:</span>
+                          {{ filaFound.SubSetor || 'Não informado.' }}
+                        </li>
+                        <li>
+                          <span>Zona:</span>
+                          {{ filaFound.Zona || 'Não informado.' }}
+                        </li>
+                      </ul>
+                      <p v-else>
+                        {{ filaFound }}
+                      </p>
+                    </div>
                   </div>
                 </section>
               </template>
             </vl-overlay>
           </template>
         </vl-interaction-select>
-      <!--// interactions -->
+      <!-- interactions -->
       </vl-layer-vector>
     </vl-map>
+
     <footer-actions
       :pdf-doc-definition="{}"
       :csv-doc-definition="[]"
-      :file-name="'--em-desenvolvimento--'"
       :json-doc-definition="[]"
+      :geojson-doc-definition="features"
+      :file-name="fileName"
       :go-back-path="'/ouc-faria-lima'"
       :go-forward="{ path:'/ouc-faria-lima/resumo', text:'Resumo' }"
+      :which-show="[4, 5]"
     />
   </div>
 </template>
@@ -126,11 +171,15 @@ export default {
       fetching: false,
       mapLoaded: false,
       filaFetching: false,
+      isFound: true,
       filaFound: {}
     }
   },
   computed: {
-    mapId () { return this.$route.params.id }
+    mapId () { return this.$route.params.id },
+    fileName () {
+      return `${this.$route.path.split('/')[1]}-${this.$route.path.split('/')[2]}`
+    }
   },
   watch: {
     selectedFeatures (features) {
@@ -167,9 +216,11 @@ export default {
       try {
         const { data } = await this.$cepacs.get(`fila/${id}`)
         this.filaFound = data
+        this.isFound = true
       }
       catch {
         this.filaFound = 'Nenhum cadastro associado à esta geometria'
+        this.isFound = false
       }
       finally {
         this.filaFetching = false
@@ -187,6 +238,22 @@ export default {
     border-radius: 8px;
     border: solid 1px $grey-2;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+    &-header {
+      a {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        color: #EB5757;
+        font-weight: 700;
+        cursor: pointer;
+      }
+    }
+    &-content {
+      ul span {
+        font-weight: 700;
+      }
+    }
   }
 }
 </style>

@@ -380,7 +380,9 @@
       :pdf-doc-definition="pdfDocDefinition"
       :json-doc-definition="estoques"
       :csv-doc-definition="estoques"
+      :geojson-doc-definition="{}"
       :file-name="fileName"
+      :which-show="[1, 2, 3]"
     />
   </div>
 </template>

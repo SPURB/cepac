@@ -28,8 +28,10 @@
       :csv-doc-definition="docDefinition"
       :file-name="fileName"
       :json-doc-definition="docDefinition"
+      :geojson-doc-definition="geoDefinition"
       :go-back-path="'/ouc-faria-lima'"
       :go-forward="{ path:'/ouc-faria-lima/resumo', text:'Resumo de estoques' }"
+      :which-show="[1, 2, 3, 5]"
     />
   </div>
 </template>
@@ -56,7 +58,8 @@ export default {
       sqls: [],
       outputFila: {},
       pdfDocDefinition: {},
-      docDefinition: []
+      docDefinition: [],
+      geoDefinition: {}
     }
   },
   computed: {
@@ -72,10 +75,17 @@ export default {
       return `${this.pluralize('IPTU', haveSql)} ${this.pluralize('associado', haveSql)} ao cadastro ${this.$route.params.id}`
     }
   },
-  async asyncData ({ params, $cepacs }) {
+  async asyncData ({ params, $cepacs, $geo }) {
     const fila = await $cepacs.get(`fila/${params.id}`)
     const sqls = await $cepacs.get(`sqls?IdFilaCepac=${params.id}`)
-    return { fila: fila.data, sqls: sqls.data }
+    let geojson = {}
+    try {
+      geojson = await $geo.get(`geo/${fila.data.IdGeo}`)
+    }
+    catch (err) {
+      geojson.data = {}
+    }
+    return { fila: fila.data, sqls: sqls.data, geoDefinition: geojson.data }
   },
   created () {
     const outputFila = this.fila

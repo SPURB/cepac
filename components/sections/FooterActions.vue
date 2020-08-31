@@ -7,14 +7,20 @@
       </button>
     </div>
     <ul class="action__list">
-      <li class="action">
+      <li v-if="isSwitch(1)" class="action">
         <csv-generator :csv-doc-definition="csvDocDefinition" :file-name="fileName + '.xlsx'" />
       </li>
-      <li class="action">
+      <li v-if="isSwitch(2)" class="action">
         <json-generator :json-doc-definition="jsonDocDefinition" :file-name="fileName + '.json'" />
       </li>
-      <li class="action">
+      <li v-if="isSwitch(3)" class="action">
         <pdf-generator :pdf-doc-definition="pdfDocDefinition" :file-name="fileName + '.pdf'" />
+      </li>
+      <li v-if="isSwitch(4)" class="action">
+        <image-generator :file-name="fileName + '.png'" />
+      </li>
+      <li v-if="isSwitch(5)" class="action">
+        <geojson-generator :geojson-doc-definition="geojsonDocDefinition" :file-name="fileName + '.geojson'" />
       </li>
     </ul>
     <div v-if="goForward.path !== ''" class="action go-forward" style="text-align: end">
@@ -29,13 +35,17 @@
 import PdfGenerator from '~/components/elements/PdfGenerator'
 import JsonGenerator from '~/components/elements/JsonGenerator'
 import CsvGenerator from '~/components/elements/CsvGenerator'
+import ImageGenerator from '~/components/elements/ImageGenerator'
+import GeojsonGenerator from '~/components/elements/GeojsonGenerator'
 
 export default {
   name: 'FooterActions',
   components: {
     PdfGenerator,
     JsonGenerator,
-    CsvGenerator
+    CsvGenerator,
+    ImageGenerator,
+    GeojsonGenerator
   },
   props: {
     pdfDocDefinition: {
@@ -44,6 +54,10 @@ export default {
     },
     jsonDocDefinition: {
       type: Array,
+      required: true
+    },
+    geojsonDocDefinition: {
+      type: undefined,
       required: true
     },
     csvDocDefinition: {
@@ -66,11 +80,18 @@ export default {
           text: ''
         }
       }
+    },
+    whichShow: {
+      type: Array,
+      required: true
     }
   },
   methods: {
     go (path) {
       this.$router.push({ path })
+    },
+    isSwitch (numero) {
+      return !!this.whichShow.find(val => val === numero)
     }
   }
 }
