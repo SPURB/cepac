@@ -1,6 +1,6 @@
 <template>
   <svg
-    :class="{ rotate, horizontal }"
+    :class="{ rotate, horizontal, isOpen }"
     :fill="fill"
     class="icon seta"
     width="80"
@@ -47,6 +47,10 @@ export default {
     horizontal: {
       type: Boolean,
       default: false
+    },
+    isOpen: {
+      type: Boolean,
+      default: false
     }
   }
 }
@@ -60,11 +64,19 @@ export default {
     transform: translateX(10px)  rotate(270deg);
   }
 }
+.isOpen {
+  transform: rotate(540deg);
+  transition: transform ease-in-out 150ms;
+  &:hover {
+    transform: translateY(10px);
+    transition: transform ease-in-out 150ms;
+  }
+}
 
 .horizontal {
-    transition: transform ease-in-out 150ms;
-    &:hover {
-     transform: translateY(10px);
-    }
+  transition: transform ease-in-out 150ms;
+  &:hover {
+    transform: translateY(10px);
+  }
 }
 </style>

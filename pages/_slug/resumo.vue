@@ -2,8 +2,8 @@
   <div class="estoque-aca main--content">
     <page-title :two-columns="true">
       <div class="col-1">
-        <h1>Operação Urbana Consorciada Faria Lima</h1>
-        <h2>Lei 13.769/04, alterada pelas leis 13.871/04, 15.519/11 e 16.242/15</h2>
+        <h1>{{ ouc.titulo }}</h1>
+        <h2>{{ ouc.subtitulo }}</h2>
       </div>
       <div class="col-2">
         <p>Fontes:</p>
@@ -376,7 +376,7 @@
     </section>
 
     <footer-actions
-      :go-back-path="'/ouc-faria-lima'"
+      :go-back-path="`/${ouc.slug}`"
       :pdf-doc-definition="pdfDocDefinition"
       :json-doc-definition="estoques"
       :csv-doc-definition="estoques"
@@ -388,6 +388,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import PageTitle from '~/components/sections/PageTitle'
 import FooterActions from '~/components/sections/FooterActions'
 import Preloader from '~/components/sections/Preloader'
@@ -456,6 +457,7 @@ export default {
     }
   },
   computed: {
+    ...mapState('user-interface', ['ouc']),
     fileName () {
       const date = new Date().toISOString().slice(0, 19)
       return `${this.$route.path.slice(1).replace('/', '-')}_${date}`
