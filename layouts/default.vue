@@ -17,22 +17,17 @@ export default {
     }
   },
   computed: {
-    ...mapState('userInterface', [ 'pageTitle' ])
+    ...mapState('user-interface', ['pageTitle', 'ouc'])
   },
   created () {
-    this.setHeader(this.$route.path)
+    this.setHeader()
   },
   methods: {
     ...mapMutations('user-interface', {
       uiSET: 'SET'
     }),
-    setHeader (path) {
-      if (path.includes('/ouc-faria-lima')) {
-        this.uiSET({ key: 'pageTitle', data: 'OUC Faria Lima' })
-      }
-      else {
-        this.uiSET({ key: 'pageTitle', data: 'CEPAC' })
-      }
+    setHeader () {
+      this.uiSET({ key: 'pageTitle', data: `OUC ${this.ouc.nome}` })
     }
   }
 }
