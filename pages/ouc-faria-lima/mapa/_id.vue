@@ -41,7 +41,7 @@
         />
       </vl-layer-tile>
 
-      <vl-layer-vector :id="'vector-layer'">
+      <vl-layer-vector v-if="isLoaded" :id="'vector-layer'">
         <vl-source-vector :features.sync="features" />
 
         <vl-style-box>
@@ -169,6 +169,7 @@ export default {
       selectedFeatures: [],
       error: false,
       fetching: false,
+      isLoaded: false,
       mapLoaded: false,
       filaFetching: false,
       isFound: true,
@@ -209,6 +210,7 @@ export default {
         new ScaleLine(),
         new ZoomSlider()
       ])
+      this.isLoaded = true
     },
     async searhAnddisplayFila (features) {
       const { id } = features[0].properties
