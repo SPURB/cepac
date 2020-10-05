@@ -221,7 +221,7 @@ export default {
         this.isFound = true
       }
       catch {
-        this.filaFound = 'Nenhum cadastro associado à esta geometria'
+        this.filaFound = 'Certidão da Lei 11.732/1995'
         this.isFound = false
       }
       finally {
