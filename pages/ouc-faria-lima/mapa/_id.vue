@@ -16,9 +16,7 @@
           </li>
         </ul>
       </div>
-      <div class="">
-        <custom-select :options="optionMap" />
-      </div>
+      <custom-select :options="optionMap" @optionValue="getValueOption" />
     </page-title>
     <preloader :is-fetching="fetching" :error="error" />
 
@@ -39,9 +37,11 @@
 
       <vl-layer-tile>
         <vl-source-stamen
+          v-if="typeMap === 1"
           layer="toner"
           projection="EPSG:4326"
         />
+        <vl-source-osm v-else />
       </vl-layer-tile>
 
       <vl-layer-vector v-if="isLoaded" :id="'vector-layer'">
@@ -178,6 +178,7 @@ export default {
       mapLoaded: false,
       filaFetching: false,
       isFound: true,
+      typeMap: 1,
       filaFound: {}
     }
   },
@@ -187,20 +188,23 @@ export default {
       return `${this.$route.path.split('/')[1]}-${this.$route.path.split('/')[2]}`
     },
     optionMap () {
-      return [
-        {
-          title: 'Toner',
-          value: 0
-        },
-        {
-          title: 'Toner',
-          value: 1
-        },
-        {
-          title: 'OSM',
-          value: 2
-        }
-      ]
+      return {
+        title: 'Tipo de mapa:',
+        values: [
+          {
+            title: 'Toner',
+            value: 0
+          },
+          {
+            title: 'Toner',
+            value: 1
+          },
+          {
+            title: 'OSM',
+            value: 2
+          }
+        ]
+      }
     }
   },
   watch: {
@@ -248,6 +252,9 @@ export default {
       finally {
         this.filaFetching = false
       }
+    },
+    getValueOption (option) {
+      this.typeMap = option
     }
   }
 }

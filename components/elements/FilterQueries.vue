@@ -123,7 +123,6 @@ export default {
             .children[0]
         const filtroValue = this.buildFiltros[i].values.filter(v => v.value === this.joinFiltros[i])
         select.textContent = filtroValue[0].title
-        console.log(filtroValue)
       }
     }
   }
