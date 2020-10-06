@@ -1,110 +1,160 @@
 <template>
-  <div class="form-section">
-    <div class="title-select">
-      {{ buildSelect.title }}
+  <div class="select-options">
+    <div class="select-options__title">
+      {{ options.title }}
     </div>
-    <div class="custom-select">
-      <select
-        v-model="optionValue"
-        @change="emitValue"
-      >
-        <option value="" selected disabled>
-          Selecione uma opção
-        </option>
-        <option
-          v-for="(item, index) in buildSelect.values"
-          :key="item.name+index"
-          :value="item.value"
+    <button
+      :class="[typeBackground, typeDisabled]"
+      :disabled="disabled"
+      @click.prevent="open = !open"
+      class="select-options__toggler"
+    >
+      <div ref="optionTitle">
+        {{ selected }}
+      </div>
+      <svg :class="{ open }" width="17" height="17" viewBox="0 0 400 248" fill="none">
+        <path d="M47 0.334229L200 153.001L353 0.334229L400 47.3342L200 247.334L0 47.3342L47 0.334229Z" fill="white" />
+      </svg>
+    </button>
+    <transition name="fade">
+      <ul v-show="open" class="select-options__select">
+        <li
+          :value="option.value"
+          :key="index"
+          v-for="(option, index) in options.values"
+          class="select-options__options"
         >
-          {{ item.name }}
-        </option>
-      </select>
-    </div>
+          <button @click.prevent="setSelectedValue(option)">
+            {{ option.title }}
+          </button>
+        </li>
+      </ul>
+    </transition>
   </div>
 </template>
-
 <script>
 export default {
   name: 'CustomSelect',
   props: {
-    buildSelect: {
+    options: {
       type: Object,
       required: true
+    },
+    type: {
+      type: Boolean,
+      default: false
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
     return {
-      optionValue: ''
+      open: false,
+      selected: ''
     }
   },
+  computed: {
+    typeBackground () {
+      if (!this.type) {
+        return 'default'
+      }
+      else {
+        return 'forms'
+      }
+    },
+    typeDisabled () {
+      if (!this.disabled) {
+        return ''
+      }
+      else { // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        this.selected = this.options.values[0].title
+        return 'disabled'
+      }
+    }
+  },
+  created () {
+    this.selected = this.options.values[0].title
+  },
   methods: {
-    emitValue () {
-      this.$emit('optionValue', this.optionValue)
+    setSelectedValue (option) {
+      this.$refs.optionTitle.textContent = option.title
+      this.selected = option.title
+      this.open = false
+      this.$emit('optionValue', option.value)
     }
   }
 }
 </script>
-
 <style lang="scss" scoped>
-@import "@/assets/variables";
-.form-section {
-  display: flex;
-  flex-direction: column;
-  width: 33%;
-
-  .title-select {
-    color: #fff;
-    font-size: 17pt;
-    float: rigth;
+@import '../../assets/variables.scss';
+.select-options {
+  &__select {
+    list-style-type: none;
+    margin: 0 0 2rem 0;
+    padding: 0;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.24);
+    li:first-child {
+      display: none;
+    }
   }
-
-  .custom-select {
-    position: relative;
-    display: block;
-    margin: 0 auto;
-    background-color: $brand-1;
-    z-index: 1;
-    border-radius: 5px;
+  &__title {
+    font-size: 14pt;
+    color: white;
+  }
+  button {
+    height: 48px;
     width: 100%;
-
-    select {
-      appearance: none;
-      border: none;
-      background: transparent;
-      font-size: 14px;
+    text-align: left;
+    cursor: pointer;
+    border: 0;
+    font-size: 1rem;
+    padding-left: 1.75rem;
+    transition: background-color ease-in-out 0.35s;
+    &.default {
+      background-color: rgba(255, 255, 255, 0.05);
       color: #fff;
-      cursor: pointer;
-      display: block;
-      outline: none;
-      border-radius: 0;
-      margin: 0;
-      width: 100%;
-      padding: 12px 55px 15px 15px;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-
-      option {
-        box-sizing: inherit;
-        background-color: $brand-1;
-        cursor: pointer;
-        font-size: 14px;
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.15);
       }
     }
-
-    &:after {
-      border-left: 1px solid #fff;
-      color: #fff;
-      content: "\2228";
-      font-size: 15px;
-      position: absolute;
-      line-height: 38px;
-      text-align: center;
-      top: 0;
-      right: 0;
-      width: 30px;
-      height: 100%;
-      z-index: -1;
+    &.disabled {
+      cursor: not-allowed;
+      background-color: #ccc;
+      &:hover {
+        background-color: #ccc;
+      }
+    }
+    &.forms {
+      background-color: rgba(0, 0, 0, 0.08);
+      color: #000;
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+    }
+    &:focus {
+      outline: none;
     }
   }
+  &__toggler {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 0.25rem;
+    margin-bottom: 10px;
+
+    .open {
+      transform: rotate(180deg);
+    }
+  }
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.25s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
