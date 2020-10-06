@@ -19,20 +19,22 @@
         {
           title: 'Situação',
           values: [
-            { name: 'Checklist', value: 'IdStatus=1' },
-            { name: 'Em análise', value: 'IdStatus=2' },
-            { name: 'Indeferidos', value: 'IdStatus=3' },
-            { name: 'Aprovados', value: 'IdStatus=4' },
-            { name: 'Cancelados', value: 'IdStatus=5' }
-          ]
+            { title: 'Selecione uma situação', value: 0 },
+            { title: 'Checklist', value: 'IdStatus=1' },
+            { title: 'Em análise', value: 'IdStatus=2' },
+            { title: 'Indeferidos', value: 'IdStatus=3' },
+            { title: 'Aprovados', value: 'IdStatus=4' },
+            { title: 'Cancelados', value: 'IdStatus=5' }
+          ],
         },
         {
           title: 'Setor',
           values: [
-            { name: 'Hélio Pelegrino', value: 'IdSetor=1' },
-            { name: 'Faria Lima', value: 'IdSetor=2' },
-            { name: 'Pinheiros', value: 'IdSetor=3' },
-            { name: 'Olimpíadas', value: 'IdSetor=4' }
+            { title: 'Selecione um setor', value: 0 },
+            { title: 'Hélio Pelegrino', value: 'IdSetor=1' },
+            { title: 'Faria Lima', value: 'IdSetor=2' },
+            { title: 'Pinheiros', value: 'IdSetor=3' },
+            { title: 'Olimpíadas', value: 'IdSetor=4' }
           ]
         }
       ]

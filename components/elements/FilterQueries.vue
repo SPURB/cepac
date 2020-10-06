@@ -27,7 +27,7 @@
         <custom-select
           v-for="(item, index) in buildFiltros"
           :key="index"
-          :build-select="item"
+          :options="item"
           :ref="`dropdown-${index}`"
           @optionValue="getValueOption"
         />
@@ -121,14 +121,9 @@ export default {
           this.$refs[`dropdown-${i}`][0].$el
             .children[1]
             .children[0]
-        const filtroValue = this.joinFiltros[i]
-        for (const j in select.options) {
-          const option = select.options[j]
-          if (option.value === filtroValue) {
-            option.selected = true
-            this.getValueOption(filtroValue)
-          }
-        }
+        const filtroValue = this.buildFiltros[i].values.filter(v => v.value === this.joinFiltros[i])
+        select.textContent = filtroValue[0].title
+        console.log(filtroValue)
       }
     }
   }
@@ -203,7 +198,8 @@ export default {
 
           button {
             max-width: 22%;
-            height: 43px;
+            height: 48px;
+            margin: 10px;
           }
         }
       }

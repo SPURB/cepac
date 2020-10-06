@@ -16,6 +16,9 @@
           </li>
         </ul>
       </div>
+      <div class="">
+        <custom-select :options="optionMap" />
+      </div>
     </page-title>
     <preloader :is-fetching="fetching" :error="error" />
 
@@ -149,6 +152,7 @@
 <script>
 import ZoomSlider from 'ol/control/ZoomSlider'
 import ScaleLine from 'ol/control/ScaleLine'
+import CustomSelect from '@/components/elements/CustomSelect'
 import PageTitle from '@/components/sections/PageTitle'
 import FooterActions from '@/components/sections/FooterActions'
 import Preloader from '@/components/sections/Preloader'
@@ -157,6 +161,7 @@ import { findPointOnSurface } from 'vuelayers/lib/ol-ext'
 export default {
   name: 'MapaOUCFL',
   components: {
+    CustomSelect,
     PageTitle,
     FooterActions,
     Preloader
@@ -180,6 +185,22 @@ export default {
     mapId () { return this.$route.params.id },
     fileName () {
       return `${this.$route.path.split('/')[1]}-${this.$route.path.split('/')[2]}`
+    },
+    optionMap () {
+      return [
+        {
+          title: 'Toner',
+          value: 0
+        },
+        {
+          title: 'Toner',
+          value: 1
+        },
+        {
+          title: 'OSM',
+          value: 2
+        }
+      ]
     }
   },
   watch: {
