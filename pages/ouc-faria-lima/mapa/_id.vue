@@ -1,6 +1,7 @@
 <template xmlns:>
   <div class="mapa main--content">
-    <page-title :two-columns="true">
+    <preloader :is-fetching="fetching" :error="error" />
+    <page-title v-if="displaySubHeader" :two-columns="true">
       <div class="col-1">
         <h1>Operação Urbana Consorciada Faria Lima</h1>
         <h2>Lei 13.769/04, alterada pelas leis 13.871/04, 15.519/11 e 16.242/15</h2>
@@ -16,9 +17,24 @@
           </li>
         </ul>
       </div>
-      <custom-select :options="optionMap" @optionValue="getValueOption" />
+      <custom-select
+        :options="[
+          {
+            title: 'Preto e branco',
+            value: 1
+          },
+          {
+            title: 'Open Street Map',
+            value: 2
+          }
+        ]"
+        @optionValue="getValueOption"
+        :selectedIndex="0"
+        class="mapa__select"
+        title="Base do mapa"
+      />
     </page-title>
-    <preloader :is-fetching="fetching" :error="error" />
+    <button-section-toggler :state="displaySubHeader" @ButtonSectionTogglerAction="changeDisplaySubHeader" />
 
     <vl-map
       ref="map"
@@ -179,32 +195,14 @@ export default {
       filaFetching: false,
       isFound: true,
       typeMap: 1,
-      filaFound: {}
+      filaFound: {},
+      displaySubHeader: true
     }
   },
   computed: {
     mapId () { return this.$route.params.id },
     fileName () {
       return `${this.$route.path.split('/')[1]}-${this.$route.path.split('/')[2]}`
-    },
-    optionMap () {
-      return {
-        title: 'Tipo de mapa:',
-        values: [
-          {
-            title: 'Toner',
-            value: 0
-          },
-          {
-            title: 'Toner',
-            value: 1
-          },
-          {
-            title: 'OSM',
-            value: 2
-          }
-        ]
-      }
     }
   },
   watch: {
@@ -230,8 +228,8 @@ export default {
   },
   methods: {
     findPointOnSurface,
-    onMapMounted () {
-      this.$refs.map.$map.getControls().extend([
+    async onMapMounted () {
+      await this.$refs.map.$map.getControls().extend([
         new ScaleLine(),
         new ZoomSlider()
       ])
@@ -255,6 +253,9 @@ export default {
     },
     getValueOption (option) {
       this.typeMap = option
+    },
+    changeDisplaySubHeader (state) {
+      this.displaySubHeader = state
     }
   }
 }
@@ -262,6 +263,9 @@ export default {
 <style lang="scss" scoped>
 @import '../../../assets/variables';
 .mapa {
+  &__select {
+    margin-top: 1rem;
+  }
   &__card {
     background: white;
     padding: 1rem;

@@ -1,7 +1,7 @@
 <template>
   <div class="select-options">
     <div class="select-options__title">
-      {{ options.title }}
+      {{ title }}
     </div>
     <button
       :class="[typeBackground, typeDisabled]"
@@ -12,16 +12,14 @@
       <div ref="optionTitle">
         {{ selected }}
       </div>
-      <svg :class="{ open }" width="17" height="17" viewBox="0 0 400 248" fill="none">
-        <path d="M47 0.334229L200 153.001L353 0.334229L400 47.3342L200 247.334L0 47.3342L47 0.334229Z" fill="white" />
-      </svg>
+      <seta :class="{ 'select-options__seta--open': open }" class="select-options__seta" />
     </button>
     <transition name="fade">
       <ul v-show="open" class="select-options__select">
         <li
           :value="option.value"
           :key="index"
-          v-for="(option, index) in options.values"
+          v-for="(option, index) in options"
           class="select-options__options"
         >
           <button @click.prevent="setSelectedValue(option)">
@@ -37,7 +35,11 @@ export default {
   name: 'CustomSelect',
   props: {
     options: {
-      type: Object,
+      type: Array,
+      required: true
+    },
+    title: {
+      type: String,
       required: true
     },
     type: {
@@ -47,12 +49,16 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    selectedIndex: {
+      type: Number,
+      default: 0
     }
   },
   data () {
     return {
       open: false,
-      selected: ''
+      selected: {}
     }
   },
   computed: {
@@ -68,14 +74,13 @@ export default {
       if (!this.disabled) {
         return ''
       }
-      else { // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        this.selected = this.options.values[0].title
+      else {
         return 'disabled'
       }
     }
   },
   created () {
-    this.selected = this.options.values[0].title
+    this.selected = this.options[this.selectedIndex].title
   },
   methods: {
     setSelectedValue (option) {
@@ -88,7 +93,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import '../../assets/variables.scss';
+@import '@/assets/variables.scss';
 .select-options {
   &__select {
     list-style-type: none;
@@ -100,17 +105,16 @@ export default {
     }
   }
   &__title {
-    font-size: 14pt;
     color: white;
   }
   button {
+    margin-top: 8px;
     height: 48px;
     width: 100%;
     text-align: left;
     cursor: pointer;
     border: 0;
-    font-size: 1rem;
-    padding-left: 1.75rem;
+    padding-left: 0.5rem;
     transition: background-color ease-in-out 0.35s;
     &.default {
       background-color: rgba(255, 255, 255, 0.05);
@@ -137,16 +141,19 @@ export default {
       outline: none;
     }
   }
+  &__seta {
+    max-width: 20px;
+    transition: transform ease-in-out 300ms;
+    &--open {
+      transform: rotate(-180deg);
+    }
+  }
   &__toggler {
     display: flex;
     align-items: center;
     justify-content: space-between;
     border-radius: 0.25rem;
     margin-bottom: 10px;
-
-    .open {
-      transform: rotate(180deg);
-    }
   }
 }
 .fade-enter-active,
