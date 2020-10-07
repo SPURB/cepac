@@ -1,6 +1,6 @@
 <template>
   <div class="preloader">
-    <div v-if="isFetching" :class="{ faded: !isFetching }" class="is-loading">
+    <div v-if="isFetching" :class="{ faded: !isFetching }" class="is-loading" stroke="white">
       <preloader-animation v-if="!isIE" :is-fetching="isFetching" />
       <h2>Carregando</h2>
     </div>
@@ -15,7 +15,7 @@
   </div>
 </template>
 <script>
-import PreloaderAnimation from '~/components/icons/PreloaderAnimation'
+import { PreloaderVerticalizacao as PreloaderAnimation } from '@spurb/componentes'
 export default {
   name: 'Preloader',
   components: {
