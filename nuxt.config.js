@@ -4,7 +4,7 @@ const baseUrl = '/cepac/'
 const apiBaseUrl = 'https://servicos.spurbanismo.sp.gov.br/cepacs/api'
 
 export default {
-  mode: 'spa',
+  ssr: false,
   target: 'static',
   components: true,
   env: {

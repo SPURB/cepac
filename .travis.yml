@@ -13,7 +13,7 @@ branches:
   - master
 
 install:
- - npm install
+ - npm ci
 
 script:
  - npm run build

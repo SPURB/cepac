@@ -1,8 +1,7 @@
-# cepac
+# cepac [![Build Status](https://travis-ci.org/SPURB/cepac.svg?branch=master)](https://travis-ci.org/SPURB/cepac)
+> servicos.spurbanismo.sp.gov.br/cepac/
 
-[![Build Status](https://travis-ci.org/SPURB/cepac.svg?branch=master)](https://travis-ci.org/SPURB/cepac)
-
-Documentos e dados dos CEPAC’s (Certificados de Potencial Adicional de Construção) mantidos pela São Paulo Urbanismo >servicos.spurbanismo.sp.gov.br/cepac/
+Documentos e dados dos CEPAC’s (Certificados de Potencial Adicional de Construção) mantidos pela São Paulo Urbanismo
 
 ## Build Setup
 
