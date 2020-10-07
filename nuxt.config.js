@@ -6,6 +6,7 @@ const apiBaseUrl = 'https://servicos.spurbanismo.sp.gov.br/cepacs/api'
 export default {
   mode: 'spa',
   target: 'static',
+  components: true,
   env: {
     apiBaseUrl,
     apiGeoUrl: 'https://servicos.spurbanismo.sp.gov.br/geo/api' // 'http://localhost:5000/geo/api'

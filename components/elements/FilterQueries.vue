@@ -25,9 +25,10 @@
     >
       <div class="select-generator">
         <custom-select
-          v-for="(item, index) in buildFiltros"
+          v-for="({ values, title }, index) in buildFiltros"
           :key="index"
-          :options="item"
+          :options="values"
+          :title="title"
           :ref="`dropdown-${index}`"
           @optionValue="getValueOption"
         />
@@ -42,15 +43,8 @@
 </template>
 
 <script>
-import CustomSelect from '~/components/elements/CustomSelect'
-import Filtro from '~/components/icons/Filtro'
-
 export default {
   name: 'FilterQueries',
-  components: {
-    CustomSelect,
-    Filtro
-  },
   props: {
     buildFiltros: {
       type: Array,

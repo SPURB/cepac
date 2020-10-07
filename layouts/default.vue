@@ -37,3 +37,8 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.default {
+  min-height: 100vh;
+}
+</style>
