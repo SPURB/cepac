@@ -20,6 +20,10 @@
       <custom-select
         :options="[
           {
+            title: 'Selecione uma base',
+            value: 0
+          },
+          {
             title: 'Preto e branco',
             value: 1
           },
@@ -29,7 +33,7 @@
           }
         ]"
         @optionValue="getValueOption"
-        :selectedIndex="0"
+        :selectedIndex="1"
         class="mapa__select"
         title="Base do mapa"
       />
