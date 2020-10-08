@@ -43,10 +43,18 @@ export default {
     id: 'UA-113737634-10'
   },
   generate: {
-    routes () {
-      return get(`${apiBaseUrl}/fila`, { timeout: 600000 }) // 10min
-        .then(res => res.data.map(fila => `/ouc-faria-lima/${fila.Id}`))
+    async routes () {
+      const filaFariaLima = await get(`${apiBaseUrl}/fila`, { timeout: 600000 }) // 10min
+        .then(res => {
+          return res.data.map(fila => {
+            return `/ouc-faria-lima/${fila.Id}`
+          })
+        })
         .catch(err => new Error(err))
+      
+      const FariaLima = ['/ouc-faria-lima','/ouc-faria-lima/resumo','/ouc-faria-lima/mapa/1', ...filaFariaLima]
+
+      return [...FariaLima]
     },
     interval: 100 // cria intervalo de 1s para cada requisição
   },
