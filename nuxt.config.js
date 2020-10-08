@@ -44,17 +44,15 @@ export default {
   },
   generate: {
     async routes () {
-      const filaFariaLima = await get(`${apiBaseUrl}/fila`, { timeout: 600000 }) // 10min
-        .then(res => {
-          return res.data.map(fila => {
-            return `/ouc-faria-lima/${fila.Id}`
-          })
-        })
-        .catch(err => new Error(err))
-      
-      const FariaLima = ['/ouc-faria-lima','/ouc-faria-lima/resumo','/ouc-faria-lima/mapa/1', ...filaFariaLima]
-
-      return [...FariaLima]
+      try {
+        const { data } = await get(`${apiBaseUrl}/fila`, { timeout: 600000 }) // 10min
+        const filaPaths = data.map(({ Id }) => `/ouc-faria-lima/${Id}`)
+        const FariaLima = ['/ouc-faria-lima', '/ouc-faria-lima/resumo', '/ouc-faria-lima/mapa/1', ...filaPaths]
+        return [...FariaLima]
+      }
+      catch (err) {
+        throw new Error(err)
+      }
     },
     interval: 100 // cria intervalo de 1s para cada requisição
   },
