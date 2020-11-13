@@ -16,7 +16,7 @@
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/google-analytics": "^2.2.3",
     "@nuxtjs/pwa": "^3.0.0-0",
-    "@spurb/componentes": "0.0.1",
+    "@spurb/componentes": "^0.0.6",
     "file-saver": "^2.0.2",
     "intersection-observer": "^0.7.0",
     "numeral": "^2.0.6",
@@ -30,6 +30,7 @@
   "devDependencies": {
     "@nuxtjs/eslint-config": "^1.0.1",
     "@nuxtjs/eslint-module": "^1.0.0",
+    "@nuxtjs/tailwindcss": "^3.2.0",
     "babel-eslint": "^10.0.1",
     "cross-env": "^6.0.3",
     "eslint": "^5.0.0",

@@ -9,7 +9,8 @@ export default {
   components: true,
   env: {
     apiBaseUrl,
-    apiGeoUrl: 'https://servicos.spurbanismo.sp.gov.br/geo/api' // 'http://localhost:5000/geo/api'
+    apiGeoUrl: 'https://servicos.spurbanismo.sp.gov.br/geo/api', // 'http://localhost:5000/geo/api'
+    apiArquivos: 'https://servicos.spurbanismo.sp.gov.br/arquivos/api'
   },
   head: {
     htmlAttrs: { lang: 'pt-br' },
@@ -28,7 +29,8 @@ export default {
   buildModules: [
     '@nuxtjs/eslint-module',
     '@nuxtjs/google-analytics',
-    '@nuxtjs/pwa'
+    '@nuxtjs/pwa',
+    '@nuxtjs/tailwindcss'
   ],
   modules: [
     '@nuxtjs/axios'

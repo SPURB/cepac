@@ -77,7 +77,7 @@
 
         <!-- interactions -->
         <vl-interaction-select :features.sync="selectedFeatures">
-          <template slot-scope="select">
+          <template slot-scope="select" v-if="!filaFetching">
             <vl-overlay
               v-for="feature in select.features"
               :key="feature.id"
@@ -87,69 +87,126 @@
               :auto-pan-animation="{ duration: 300 }"
               class="mapa__feature-popup"
             >
-              <template>
-                <section class="mapa__card">
-                  <header class="mapa__card-header">
+              <Card
+                :body-class="isFound ? 'bg-white' : 'px-2 pt-2 pb-2 bg-white'"
+                header-class="bg-gray-200"
+                footer-class="px-6 pt-4 pb-2 bg-white"
+              >
+                <template v-slot:header>
+                  <Galeria
+                    v-if="feature.properties.isImage"
+                    :imagens="feature.properties.imagens"
+                    :backgroundCover="false"
+                    width="100%"
+                    height="150px"
+                  >
+                    <template v-slot:header>
+                      <a
+                        @click="selectedFeatures = selectedFeatures.filter(f => f.id !== feature.id)"
+                        class="mapa__card--close"
+                        title="Fechar"
+                      >
+                        <div class="mapa__card--btnClose">Fechar</div>
+                      </a>
+                    </template>
+                  </Galeria>
+                  <div v-else>
                     <a
                       @click="selectedFeatures = selectedFeatures.filter(f => f.id !== feature.id)"
-                      class="mapa__card-header-icon"
-                      title="Close"
+                      class="mapa__card--close"
+                      title="Fechar"
                     >
-                      <div>Fechar</div>
+                      <div class="mapa__card--btnClose removeRadius">
+                        Fechar
+                      </div>
                     </a>
-                  </header>
-                  <div class="mapa__card-content">
-                    <p v-if="filaFetching" class="mapa__card-content--fetching">
-                      Procurando cadastro...
-                    </p>
-                    <div v-else>
-                      <ul v-if="isFound">
-                        <li>
-                          <span>Status:</span>
+                  </div>
+                </template>
+                <template v-slot:body>
+                  <table v-if="isFound">
+                    <tbody>
+                      <tr class="mapa__card mapa__card--header">
+                        <td>
+                          status
+                        </td>
+                        <td>
                           {{ filaFound.Status ? filaFound.Status.Nome : 'Não informado.' }}
-                        </li>
-                        <li>
-                          <span>Tipo do pedido:</span>
+                        </td>
+                      </tr>
+                      <tr class="mapa__card">
+                        <td class="color">
+                          tipo do pedido
+                        </td>
+                        <td>
                           {{ filaFound.TipoPedido || 'Não informado.' }}
-                        </li>
-                        <li>
-                          <span>Interessado:</span>
+                        </td>
+                      </tr>
+                      <tr class="mapa__card mapa__card--grey">
+                        <td class="color">
+                          interessado
+                        </td>
+                        <td>
                           {{ filaFound.Interessado || 'Não informado.' }}
-                        </li>
-                        <li>
-                          <span>Certidão:</span>
+                        </td>
+                      </tr>
+                      <tr class="mapa__card">
+                        <td class="color">
+                          certidão
+                        </td>
+                        <td>
                           {{ filaFound.Certidao || 'Não informado.' }}
-                        </li>
-                        <li>
-                          <span>Proposta:</span>
+                        </td>
+                      </tr>
+                      <tr class="mapa__card mapa__card--grey">
+                        <td class="color">
+                          proposta
+                        </td>
+                        <td>
                           {{ filaFound.CodigoProposta || 'Não informado.' }}
-                        </li>
-                        <li>
-                          <span>Endereço:</span>
+                        </td>
+                      </tr>
+                      <tr class="mapa__card">
+                        <td class="color">
+                          endereço
+                        </td>
+                        <td>
                           {{ filaFound.Endereco || 'Não informado.' }}
-                        </li>
-                        <li>
-                          <span>Setor:</span>
+                        </td>
+                      </tr>
+                      <tr class="mapa__card mapa__card--grey">
+                        <td class="color">
+                          setor
+                        </td>
+                        <td>
                           {{
                             filaFound.SetorObj ? filaFound.SetorObj.OperacaoUrbana.Nome : 'Não informado'
                           }}
-                        </li>
-                        <li>
-                          <span>Subsetor:</span>
+                        </td>
+                      </tr>
+                      <tr class="mapa__card">
+                        <td class="color">
+                          subsetor
+                        </td>
+                        <td>
                           {{ filaFound.SubSetor || 'Não informado.' }}
-                        </li>
-                        <li>
-                          <span>Zona:</span>
+                        </td>
+                      </tr>
+                      <tr class="mapa__card mapa__card--grey">
+                        <td class="color">
+                          zona
+                        </td>
+                        <td>
                           {{ filaFound.Zona || 'Não informado.' }}
-                        </li>
-                      </ul>
-                      <p v-else>
-                        {{ filaFound }}
-                      </p>
-                    </div>
-                  </div>
-                </section>
-              </template>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <p v-else>
+                    {{ filaFound }}
+                  </p>
+                </template>
+              </Card>
             </vl-overlay>
           </template>
         </vl-interaction-select>
@@ -177,6 +234,7 @@ import PageTitle from '@/components/sections/PageTitle'
 import FooterActions from '@/components/sections/FooterActions'
 import Preloader from '@/components/sections/Preloader'
 import { findPointOnSurface } from 'vuelayers/lib/ol-ext'
+import { Card, Galeria } from '@spurb/componentes'
 
 export default {
   name: 'MapaOUCFL',
@@ -184,7 +242,9 @@ export default {
     CustomSelect,
     PageTitle,
     FooterActions,
-    Preloader
+    Preloader,
+    Card,
+    Galeria
   },
   data () {
     return {
@@ -240,11 +300,28 @@ export default {
       this.isLoaded = true
     },
     async searhAnddisplayFila (features) {
+      const { $cepacs, $arquivos } = this
       const { id } = features[0].properties
       this.filaFetching = true
+
       try {
         const { data } = await this.$cepacs.get(`fila/${id}`)
         this.filaFound = data
+
+        const listaArquivos = await $cepacs(`/arquivofila?IdFilaCepac=${features[0].properties.id}`)
+        if (listaArquivos.status === 200) {
+          features[0].properties.imagens = []
+          features[0].properties.isImage = true
+          for (const imagem of listaArquivos.data) {
+            const arquivo = await $arquivos(`/${imagem.IdArquivo}`)
+            features[0]
+              .properties
+              .imagens.push(`https://servicos.spurbanismo.sp.gov.br/public/${arquivo.data.file.filename}`)
+          }
+        }
+        else {
+          features[0].properties.isImage = false
+        }
         this.isFound = true
       }
       catch {
@@ -271,27 +348,50 @@ export default {
     margin-top: 1rem;
   }
   &__card {
-    background: white;
-    padding: 1rem;
-    border-radius: 8px;
-    border: solid 1px $grey-2;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    td {
+      padding: .3rem 1.5rem .2rem 1.5rem;
+      &:first-child {
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 10pt;
 
-    &-header {
-      a {
-        width: 100%;
-        display: flex;
-        justify-content: flex-end;
-        color: #EB5757;
-        font-weight: 700;
-        cursor: pointer;
+        &.color {
+          color: $grey-1;
+        }
       }
     }
-    &-content {
-      ul span {
-        font-weight: 700;
+
+    &--close {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    &--btnClose {
+      background-color: #EB5757;
+      padding: .2rem;
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+
+      &.removeRadius {
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
       }
     }
+
+    &--header {
+      background-color: #008375;
+      color: white;
+    }
+    &--grey {
+      background-color: #f5f5f5;
+    }
+  }
+  .galeria .controles span.right {
+    right: 10px !important;
   }
 }
 </style>
