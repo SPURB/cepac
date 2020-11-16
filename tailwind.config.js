@@ -5,7 +5,22 @@
 ** Default: https://github.com/tailwindcss/tailwindcss/blob/master/stubs/defaultConfig.stub.js
 */
 module.exports = {
-  theme: {},
+  theme: {
+    extend: {
+      colors: {
+        spurb: {
+          default: '#008375',
+          dark: '#005249',
+          lighter: '#5CD6C9'
+        },
+        apoio: {
+          primary: '#FFDAAD',
+          secondary: '#A3DFF5'
+        },
+        erro: '#EB5757'
+      }
+    }
+  },
   variants: {},
   plugins: [],
   purge: {

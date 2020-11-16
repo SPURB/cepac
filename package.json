@@ -16,7 +16,7 @@
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/google-analytics": "^2.2.3",
     "@nuxtjs/pwa": "^3.0.0-0",
-    "@spurb/componentes": "^0.0.6",
+    "@spurb/componentes": "^0.0.9",
     "file-saver": "^2.0.2",
     "intersection-observer": "^0.7.0",
     "numeral": "^2.0.6",

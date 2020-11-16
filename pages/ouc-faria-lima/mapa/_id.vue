@@ -90,7 +90,7 @@
               <Card
                 :body-class="isFound ? 'bg-white' : 'px-2 pt-2 pb-2 bg-white'"
                 header-class="bg-gray-200"
-                footer-class="px-6 pt-4 pb-2 bg-white"
+                footer-class="px-0 pt-1 pb-0 bg-white"
               >
                 <template v-slot:header>
                   <Galeria
@@ -206,6 +206,13 @@
                     {{ filaFound }}
                   </p>
                 </template>
+                <template v-slot:footer v-if="isFound">
+                  <Button
+                    @buttonClick="getClick"
+                    action-text="Acessar página"
+                    style-button="w-full bg-spurb hover:bg-spurb-dark"
+                  />
+                </template>
               </Card>
             </vl-overlay>
           </template>
@@ -234,7 +241,7 @@ import PageTitle from '@/components/sections/PageTitle'
 import FooterActions from '@/components/sections/FooterActions'
 import Preloader from '@/components/sections/Preloader'
 import { findPointOnSurface } from 'vuelayers/lib/ol-ext'
-import { Card, Galeria } from '@spurb/componentes'
+import { Card, Galeria, Button } from '@spurb/componentes'
 
 export default {
   name: 'MapaOUCFL',
@@ -244,7 +251,8 @@ export default {
     FooterActions,
     Preloader,
     Card,
-    Galeria
+    Galeria,
+    Button
   },
   data () {
     return {
@@ -337,6 +345,9 @@ export default {
     },
     changeDisplaySubHeader (state) {
       this.displaySubHeader = state
+    },
+    getClick () {
+      this.$router.push(`/ouc-faria-lima/${this.filaFound.Id}`)
     }
   }
 }
