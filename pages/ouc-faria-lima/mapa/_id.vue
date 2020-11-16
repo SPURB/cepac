@@ -209,8 +209,8 @@
                 <template v-slot:footer v-if="isFound">
                   <Button
                     @buttonClick="getClick"
-                    action-text="Acessar página"
-                    style-button="w-full bg-spurb hover:bg-spurb-dark"
+                    action-text="ACESSAR PÁGINA DE CADASTRO"
+                    style-button="w-full text-sm bg-spurb-dark hover:bg-spurb"
                   />
                 </template>
               </Card>
