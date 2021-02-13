@@ -3,7 +3,7 @@
     <preloader :is-fething="true" />
     <page-title :two-columns="true">
       <div class="col-1">
-        <h1>Operação Urbana Consociada Faria Lima</h1>
+        <h1>{{ ouc.titulo }}</h1>
         <h2>Controle de Estoques</h2>
       </div>
       <div class="col-2">
@@ -13,7 +13,7 @@
       </div>
     </page-title>
     <index-table
-      :table-name="addDateToName(tableName)"
+      :table-name="addDateToName(ouc.slug)"
       :query-filter="'?'"
       :build-filtros="[
         {
@@ -43,26 +43,24 @@
     <message-bar v-if="displayCanceladosMessage" :message="'Os itens CANCELADOS estão em processo de revisão'" />
   </div>
 </template>
+
 <script>
+import { mapState } from 'vuex'
 import PageTitle from '~/components/sections/PageTitle'
 import IndexTable from '~/components/sections/IndexTable'
 import Preloader from '~/components/sections/Preloader'
 import MessageBar from '~/components/elements/MessageBar'
 
 export default {
-  name: 'OucFariaLima',
+  name: 'OUC',
   components: {
     PageTitle,
     IndexTable,
     Preloader,
     MessageBar
   },
-  data () {
-    return {
-      tableName: 'ouc-faria-lima'
-    }
-  },
   computed: {
+    ...mapState('user-interface', ['ouc']),
     displayCanceladosMessage () {
       return this.$route.query.IdStatus === '5'
     }
@@ -81,7 +79,13 @@ export default {
   head () {
     return {
       title: 'OUC Faria Lima | Estoques desvinculados',
-      meta: [{ hid: 'relatorios', name: 'relatorios', content: "Operação Urbana Consorciada Faria Lima CEPAC'S desvinculados" }]
+      meta: [
+        {
+          hid: 'relatorios',
+          name: 'relatorios',
+          content: "Operação Urbana Consorciada Faria Lima CEPAC'S desvinculados"
+        }
+      ]
     }
   }
 }

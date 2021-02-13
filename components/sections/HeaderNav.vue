@@ -1,32 +1,82 @@
 <template>
-  <header class="header-nav">
-    <router-link to="/">
-      <logo-spurb :fill-type="'#1D1D1B'" :fill-brand="'#038375'" />
-    </router-link>
-    <p class="header-nav__page-title">
-      {{ pageTitle }}
-    </p>
-    <nav class="nav-sections">
-      <router-link class="nav-sections__item" to="/ouc-faria-lima" tag="a" name="ouc-faria-lima">
-        Quadro geral
+  <div class="">
+    <modal
+      v-if="modal.show"
+      :title="modal.title"
+      :error="modal.error"
+      :description="modal.description"
+      :action-description="modal.actionDescription"
+      :action-text="modal.actionText"
+      @setModalAction="getEmitModal"
+    />
+
+    <header class="header-nav">
+      <router-link to="/">
+        <logo-spurb :fill-type="'#1D1D1B'" :fill-brand="'#038375'" />
       </router-link>
-      <router-link class="nav-sections__item" to="/ouc-faria-lima/resumo" tag="a" name="ouc-faria-lima-resumo">
-        Resumo
-      </router-link>
-      <router-link class="nav-sections__item" to="/ouc-faria-lima/mapa/1" tag="a" name="ouc-faria-lima-mapa">
-        Mapa
-      </router-link>
-    </nav>
-  </header>
+      <p class="header-nav__page-title">
+        {{ pageTitle }}
+      </p>
+      <nav class="nav-sections">
+        <router-link :to="`/${ouc.slug}`" :name="ouc.slug" tag="a" class="nav-sections__item">
+          Quadro geral
+        </router-link>
+        <router-link :to="`/${ouc.slug}/resumo`" :name="ouc.slug" tag="a" class="nav-sections__item">
+          Resumo
+        </router-link>
+        <router-link :to="`/${ouc.slug}/mapa/${ouc.mapa}`" :name="ouc.slug" tag="a" class="nav-sections__item">
+          Mapa
+        </router-link>
+      </nav>
+    </header>
+  </div>
 </template>
+
 <script>
 import { mapState } from 'vuex'
 import LogoSpurb from '~/components/icons/LogoSpurb.vue'
+import Modal from '~/components/elements/Modal'
+
 export default {
   name: 'HeaderNav',
-  components: { LogoSpurb },
+  components: { LogoSpurb, Modal },
+  data () {
+    return {
+      modal: {
+        show: false,
+        error: false,
+        title: '',
+        description: '',
+        actionDescription: '',
+        actionText: ''
+      }
+    }
+  },
   computed: {
-    ...mapState('user-interface', [ 'pageTitle' ])
+    ...mapState('user-interface', ['pageTitle', 'ouc'])
+  },
+  beforeMount () {
+    if (Object.keys(this.ouc).length > 0) {
+      this.modal.error = false
+      this.modal.title = ''
+      this.modal.description = ''
+      this.modal.actionDescription = ''
+      this.modal.actionText = ''
+      this.modal.show = false
+    }
+    else {
+      this.modal.error = true
+      this.modal.title = 'Erro.'
+      this.modal.description = 'Acesso direto pela URL negado!'
+      this.modal.actionDescription = 'Volte a página principal e selecione a Operação urbana'
+      this.modal.actionText = 'Voltar para página principal.'
+      this.modal.show = true
+    }
+  },
+  methods: {
+    getEmitModal () {
+      this.$router.push({ path: '/' })
+    }
   }
 }
 </script>
