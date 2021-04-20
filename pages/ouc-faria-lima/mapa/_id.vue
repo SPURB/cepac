@@ -10,7 +10,7 @@
         <p>Fontes:</p>
         <ul>
           <li class="fonte">
-            <a href="https://servicos.spurbanismo.sp.gov.br/geo/api/mapa/1">Dados geográficos</a>
+            <a href="https://servicos.spurbanismo.sp.gov.br/geo/api/mapas/1">Dados geográficos</a>
           </li>
           <li class="fonte">
             <a href="https://servicos.spurbanismo.sp.gov.br/cepacs/api/fila">Cadastro</a>
