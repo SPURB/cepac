@@ -1,0 +1,37 @@
+{
+  "fila": {
+    "Data": "Data de cadastro",
+    "TipoPedido": "Tipo de pedido",
+    "SubSetor": "Sub-setor",
+    "Certidao": "Certidão",
+    "Interessado": "Interessado",
+    "Licenciamento": "Licenciamento",
+    "Sei": "PA / SEI",
+    "AreaAdResidencial": "Área adicional residencial",
+    "AreaAdNaoResidencial": "Área adicional não residencial",
+    "CepacAreaAdicional": "CEPAC área adicional",
+    "CepacModUso": "CEPAC - Modo de uso",
+    "Email": "e-mail",
+    "Telefone": "Telefone",
+    "Procurador": "Procurador",
+    "CepacObjeto": "CEPAC - Objeto",
+    "Endereco": "Endereço",
+    "AreaTerreno": "Área do terreno",
+    "Zona": "Zona (Lei 16.402/16,)",
+    "Uso": "Tipo de uso",
+    "CAProjeto": "C.A. do projeto",
+    "Obs": "Observação",
+    "CodigoProposta": "Código da proposta",
+    "UsuarioAlteracao": "Usuário responsável pela última alteração",
+    "DataAlteracao": "Última alteração",
+    "IdStatus": "Situação",
+    "IdSetor": "Setor",
+    "Id": "Cadastro"
+  },
+  "statusDescription": {
+    "1": "Checklist",
+    "2": "Em análise",
+    "3": "Indeferido",
+    "4": "Aprovado"
+  }
+}

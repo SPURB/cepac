@@ -1,0 +1,55 @@
+{
+  "oucFariaLima": {
+    "estoqueGeral": 2250000,
+    "limiteDeEstoque": 1310000,
+    "cepacTotal": 1000000,
+    "resumo": {
+      "leiloado": 653712,
+      "colocacaoPrivada": 117452
+    },
+    "leiAntiga": {
+      "consumidoPre-1376904": 940000,
+      "consumidoArt6-1376904": 244719.95
+    },
+    "helioPelegrino": {
+      "areaMax": {
+        "res": 292445,
+        "nRes": 182505
+      },
+      "cepacDesvinculado":{
+        "aca": 772,
+        "usoPar": 0
+      }
+    },
+    "fariaLima": {
+      "areaMax": {
+        "res": 288190,
+        "nRes": 73715
+      },
+      "cepacDesvinculado":{
+        "aca": 9555,
+        "usoPar": 2073
+      }
+    },
+    "pinheiros": {
+      "areaMax": {
+        "res": 286695,
+        "nRes": 96600
+      },
+      "cepacDesvinculado":{
+        "aca": 72,
+        "usoPar": 2343
+      }
+    },
+    "olimpiadas": {
+      "areaMax": {
+        "res": 190440,
+        "nRes": 95565
+      },
+      "cepacDesvinculado":{
+        "aca": 0,
+        "usoPar": 0
+      }
+    }
+  }
+}
